@@ -1,9 +1,9 @@
-package com.velvet.tarot
+package com.velvet.tarot.fate
 
 import com.velvet.mvi.FragmentContract
 
-class MainContract {
-    interface ViewModel : FragmentContract.ViewModel<MainScreenState, MainScreenEffect> {
+class FateContract {
+    interface ViewModel : FragmentContract.ViewModel<FateScreenState, FateScreenEffect> {
 
     }
 
