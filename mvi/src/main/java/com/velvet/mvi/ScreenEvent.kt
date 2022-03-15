@@ -1,3 +1,3 @@
 package com.velvet.mvi
 
-interface ScreenState
+interface ScreenEvent
