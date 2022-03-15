@@ -2,41 +2,58 @@ package com.velvet.tarot.fate
 
 import androidx.lifecycle.viewModelScope
 import com.velvet.models.network.Network
-import com.velvet.mvi.MviViewModel
+import com.velvet.mvi.BaseViewModel
+import com.velvet.mvi.Reducer
+import com.velvet.mvi.TimeMachine
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
+class FateViewModel constructor(
+    private val repo: Network,
+    private val dispatcher: CoroutineDispatcher) : BaseViewModel<FateScreenState, FateScreenEvent>() {
+    private val reducer = FateReducer(FateScreenState.initial())
 
-class FateViewModel(private val repo: Network) : MviViewModel<FateContract.Event,
-        FateContract.State,
-        FateContract.Effect>() {
-    override fun createInitialState(): FateContract.State {
-        return FateContract.State(
-            FateContract.FateState.Idle
-        )
-    }
+    override val state: Flow<FateScreenState>
+        get() = reducer.state
 
-    override fun handleEvent(event: FateContract.Event) {
-        when (event) {
-            is FateContract.Event.OnOneCardButtonClicked -> { getCards(GuessingTypes.ONE) }
-            is FateContract.Event.OnThreeCardButtonClicked -> { getCards(GuessingTypes.THREE) }
+    val timeMachine: TimeMachine<FateScreenState>
+        get() = reducer.timeMachine
+
+    init {
+        viewModelScope.launch(dispatcher) {
+            sendEvent(FateScreenEvent.Initial)
         }
     }
 
-    private fun getCards(type: GuessingTypes) {
-        viewModelScope.launch {
-            setState { copy(fateState = FateContract.FateState.Loading) }
-            try {
-                val number = if (type == GuessingTypes.ONE) 1 else if (type == GuessingTypes.THREE) 3 else 0
-                val result = withContext(Dispatchers.IO) {
-                    repo.getCards(number)
+    private fun sendEvent(event: FateScreenEvent) {
+        reducer.sendEvent(event)
+    }
+
+    fun onOneCardGet() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val data = repo.getCards(1)
+            sendEvent(FateScreenEvent.OnOneCardButtonClicked(cards = data))
+        }
+    }
+
+    fun onThreeCardGet() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val data = repo.getCards(3)
+            sendEvent(FateScreenEvent.OnThreeCardButtonClicked(cards = data))
+        }
+    }
+
+    private class FateReducer(initState: FateScreenState) : Reducer<FateScreenState, FateScreenEvent>(initState = initState) {
+        override fun reduce(oldState: FateScreenState, event: FateScreenEvent) {
+            when (event) {
+                is FateScreenEvent.OnOneCardButtonClicked -> {
+                    setState(oldState.copy(isLoading = true, data = event.cards))
                 }
-                setState {
-                    copy( fateState = FateContract.FateState.Success(type = type, cards = result))
+                is FateScreenEvent.OnThreeCardButtonClicked -> {
+                    setState(oldState.copy(isLoading = true, data = event.cards))
                 }
-            } catch (exception: Exception) {
-                setEffect { FateContract.Effect.ShowToast }
             }
         }
     }

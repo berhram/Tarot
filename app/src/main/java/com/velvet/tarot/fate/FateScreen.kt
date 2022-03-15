@@ -1,60 +1,26 @@
 package com.velvet.tarot.fate
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import com.velvet.mvi.MviViewModel
 import com.velvet.tarot.R
 
-class FateFragment : Fragment() {
-
-    private val viewModel: FateViewModel by viewModels()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val view = ComposeView(requireContext())
-        view.setContent { FateScreen(viewModel) }
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initObservers()
-    }
-
-    private fun initObservers() {
-
-    }
-}
-//TODO make observe on current state or smth like this
 @Composable
 fun FateScreen(
-    viewModel: MviViewModel<FateContract.Event,
-            FateContract.State,
-            FateContract.Effect>
+    viewModel: FateViewModel
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsState(FateScreenState.initial())
     MaterialTheme() {
         Scaffold() {
             ConstraintLayout(Modifier.fillMaxSize()) {
@@ -76,11 +42,11 @@ fun FateScreen(
                             end.linkTo(parent.end)
                         },
                     horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.Bottom) {
-                    Button(onClick = { viewModel.setEvent(FateContract.Event.OnOneCardButtonClicked) }) {
+                    Button(onClick = { viewModel.onOneCardGet() }) {
                         Text(text = "One card")
                     }
                     Spacer(modifier = Modifier.size(10.dp))
-                    Button(onClick = { viewModel.setEvent(FateContract.Event.OnThreeCardButtonClicked)  }) {
+                    Button(onClick = { viewModel.onThreeCardGet()  }) {
                         Text(text = "Two cards")
                     }
                 }

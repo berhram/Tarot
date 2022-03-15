@@ -4,9 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.velvet.tarot.fate.FateContract
 
-class AppActivity : AppCompatActivity(), FateContract.Host {
+class AppActivity : AppCompatActivity() {
     private var navController: NavController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
