@@ -1,60 +1,48 @@
 package com.velvet.tarot.fate
 
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.ViewModel
+import com.velvet.models.card.CardDetails
+import com.velvet.models.card.CardDetailsScheme
 import com.velvet.models.network.Network
-import com.velvet.mvi.BaseViewModel
-import com.velvet.mvi.Reducer
-import com.velvet.mvi.TimeMachine
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
+import com.velvet.tarot.Constants
+import dagger.hilt.android.lifecycle.HiltViewModel
+import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.viewmodel.container
+import javax.inject.Inject
 
-class FateViewModel constructor(
-    private val repo: Network,
-    private val dispatcher: CoroutineDispatcher) : BaseViewModel<FateScreenState, FateScreenEvent>() {
-    private val reducer = FateReducer(FateScreenState.initial())
+@HiltViewModel
+class FateViewModel @Inject constructor(private val repo: Network) : ContainerHost<FateScreenState, FateScreenEffect>, ViewModel() {
 
-    override val state: Flow<FateScreenState>
-        get() = reducer.state
+    override val container = container<FateScreenState, FateScreenEffect>(FateScreenState())
 
-    val timeMachine: TimeMachine<FateScreenState>
-        get() = reducer.timeMachine
-
-    init {
-        viewModelScope.launch(dispatcher) {
-            sendEvent(FateScreenEvent.Initial)
+    fun getCards(layout: GuessingTypes) = intent {
+        val data = repo.getCards(layout.cards).toCardDetails()
+        reduce {
+            val oldMap = state.cards.toMutableMap()
+            oldMap[layout] = data
+            state.copy(layoutType = layout, cards = oldMap)
         }
     }
 
-    private fun sendEvent(event: FateScreenEvent) {
-        reducer.sendEvent(event)
-    }
-
-    fun onOneCardGet() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val data = repo.getCards(1)
-            sendEvent(FateScreenEvent.OnOneCardButtonClicked(cards = data))
+    fun changeLayout(layoutType: GuessingTypes) = intent {
+        reduce {
+            state.copy(layoutType = layoutType)
         }
     }
 
-    fun onThreeCardGet() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val data = repo.getCards(3)
-            sendEvent(FateScreenEvent.OnThreeCardButtonClicked(cards = data))
-        }
-    }
-
-    private class FateReducer(initState: FateScreenState) : Reducer<FateScreenState, FateScreenEvent>(initState = initState) {
-        override fun reduce(oldState: FateScreenState, event: FateScreenEvent) {
-            when (event) {
-                is FateScreenEvent.OnOneCardButtonClicked -> {
-                    setState(oldState.copy(isLoading = true, data = event.cards))
-                }
-                is FateScreenEvent.OnThreeCardButtonClicked -> {
-                    setState(oldState.copy(isLoading = true, data = event.cards))
-                }
-            }
+    private fun List<CardDetailsScheme>.toCardDetails() : List<CardDetails> {
+        val outputList = ArrayList<CardDetails>()
+        for (scheme in this) {
+            outputList.add(CardDetails(
+                type = scheme.type ?: Constants.Unknown,
+                name = scheme.name ?: Constants.Unknown,
+                nameShort = scheme.nameShort ?: Constants.Unknown,
+                meaningUp = scheme.meaningUp ?: Constants.Unknown,
+                meaningRev = scheme.meaningRev ?: Constants.Unknown,
+                description = scheme.description ?: Constants.Unknown
+            ))
         }
     }
 }

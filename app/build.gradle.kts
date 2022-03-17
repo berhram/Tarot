@@ -1,6 +1,10 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
+
 plugins {
     id(Dependencies.Plugins.application)
     id(Dependencies.Plugins.kotlinAndroid)
+    id(Dependencies.Plugins.hilt)
+    kotlin(Dependencies.Plugins.kapt)
 }
 
 repositories {
@@ -47,9 +51,11 @@ android {
 }
 
 dependencies {
-    implementation(project(path = ":mvi"))
     implementation(project(path = ":models"))
 
+    implementation(Dependencies.Orbit.orbit)
+    implementation(Dependencies.Orbit.orbitCore)
+    implementation(Dependencies.Orbit.orbitTest)
     implementation(Dependencies.Compose.runtime)
     implementation(Dependencies.Compose.compiler)
     implementation(Dependencies.Compose.ui)
@@ -62,8 +68,15 @@ dependencies {
     implementation(Dependencies.Core.appCompat)
     implementation(Dependencies.Core.coreKtx)
     implementation(Dependencies.Core.material)
-    implementation(Dependencies.Navigation.navigationFragment)
+    implementation(Dependencies.Navigation.navigationCompose)
     implementation(Dependencies.Testing.jUnit)
     implementation(Dependencies.Testing.jUnitExt)
     implementation(Dependencies.Testing.espresso)
+    kapt(Dependencies.Di.hiltCompiler)
+    implementation(Dependencies.Di.hiltAndroid)
+    implementation(Dependencies.Di.hiltCompose)
+}
+
+kapt {
+    correctErrorTypes = true
 }

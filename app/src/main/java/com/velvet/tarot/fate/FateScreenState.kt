@@ -1,20 +1,10 @@
 package com.velvet.tarot.fate
 
-import androidx.compose.runtime.Immutable
-import com.velvet.models.card.CardDetails
-import com.velvet.mvi.ScreenState
+import com.velvet.models.card.CardDetailsScheme
 
-@Immutable
 data class FateScreenState (
-    val isLoading: Boolean,
-    val error: Throwable?,
-    val data: List<CardDetails>
-) : ScreenState {
-    companion object {
-        fun initial() = FateScreenState(
-            isLoading = false,
-            data = emptyList(),
-            error = null
-        )
-    }
-}
+    val layoutType: GuessingTypes = GuessingTypes.ONE,
+    val cards: List<CardDetailsScheme> = mapOf(pairs = arrayOf(Pair(GuessingTypes.ONE, emptyList()), Pair(GuessingTypes.THREE, emptyList()))),
+    val isAnimated: Boolean = false,
+    val isInitial: Boolean = true
+)

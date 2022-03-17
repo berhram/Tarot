@@ -1,7 +1,7 @@
 package com.velvet.models.network
 
 import com.velvet.models.BuildConfig
-import com.velvet.models.card.CardDetails
+import com.velvet.models.card.CardDetailsScheme
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -27,12 +27,12 @@ class NetworkImpl : Network {
         val retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient.build())
-            .baseUrl("https://rws-cards-api.herokuapp.com/api/v1/")
+            .baseUrl("https://rws-cards-api.herokuapp.com/api/v1/cards/")
             .build()
         service = retrofit.create(RetrofitApi::class.java)
     }
 
-    override suspend fun getCards(number: Int) : List<CardDetails> {
+    override suspend fun getCards(number: Int) : List<CardDetailsScheme> {
         val list = service.getRandom(number).cards?.let {
             it
         } ?: kotlin.run {

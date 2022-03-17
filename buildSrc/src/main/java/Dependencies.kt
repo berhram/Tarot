@@ -38,6 +38,14 @@ object Dependencies {
         const val version = "2.4.1"
 
         const val navigationFragment = "androidx.navigation:navigation-fragment-ktx:$version"
+        const val navigationCompose = "androidx.navigation:navigation-compose:$version"
+    }
+
+    object Orbit {
+        const val version = "4.3.2"
+        const val orbitCore = "org.orbit-mvi:orbit-core:$version"
+        const val orbit = "org.orbit-mvi:orbit-viewmodel:$version"
+        const val orbitTest = "org.orbit-mvi:orbit-test:$version"
     }
 
     object Core {
@@ -52,6 +60,15 @@ object Dependencies {
         const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versionCoroutines"
     }
 
+    object Di {
+        const val versionHilt = "2.41"
+        const val versionHiltCompose = "1.0.0"
+
+        const val hiltAndroid = "com.google.dagger:hilt-android:$versionHilt"
+        const val hiltCompiler ="com.google.dagger:hilt-android-compiler:$versionHilt"
+        const val hiltCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
+    }
+
 
     object Testing {
         const val versionJUnit = "4.13.2"
@@ -61,11 +78,14 @@ object Dependencies {
         const val jUnit = "junit:junit:$versionJUnit"
         const val jUnitExt = "androidx.test.ext:junit:$versionJUnitExt"
         const val espresso = "androidx.test.espresso:espresso-core:$versionEspresso"
+
     }
 
     object Plugins {
         const val application = "com.android.application"
         const val library = "com.android.library"
         const val kotlinAndroid = "org.jetbrains.kotlin.android"
+        const val kapt = "kapt"
+        const val hilt = "dagger.hilt.android.plugin"
     }
 }
