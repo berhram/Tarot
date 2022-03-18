@@ -61,6 +61,7 @@ dependencies {
     implementation(Dependencies.Orbit.orbitCore)
     implementation(Dependencies.Orbit.orbitTest)
     implementation(Dependencies.Compose.runtime)
+    implementation(Dependencies.Compose.systemUiController)
     implementation(Dependencies.Compose.compiler)
     implementation(Dependencies.Compose.ui)
     implementation(Dependencies.Compose.constraint)
