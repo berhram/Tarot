@@ -1,10 +1,8 @@
 package com.velvet.tarot.fate
 
-import com.velvet.models.card.CardDetailsScheme
+import com.velvet.models.card.Card
 
 data class FateScreenState (
-    val layoutType: GuessingTypes = GuessingTypes.ONE,
-    val cards: List<CardDetailsScheme> = mapOf(pairs = arrayOf(Pair(GuessingTypes.ONE, emptyList()), Pair(GuessingTypes.THREE, emptyList()))),
-    val isAnimated: Boolean = false,
-    val isInitial: Boolean = true
+    val card: Card,
+    val isAnimated: Boolean
 )

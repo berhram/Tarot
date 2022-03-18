@@ -53,6 +53,10 @@ android {
 dependencies {
     implementation(project(path = ":models"))
 
+    implementation(Dependencies.Room.room)
+    testImplementation(Dependencies.Room.roomTest)
+    kapt(Dependencies.Room.roomKapt)
+    annotationProcessor(Dependencies.Room.roomAnnotation)
     implementation(Dependencies.Orbit.orbit)
     implementation(Dependencies.Orbit.orbitCore)
     implementation(Dependencies.Orbit.orbitTest)
@@ -65,6 +69,8 @@ dependencies {
     implementation(Dependencies.Compose.material)
     implementation(Dependencies.Compose.runtimeLivedata)
     implementation(Dependencies.Compose.uiTooling)
+    implementation(Dependencies.Compose.accompanist)
+    implementation(Dependencies.Compose.accompanistIndicators)
     implementation(Dependencies.Core.appCompat)
     implementation(Dependencies.Core.coreKtx)
     implementation(Dependencies.Core.material)

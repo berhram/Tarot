@@ -3,6 +3,7 @@ package com.velvet.models.card
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+//TODO try with data class
 class CardDetailsScheme {
     @Expose
     @SerializedName("type")
@@ -11,20 +12,6 @@ class CardDetailsScheme {
     @Expose
     @SerializedName("name")
     var name: String? = null
-
-    @Expose
-    @SerializedName("name_short")
-    var nameShort: String? = null
-/*
-    @Expose
-    @SerializedName("value")
-    var value: String? = null
-
-    @Expose
-    @SerializedName("value_int")
-    var valueInt: Int? = null
-
- */
 
     @Expose
     @SerializedName("meaning_up")

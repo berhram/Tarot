@@ -6,6 +6,15 @@ object Dependencies {
         const val okHttp = "com.squareup.okhttp3:okhttp:$version"
     }
 
+    object Room {
+        const val version = "2.4.2"
+
+        const val room = "androidx.room:room-runtime:$version"
+        const val roomAnnotation = "androidx.room:room-compiler:$version"
+        const val roomKapt = "androidx.room:room-compiler:$version"
+        const val roomTest = "androidx.room:room-testing:$version"
+    }
+
     object Gson {
         const val version = "2.8.6"
 
@@ -22,6 +31,7 @@ object Dependencies {
     object Compose {
         const val version = "1.1.1"
         const val versionConstraint = "1.0.0"
+        const val versionAccompanist = "0.23.1"
 
         const val runtime = "androidx.compose.runtime:runtime:$version"
         const val compiler = "androidx.compose.compiler:compiler:$version"
@@ -32,6 +42,8 @@ object Dependencies {
         const val runtimeLivedata = "androidx.compose.runtime:runtime-livedata:$version"
         const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
         const val constraint = "androidx.constraintlayout:constraintlayout-compose:$versionConstraint"
+        const val accompanist = "com.google.accompanist:accompanist-pager:$versionAccompanist"
+        const val accompanistIndicators = "com.google.accompanist:accompanist-pager-indicators:$versionAccompanist"
     }
 
     object Navigation {

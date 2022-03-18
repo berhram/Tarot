@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt
 import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 
 plugins {
@@ -38,6 +39,10 @@ android {
 }
 
 dependencies {
+    implementation(Dependencies.Room.room)
+    testImplementation(Dependencies.Room.roomTest)
+    kapt(Dependencies.Room.roomKapt)
+    annotationProcessor(Dependencies.Room.roomAnnotation)
     implementation(Dependencies.Retrofit.retrofit)
     implementation(Dependencies.Gson.gson)
     implementation(Dependencies.Retrofit.converterGson)

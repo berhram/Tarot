@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Tarot</string>
+    <string name="reveal">/reveal.sh</string>
+    <string name="type">Type:</string>
+    <string name="name">Name:</string>
+    <string name="meaning">Meaning:</string>
+    <string name="desc">Description:</string>
+
 </resources>
