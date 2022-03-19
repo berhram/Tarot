@@ -6,22 +6,21 @@ import com.velvet.models.Strings
 
 @Entity
 data class Card (
-    @PrimaryKey val time: Long,
-    val name: String,
+    @PrimaryKey val name: String,
     val art: String,
     val type: String,
-    val meaning: String,
+    val meaningUp: String,
+    val meaningRev: String,
     val description: String,
 ) {
     companion object {
         fun initial() = Card(
-                time = System.currentTimeMillis(),
                 name = "?????",
                 art = Strings.Blank,
                 type = "?????",
-                meaning = "?????",
+                meaningUp = "?????",
+                meaningRev = "?????",
             description = "?????"
         )
-
     }
 }

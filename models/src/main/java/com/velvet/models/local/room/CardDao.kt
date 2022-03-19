@@ -8,12 +8,12 @@ import com.velvet.models.card.Card
 
 @Dao
 interface CardDao {
-    @Query("SELECT * FROM card ORDER BY time DESC LIMIT 1")
-    fun getLast(): Card
+    @Query("SELECT * FROM card WHERE name LIKE :cardName LIMIT 1")
+    fun findByName(cardName: String): Card
 
     @Insert
-    fun insert(card: Card)
+    fun insertAll(cards: List<Card>)
 
     @Delete
-    fun delete(user: Card)
+    fun deleteAll(cards: List<Card>)
 }

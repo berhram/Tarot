@@ -1,4 +1,4 @@
-package com.velvet.tarot.fate
+package com.velvet.tarot.card
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,14 +13,14 @@ import org.orbitmvi.orbit.viewmodel.container
 import javax.inject.Inject
 
 @HiltViewModel
-class FateViewModel @Inject constructor(private val repository: Repository) : ContainerHost<FateScreenState, FateScreenEffect>, ViewModel() {
+class CardViewModel @Inject constructor(private val repository: Repository) : ContainerHost<CardState, CardEffect>, ViewModel() {
 
-    override val container = container<FateScreenState, FateScreenEffect>(FateScreenState(card = Card.initial(), isAnimated = true))
+    override val container = container<CardState, CardEffect>(CardState(card = Card.initial(), isLoading = true))
 
-    fun getCard() = intent {
-        val card = repository.getNewCard()
+    fun getCard(cardName: String) = intent {
+        val card = repository.getCard(cardName)
         reduce {
-            state.copy(card = card, isAnimated = false)
+            state.copy(card = card, isLoading = false)
         }
     }
 }
