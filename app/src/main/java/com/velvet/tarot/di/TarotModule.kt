@@ -1,4 +1,4 @@
-package com.velvet.tarot.fate.di
+package com.velvet.tarot.di
 
 import com.velvet.models.local.arts.CardArtStore
 import com.velvet.models.local.room.CardDatabase
@@ -12,7 +12,7 @@ import dagger.hilt.android.components.ViewModelComponent
 
 @Module
 @InstallIn(ViewModelComponent::class)
-object FateModule {
+object TarotModule {
     @Provides
     fun providesRepo(network: Network, database: CardDatabase, arts: CardArtStore): Repository {
         return RepositoryImpl(network = network, database = database, arts = arts)

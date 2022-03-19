@@ -32,13 +32,12 @@ class NetworkImpl : Network {
         service = retrofit.create(RetrofitApi::class.java)
     }
 
-    override suspend fun getCard() : CardDetailsScheme {
-        val cards = service.getRandom(1).cards?.let {
+    override suspend fun getCards() : List<CardDetailsScheme> {
+        val cards = service.getCards().cards?.let {
             it
         } ?: kotlin.run {
             ArrayList()
         }
-        return cards[0]
+        return cards
     }
-
 }

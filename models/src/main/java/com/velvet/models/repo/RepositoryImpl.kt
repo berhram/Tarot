@@ -12,26 +12,32 @@ import kotlin.random.Random
 class RepositoryImpl @Inject constructor(private val network: Network, private val database: CardDatabase, private val arts: CardArtStore) : Repository {
     private val dao = database.cardDao()
 
-    override suspend fun getNewCard(): Card {
-        val card = network.getCard().toCard()
-        dao.insert(card)
-        return card
+    override suspend fun getCards(): List<Card> {
+        return network.getCards().toCardList()
     }
 
-    override suspend fun getOldCard(): Card {
-        return dao.getLast()
+    override suspend fun getCard(cardName: String): Card {
+        return dao.findByName(cardName)
     }
 
     private fun CardDetailsScheme.toCard() : Card {
-        val isReversed = Random.nextBoolean()
-        val name = (if (isReversed) this.name + " " + Strings.Reversed else this.name) ?: Strings.Unknown
         return Card(
             type = if (this.type == "major") "Major" else if (this.type == "minor") "Minor" else Strings.Unknown,
-            name = name,
-            meaning = (if (isReversed) this.meaningRev else this.meaningUp) ?: Strings.Unknown,
+            name = this.name ?: Strings.Unknown,
+            meaningUp =  this.meaningUp ?: Strings.Unknown,
+            meaningRev =  this.meaningUp ?: Strings.Unknown,
             description = this.description ?: Strings.Unknown,
-            time = System.currentTimeMillis(),
-            art = arts.getArt(name)
+            art =  if (this.name != null) arts.getArt(this.name!!) else Strings.Blank
         )
     }
+
+    private fun List<CardDetailsScheme>.toCardList() : List<Card> {
+        val output: ArrayList<Card> = ArrayList()
+        for (cardScheme in this) {
+            output.add(cardScheme.toCard())
+        }
+        return output
+    }
+
+
 }
