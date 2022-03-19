@@ -1,35 +1,37 @@
 package com.velvet.tarot
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.velvet.tarot.fate.FateScreen
-import com.velvet.tarot.fate.FateViewModel
-import com.velvet.tarot.navigations.Destinations.startRoute
+import androidx.navigation.navArgument
+import com.velvet.tarot.card.CardScreen
+import com.velvet.tarot.card.CardViewModel
+import com.velvet.tarot.feed.FeedScreen
+import com.velvet.tarot.feed.FeedViewModel
+import com.velvet.tarot.navigation.Destinations
+import com.velvet.tarot.theme.AppTheme
 
 
 @Composable
 fun AppScreen() {
-        Scaffold() {
-            val systemUiController = rememberSystemUiController()
-            systemUiController.setStatusBarColor(color = Color.Transparent)
-            val navController = rememberNavController()
-            NavHost(navController, startDestination = startRoute) {
-                composable("fate") { backStackEntry ->
-                    val fateViewModel = hiltViewModel<FateViewModel>()
-                    FateScreen(fateViewModel)
-                }
+    AppTheme() {
+        val navController = rememberNavController()
+        NavHost(navController, startDestination = Destinations.FEED) {
+            composable(Destinations.FEED) { backStackEntry ->
+                val feedViewModel = hiltViewModel<FeedViewModel>()
+                FeedScreen(viewModel = feedViewModel, navController = navController)
+            }
+            composable("${Destinations.CARDS}/{name}",
+                arguments = listOf(navArgument("name") { type = NavType.StringType })) {
+                backStackEntry ->
+                val feedViewModel = hiltViewModel<CardViewModel>()
+                CardScreen(cardName = backStackEntry.arguments?.getString("name"), viewModel = feedViewModel, navController =  navController)
             }
         }
+    }
 }
 
