@@ -11,8 +11,13 @@ import kotlin.random.Random
 
 class RepositoryImpl @Inject constructor(private val network: Network, private val database: CardDatabase, private val arts: CardArtStore) : Repository {
     private val dao = database.cardDao()
-
+//TODO fix this logic
+    //TODO fix system bar is violet
+    //TODO add icon
+    //TODO fix lagging
+    //TODO remove redundant code
     override suspend fun getCards(): List<Card> {
+        dao.insertAll(network.getCards().toCardList())
         return network.getCards().toCardList()
     }
 

@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
@@ -22,18 +23,18 @@ fun CardScreen(cardName: String?, viewModel: CardViewModel, navController: NavCo
     Scaffold(topBar = {
         TopAppBar(
             title = { Text(text = cardName ?: stringResource(id = R.string.no_card_title),
-                style = AppTheme.typography.body1,
-                textAlign = TextAlign.Start)},
+                style = AppTheme.typography.h1,
+                textAlign = TextAlign.Start, color = AppTheme.colors.textPrimary)},
             navigationIcon = {
                 IconButton(onClick = { navController.navigate(Destinations.FEED) }) {
                     Icon(
                         Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(id = R.string.button_back)
+                        contentDescription = stringResource(id = R.string.button_back), tint = AppTheme.colors.textPrimary
                     )
                 }
-            }
+            }, backgroundColor = AppTheme.colors.background
         )
-    }) {
+    }, backgroundColor = AppTheme.colors.background) {
         val state = viewModel.container.stateFlow.collectAsState()
         if (state.value.isLoading) {
             Loading()

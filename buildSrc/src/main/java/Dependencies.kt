@@ -10,7 +10,6 @@ object Dependencies {
         const val version = "2.4.2"
 
         const val room = "androidx.room:room-runtime:$version"
-        const val roomAnnotation = "androidx.room:room-compiler:$version"
         const val roomKapt = "androidx.room:room-compiler:$version"
         const val roomTest = "androidx.room:room-testing:$version"
     }
@@ -34,7 +33,6 @@ object Dependencies {
         const val versionAccompanist = "0.23.1"
 
         const val runtime = "androidx.compose.runtime:runtime:$version"
-        const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$versionAccompanist"
         const val compiler = "androidx.compose.compiler:compiler:$version"
         const val ui = "androidx.compose.ui:ui:$version"
         const val foundation = "androidx.compose.foundation:foundation:$version"
@@ -43,8 +41,7 @@ object Dependencies {
         const val runtimeLivedata = "androidx.compose.runtime:runtime-livedata:$version"
         const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
         const val constraint = "androidx.constraintlayout:constraintlayout-compose:$versionConstraint"
-        const val accompanist = "com.google.accompanist:accompanist-pager:$versionAccompanist"
-        const val accompanistIndicators = "com.google.accompanist:accompanist-pager-indicators:$versionAccompanist"
+        const val accompanist = "com.google.accompanist:accompanist-swiperefresh:$versionAccompanist"
     }
 
     object Navigation {

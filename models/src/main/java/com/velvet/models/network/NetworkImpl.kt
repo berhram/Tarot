@@ -27,7 +27,7 @@ class NetworkImpl : Network {
         val retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient.build())
-            .baseUrl("https://rws-cards-api.herokuapp.com/api/v1/cards/")
+            .baseUrl("https://rws-cards-api.herokuapp.com/api/v1/")
             .build()
         service = retrofit.create(RetrofitApi::class.java)
     }

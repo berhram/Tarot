@@ -1,9 +1,12 @@
 <resources>
     <string name="app_name">Tarot</string>
-    <string name="reveal">/reveal.sh</string>
+    <string name="no_cards">Oops, there is no cards for some reason!</string>
+    <string name="no_card_title">Oops!</string>
     <string name="type">Type:</string>
     <string name="name">Name:</string>
-    <string name="meaning">Meaning:</string>
+    <string name="meaning_up">Meaning (up side):</string>
+    <string name="meaning_rev">Meaning (reversed side):</string>
     <string name="desc">Description:</string>
-
+    <string name="loading">Description:</string>
+    <string name="button_back">Back button</string>
 </resources>
