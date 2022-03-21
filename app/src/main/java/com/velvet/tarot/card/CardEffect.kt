@@ -1,4 +1,3 @@
 package com.velvet.tarot.card
 
-sealed class CardEffect {
-}
+sealed class CardEffect

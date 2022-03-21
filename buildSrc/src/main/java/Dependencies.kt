@@ -72,12 +72,12 @@ object Dependencies {
     }
 
     object Di {
-        const val versionHilt = "2.41"
-        const val versionHiltCompose = "1.0.0"
+        const val version = "3.1.5"
 
-        const val hiltAndroid = "com.google.dagger:hilt-android:$versionHilt"
-        const val hiltCompiler ="com.google.dagger:hilt-android-compiler:$versionHilt"
-        const val hiltCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
+        const val koin = "io.insert-koin:koin-android:$version"
+        //const val koinWM = "io.insert-koin:koin-androidx-workmanager:$versionKoin"
+        const val koinNavGraph = "io.insert-koin:koin-androidx-navigation:$version"
+        const val koinCompose = "io.insert-koin:koin-androidx-compose:$version"
     }
 
 

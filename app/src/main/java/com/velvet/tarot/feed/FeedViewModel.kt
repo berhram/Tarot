@@ -1,65 +1,33 @@
 package com.velvet.tarot.feed
 
 import androidx.lifecycle.ViewModel
-import com.velvet.models.cache.Cache
-import com.velvet.models.repo.Repository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.velvet.domain.usecase.FetchCardsUseCase
+import com.velvet.domain.usecase.GetAllCardsUseCase
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
-import javax.inject.Inject
 
-@HiltViewModel
-class FeedViewModel @Inject constructor(private val repository: Repository, private val cache: Cache) : ContainerHost<FeedState, FeedEffect>, ViewModel() {
+class FeedViewModel(private val fetchCardsUseCase: FetchCardsUseCase, private val getAllCardsUseCase: GetAllCardsUseCase) : ContainerHost<FeedState, FeedEffect>, ViewModel() {
     override val container: Container<FeedState, FeedEffect> = container(FeedState(
         isLoading = true,
-        cards = emptyList(),
-        isInitial = true,
-        scrollPosition = cache.getSavedPosition(),
-        scrollOffset = cache.getSavedOffset(),
-        isScrollNeeded = true))
+        cards = emptyList()))
+
+    init {
+        refresh()
+    }
 
     fun refresh() = intent {
+        fetchCardsUseCase.invoke()
+        val cards = getAllCardsUseCase.invoke()
         reduce {
-            state.copy(
-                isLoading = true,
-                isInitial = false
-            )
-        }
-        repository.getCards()
-        val cards = cache.retrieveCardsAfterCall()
-        reduce {
-            state.copy(
-                isLoading = false,
-                cards = cards
-            )
+            state.copy(isLoading = false, cards = cards)
         }
     }
 
-    fun initialRefresh() = intent {
-        if (cache.isCacheEmpty()) {
-            refresh()
-        } else {
-            val cards = cache.retrieveCards()
-            reduce {
-                state.copy(
-                    cards = cards,
-                    isLoading =  false
-                )
-            }
-        }
-    }
-
-    fun saveStateAndOffset(position: Int, offset: Int) = intent {
-        cache.savePosition(position = position)
-        cache.savedOffset(offset = offset)
-    }
-
-    fun scrollComplete() = intent {
-        reduce {
-            state.copy(isScrollNeeded = false)
-        }
+    fun showCard(cardName: String) = intent {
+        postSideEffect(FeedEffect.ShowCard(cardName = cardName))
     }
 }

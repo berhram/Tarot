@@ -1,3 +1,5 @@
 package com.velvet.tarot.feed
 
-sealed class FeedEffect {}
+sealed class FeedEffect {
+    data class ShowCard(val cardName: String) : FeedEffect()
+}

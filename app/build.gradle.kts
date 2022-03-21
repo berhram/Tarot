@@ -1,9 +1,6 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
-
 plugins {
     id(Dependencies.Plugins.application)
     id(Dependencies.Plugins.kotlinAndroid)
-    id(Dependencies.Plugins.hilt)
     kotlin(Dependencies.Plugins.kapt)
 }
 
@@ -51,10 +48,10 @@ android {
 }
 
 dependencies {
-    implementation(project(path = ":models"))
 
+    implementation(project(":domain"))
+    implementation(project(":data"))
     kapt(Dependencies.Room.roomKapt)
-    kapt(Dependencies.Di.hiltCompiler)
     implementation(Dependencies.Compose.systemUiController)
     implementation(Dependencies.Room.room)
     implementation(Dependencies.Orbit.orbit)
@@ -76,8 +73,10 @@ dependencies {
     implementation(Dependencies.Testing.jUnit)
     implementation(Dependencies.Testing.jUnitExt)
     implementation(Dependencies.Testing.espresso)
-    implementation(Dependencies.Di.hiltAndroid)
-    implementation(Dependencies.Di.hiltCompose)
+    implementation(Dependencies.Di.koin)
+    implementation(Dependencies.Di.koinNavGraph)
+    implementation(Dependencies.Di.koinCompose)
+    //implementation(Dependencies.Di.koinWM)
     testImplementation(Dependencies.Room.roomTest)
 }
 

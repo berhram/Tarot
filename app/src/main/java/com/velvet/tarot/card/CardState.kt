@@ -1,6 +1,6 @@
 package com.velvet.tarot.card
 
-import com.velvet.models.card.Card
+import com.velvet.data.card.Card
 
 data class CardState (
     val card: Card,

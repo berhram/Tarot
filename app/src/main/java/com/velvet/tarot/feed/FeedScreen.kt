@@ -1,11 +1,9 @@
 package com.velvet.tarot.feed
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -17,16 +15,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.velvet.models.card.Card
+import com.velvet.data.card.Card
 import com.velvet.tarot.R
-import com.velvet.tarot.navigation.Destinations
 import com.velvet.tarot.theme.AppTheme
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
-fun FeedScreen(viewModel: FeedViewModel, navController: NavController) {
+fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit) {
     Scaffold(topBar = {
         TopAppBar(
             title = { Text(text = stringResource(id = R.string.app_name), style = AppTheme.typography.h1,
@@ -34,29 +31,19 @@ fun FeedScreen(viewModel: FeedViewModel, navController: NavController) {
         )
     }, backgroundColor = AppTheme.colors.background) {
         val state = viewModel.container.stateFlow.collectAsState()
-        val scrollState = rememberLazyListState()
-        LaunchedEffect(key1 = scrollState.isScrollInProgress) {
-            if(!scrollState.isScrollInProgress) {
-                viewModel.saveStateAndOffset(position = scrollState.firstVisibleItemIndex,
-                    offset = scrollState.firstVisibleItemScrollOffset)
+        LaunchedEffect(viewModel) {
+            viewModel.container.sideEffectFlow.collectLatest {
+                when (it) {
+                    is FeedEffect.ShowCard -> onShowCard(it.cardName)
+                }
             }
-        }
-        LaunchedEffect(key1 = state.value.isInitial) {
-            viewModel.initialRefresh()
-        }
-        LaunchedEffect(key1 = state.value.isScrollNeeded) {
-            scrollState.scrollToItem(
-                index = state.value.scrollPosition,
-                scrollOffset = state.value.scrollOffset
-            )
-            viewModel.scrollComplete()
         }
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = state.value.isLoading),
             onRefresh = { viewModel.refresh() },
             modifier = Modifier.fillMaxSize()
         ) {
-            LazyColumn(state = scrollState) {
+            LazyColumn {
                 if (state.value.cards.isNullOrEmpty()) {
                     items(items = listOf(System.currentTimeMillis()), key = { it }) {
                         Column(
@@ -76,7 +63,7 @@ fun FeedScreen(viewModel: FeedViewModel, navController: NavController) {
                     items(
                         items = state.value.cards,
                         key = { it.name }
-                    ) { CardItem(it, navController) }
+                    ) { CardItem(it, viewModel = viewModel) }
                 }
             }
         }
@@ -84,12 +71,12 @@ fun FeedScreen(viewModel: FeedViewModel, navController: NavController) {
 }
 
 @Composable
-fun CardItem(card: Card, navController: NavController) {
+fun CardItem(card: Card, viewModel: FeedViewModel) {
     Row(
         Modifier
             .fillMaxWidth()
             .padding(5.dp)
-            .clickable { navController.navigate("${Destinations.CARDS}/${card.name}") }) {
+            .clickable { viewModel.showCard(card.name) }) {
         Text(
             text = card.name,
             style = AppTheme.typography.h1,

@@ -9,24 +9,22 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.navigation.NavController
-import com.velvet.models.card.Card
+import com.velvet.data.card.Card
 import com.velvet.tarot.R
-import com.velvet.tarot.navigation.Destinations
 import com.velvet.tarot.theme.AppTheme
 
 @Composable
-fun CardScreen(cardName: String?, viewModel: CardViewModel, navController: NavController) {
+fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
+    val state = viewModel.container.stateFlow.collectAsState()
     Scaffold(topBar = {
         TopAppBar(
-            title = { Text(text = cardName ?: stringResource(id = R.string.no_card_title),
+            title = { Text(text = state.value.card.name,
                 style = AppTheme.typography.h1,
                 textAlign = TextAlign.Start, color = AppTheme.colors.textPrimary)},
             navigationIcon = {
-                IconButton(onClick = { navController.navigate(Destinations.FEED) }) {
+                IconButton(onClick = onBack) {
                     Icon(
                         Icons.Filled.ArrowBack,
                         contentDescription = stringResource(id = R.string.button_back), tint = AppTheme.colors.textPrimary
@@ -35,27 +33,7 @@ fun CardScreen(cardName: String?, viewModel: CardViewModel, navController: NavCo
             }, backgroundColor = AppTheme.colors.background
         )
     }, backgroundColor = AppTheme.colors.background) {
-        val state = viewModel.container.stateFlow.collectAsState()
-        if (state.value.isLoading) {
-            Loading()
-            if (cardName != null) {
-                viewModel.getCard(cardName)
-            }
-        } else {
-            ShowCard(card = state.value.card)
-        }
-    }
-}
-
-@Composable
-fun Loading() {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-        Text(
-            text = stringResource(id = R.string.loading),
-            style = AppTheme.typography.body2,
-            textAlign = TextAlign.Center,
-            color = AppTheme.colors.textPrimary
-        )
+        ShowCard(card = state.value.card)
     }
 }
 

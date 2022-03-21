@@ -20,4 +20,5 @@ pluginManagement {
 }
 rootProject.name = "Tarot"
 include(":app")
-include(":models")
+include(":data")
+include(":domain")
