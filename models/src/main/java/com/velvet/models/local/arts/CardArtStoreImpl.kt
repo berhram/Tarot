@@ -8,7 +8,7 @@ import com.velvet.models.card.CardArtScheme
 import java.io.IOException
 import javax.inject.Inject
 
-class CardArtStoreImpl @Inject constructor(private val appContext: Context) : CardArtStore {
+class CardArtStoreImpl(appContext: Context) : CardArtStore {
     val gson = Gson()
     val listCardArtType = object : TypeToken<List<CardArtScheme>>() {}.type
     val arts: List<CardArtScheme> = gson.fromJson(appContext.assets.open("ASCIIarts.json").bufferedReader().use { it.readText() }, listCardArtType)

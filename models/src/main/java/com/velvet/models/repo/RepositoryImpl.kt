@@ -5,24 +5,32 @@ import com.velvet.models.card.CardDetailsScheme
 import com.velvet.models.local.room.CardDatabase
 import com.velvet.models.network.Network
 import com.velvet.models.Strings
+import com.velvet.models.cache.Cache
 import com.velvet.models.local.arts.CardArtStore
 import javax.inject.Inject
 import kotlin.random.Random
 
-class RepositoryImpl @Inject constructor(private val network: Network, private val database: CardDatabase, private val arts: CardArtStore) : Repository {
+class RepositoryImpl @Inject constructor(private val network: Network, private val database: CardDatabase, private val arts: CardArtStore, private val cache: Cache) : Repository {
     private val dao = database.cardDao()
-//TODO fix this logic
-    //TODO fix system bar is violet
-    //TODO add icon
-    //TODO fix lagging
-    //TODO remove redundant code
-    override suspend fun getCards(): List<Card> {
-        dao.insertAll(network.getCards().toCardList())
-        return network.getCards().toCardList()
+
+    override suspend fun getCards() {
+        val networkCardsResult = network.getCards()
+        if (networkCardsResult.isFailure) {
+            if (cache.isCacheEmpty()) {
+                cache.uploadCards(dao.getAll())
+            }
+        } else {
+            val cards = networkCardsResult.getOrNull()
+            if (cards != null) {
+                cache.uploadCards(cards = cards.toCardList())
+                dao.deleteAll(cards.toCardList())
+                dao.insertAll(cards.toCardList())
+            }
+        }
     }
 
-    override suspend fun getCard(cardName: String): Card {
-        return dao.findByName(cardName)
+    override suspend fun getCard(cardName: String) {
+        cache.uploadSelectedCard(dao.findByName(cardName))
     }
 
     private fun CardDetailsScheme.toCard() : Card {
@@ -30,7 +38,7 @@ class RepositoryImpl @Inject constructor(private val network: Network, private v
             type = if (this.type == "major") "Major" else if (this.type == "minor") "Minor" else Strings.Unknown,
             name = this.name ?: Strings.Unknown,
             meaningUp =  this.meaningUp ?: Strings.Unknown,
-            meaningRev =  this.meaningUp ?: Strings.Unknown,
+            meaningRev =  this.meaningRev ?: Strings.Unknown,
             description = this.description ?: Strings.Unknown,
             art =  if (this.name != null) arts.getArt(this.name!!) else Strings.Blank
         )

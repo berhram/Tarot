@@ -1,6 +1,6 @@
 package com.velvet.tarot.feed
 
-import androidx.compose.foundation.background
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,6 +10,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,22 @@ fun FeedScreen(viewModel: FeedViewModel, navController: NavController) {
     }, backgroundColor = AppTheme.colors.background) {
         val state = viewModel.container.stateFlow.collectAsState()
         val scrollState = rememberLazyListState()
+        LaunchedEffect(key1 = scrollState.isScrollInProgress) {
+            if(!scrollState.isScrollInProgress) {
+                viewModel.saveStateAndOffset(position = scrollState.firstVisibleItemIndex,
+                    offset = scrollState.firstVisibleItemScrollOffset)
+            }
+        }
+        LaunchedEffect(key1 = state.value.isInitial) {
+            viewModel.initialRefresh()
+        }
+        LaunchedEffect(key1 = state.value.isScrollNeeded) {
+            scrollState.scrollToItem(
+                index = state.value.scrollPosition,
+                scrollOffset = state.value.scrollOffset
+            )
+            viewModel.scrollComplete()
+        }
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = state.value.isLoading),
             onRefresh = { viewModel.refresh() },
@@ -68,13 +85,16 @@ fun FeedScreen(viewModel: FeedViewModel, navController: NavController) {
 
 @Composable
 fun CardItem(card: Card, navController: NavController) {
-    Row(Modifier.fillMaxWidth().padding(5.dp)) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(5.dp)
+            .clickable { navController.navigate("${Destinations.CARDS}/${card.name}") }) {
         Text(
             text = card.name,
             style = AppTheme.typography.h1,
             textAlign = TextAlign.Start,
-            color = AppTheme.colors.textPrimary,
-            modifier = Modifier.clickable { navController.navigate("${Destinations.CARDS}/${card.name}") }
+            color = AppTheme.colors.textPrimary
         )
     }
 }

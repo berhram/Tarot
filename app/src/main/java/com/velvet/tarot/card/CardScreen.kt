@@ -65,13 +65,13 @@ fun ShowCard(card: Card) {
         Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.Start
     ) {
         Text(
             text = card.art,
             style = AppTheme.typography.body2,
             textAlign = TextAlign.Center,
-            color = AppTheme.colors.textPrimary
+            color = AppTheme.colors.textPrimary, modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         Text(
             text = stringResource(id = R.string.type) + " " + card.type,

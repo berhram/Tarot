@@ -39,9 +39,10 @@ android {
 }
 
 dependencies {
-    implementation(Dependencies.Room.room)
-    testImplementation(Dependencies.Room.roomTest)
     kapt(Dependencies.Room.roomKapt)
+    kapt(Dependencies.Di.hiltCompiler)
+
+    implementation(Dependencies.Room.room)
     implementation(Dependencies.Retrofit.retrofit)
     implementation(Dependencies.Gson.gson)
     implementation(Dependencies.Retrofit.converterGson)
@@ -54,7 +55,8 @@ dependencies {
     implementation(Dependencies.Testing.jUnit)
     implementation(Dependencies.Testing.jUnitExt)
     implementation(Dependencies.Testing.espresso)
-    kapt(Dependencies.Di.hiltCompiler)
     implementation(Dependencies.Di.hiltAndroid)
     implementation(Dependencies.Di.hiltCompose)
+    testImplementation(Dependencies.Room.roomTest)
+
 }

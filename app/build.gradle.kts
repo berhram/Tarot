@@ -27,7 +27,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
@@ -53,16 +53,16 @@ android {
 dependencies {
     implementation(project(path = ":models"))
 
-    implementation(Dependencies.Room.room)
-    testImplementation(Dependencies.Room.roomTest)
     kapt(Dependencies.Room.roomKapt)
+    kapt(Dependencies.Di.hiltCompiler)
+    implementation(Dependencies.Compose.systemUiController)
+    implementation(Dependencies.Room.room)
     implementation(Dependencies.Orbit.orbit)
     implementation(Dependencies.Orbit.orbitCore)
     implementation(Dependencies.Orbit.orbitTest)
     implementation(Dependencies.Compose.runtime)
     implementation(Dependencies.Compose.compiler)
     implementation(Dependencies.Compose.ui)
-    implementation(Dependencies.Compose.constraint)
     implementation(Dependencies.Compose.foundation)
     implementation(Dependencies.Compose.foundation_layout)
     implementation(Dependencies.Compose.material)
@@ -76,9 +76,9 @@ dependencies {
     implementation(Dependencies.Testing.jUnit)
     implementation(Dependencies.Testing.jUnitExt)
     implementation(Dependencies.Testing.espresso)
-    kapt(Dependencies.Di.hiltCompiler)
     implementation(Dependencies.Di.hiltAndroid)
     implementation(Dependencies.Di.hiltCompose)
+    testImplementation(Dependencies.Room.roomTest)
 }
 
 kapt {

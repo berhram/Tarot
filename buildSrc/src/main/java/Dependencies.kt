@@ -33,6 +33,7 @@ object Dependencies {
         const val versionAccompanist = "0.23.1"
 
         const val runtime = "androidx.compose.runtime:runtime:$version"
+        const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$versionAccompanist"
         const val compiler = "androidx.compose.compiler:compiler:$version"
         const val ui = "androidx.compose.ui:ui:$version"
         const val foundation = "androidx.compose.foundation:foundation:$version"
