@@ -6,12 +6,12 @@ import com.google.gson.reflect.TypeToken
 import com.velvet.models.Strings
 import com.velvet.models.card.CardArtScheme
 import java.io.IOException
-import javax.inject.Inject
+import java.lang.reflect.Type
 
 class CardArtStoreImpl(appContext: Context) : CardArtStore {
-    val gson = Gson()
-    val listCardArtType = object : TypeToken<List<CardArtScheme>>() {}.type
-    val arts: List<CardArtScheme> = gson.fromJson(appContext.assets.open("ASCIIarts.json").bufferedReader().use { it.readText() }, listCardArtType)
+    private val gson = Gson()
+    private val listCardArtType: Type = object : TypeToken<List<CardArtScheme>>() {}.type
+    private val arts: List<CardArtScheme> = gson.fromJson(appContext.assets.open("ASCIIarts.json").bufferedReader().use { it.readText() }, listCardArtType)
 
     override fun getArt(name: String) : String {
         try {

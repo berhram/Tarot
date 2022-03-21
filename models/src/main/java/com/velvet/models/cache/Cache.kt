@@ -7,8 +7,8 @@ interface Cache {
     suspend fun retrieveCards() : List<Card>
     suspend fun uploadSelectedCard(card: Card)
     suspend fun retrieveSelectedCard() : Card
-    fun isCacheEmpty() : Boolean
     suspend fun retrieveCardsAfterCall(): List<Card>
+    fun isCacheEmpty() : Boolean
     fun getSavedPosition() : Int
     fun getSavedOffset() : Int
     fun savePosition(position: Int)
