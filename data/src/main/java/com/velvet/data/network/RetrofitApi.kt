@@ -1,6 +1,6 @@
 package com.velvet.data.network
 
-import com.velvet.data.card.CardListScheme
+import com.velvet.data.card.schemas.CardListScheme
 import retrofit2.http.GET
 
 interface RetrofitApi {

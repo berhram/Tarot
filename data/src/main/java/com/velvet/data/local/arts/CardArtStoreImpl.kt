@@ -4,7 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.velvet.data.Strings
-import com.velvet.data.card.CardArtScheme
+import com.velvet.data.card.schemas.CardArtScheme
 import java.io.IOException
 import java.lang.reflect.Type
 

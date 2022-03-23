@@ -35,7 +35,9 @@ val appModule = module {
     viewModel {
         FeedViewModel(
             fetchCardsUseCase = get(),
-            getAllCardsUseCase = get()
+            getAllCardsUseCase = get(),
+            filterCardsUseCase = get(),
+            searchCardsUseCase = get()
         )
     }
 

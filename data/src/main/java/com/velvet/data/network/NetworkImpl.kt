@@ -1,7 +1,7 @@
 package com.velvet.data.network
 
 import com.velvet.data.BuildConfig
-import com.velvet.data.card.CardDetailsScheme
+import com.velvet.data.card.schemas.CardScheme
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -31,7 +31,7 @@ class NetworkImpl : Network {
         service = retrofit.create(RetrofitApi::class.java)
     }
 
-    override suspend fun getCards() : Result<List<CardDetailsScheme>> {
+    override suspend fun getCards() : Result<List<CardScheme>> {
         return try {
             val cards = service.getCards().cards ?: run {
                 ArrayList()

@@ -1,7 +1,7 @@
 package com.velvet.data.repo
 
 import com.velvet.data.card.Card
-import com.velvet.data.card.CardDetailsScheme
+import com.velvet.data.card.schemas.CardScheme
 import com.velvet.data.network.Network
 import com.velvet.data.Strings
 import com.velvet.data.local.arts.CardArtStore
@@ -29,7 +29,7 @@ class RepositoryImpl(
         return dao.findByName(cardName)
     }
 
-    private fun CardDetailsScheme.toCard() : Card {
+    private fun CardScheme.toCard() : Card {
         return Card(
             type = if (this.type == "major") Strings.Major else if (this.type == "minor") Strings.Minor else Strings.Unknown,
             name = this.name ?: Strings.Unknown,
@@ -40,7 +40,7 @@ class RepositoryImpl(
         )
     }
 
-    private fun List<CardDetailsScheme>.toCardList() : List<Card> {
+    private fun List<CardScheme>.toCardList() : List<Card> {
         val output: ArrayList<Card> = ArrayList()
         for (cardScheme in this) {
             output.add(cardScheme.toCard())

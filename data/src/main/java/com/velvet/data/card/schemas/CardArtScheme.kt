@@ -1,4 +1,4 @@
-package com.velvet.data.card
+package com.velvet.data.card.schemas
 
 import com.google.gson.annotations.SerializedName
 

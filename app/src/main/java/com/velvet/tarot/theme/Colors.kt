@@ -37,7 +37,7 @@ class AppColors(
 private val colorPrimary = Color(0xFFFFFFFF)
 private val colorTextPrimary = Color(0xFFFFFFFF)
 private val colorBackground = Color(0xFF000000)
-private val colorEffect = Color(0xADA31212)
+private val colorEffect = Color(0xD3FF0000)
 
 fun colors(
     primary: Color = colorPrimary,

@@ -5,6 +5,7 @@ import com.velvet.domain.usecase.GetCardDetailsUseCase
 import com.velvet.data.card.Card
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
+import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
@@ -19,5 +20,9 @@ class CardViewModel(private val getCardDetailsUse: GetCardDetailsUseCase, privat
                 state.copy(card = card, isLoading = false)
             }
         }
+    }
+
+    fun goBack() = intent {
+        postSideEffect(CardEffect.GoBack)
     }
 }
