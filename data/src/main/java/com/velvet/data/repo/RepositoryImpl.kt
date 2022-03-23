@@ -36,7 +36,7 @@ class RepositoryImpl(
             meaningUp =  this.meaningUp ?: Strings.Unknown,
             meaningRev =  this.meaningRev ?: Strings.Unknown,
             description = this.description ?: Strings.Unknown,
-            art =  if (this.name != null) arts.getArt(this.name!!) else Strings.Blank
+            art =  if (this.name != null) arts.getArt(this.name) else Strings.Blank
         )
     }
 

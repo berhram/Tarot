@@ -2,12 +2,9 @@ package com.velvet.tarot.feed
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -52,7 +49,7 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                                 textAlign = TextAlign.Start,
                                 color = AppTheme.colors.textPrimary)
                         }
-                        DropdownMenuItem(onClick = { viewModel.setFilter(Strings.Minor) } , ) {
+                        DropdownMenuItem(onClick = { viewModel.setFilter(Strings.Minor) }) {
                             val check = if (state.value.filter.isMinorEnabled) "[X] - " else "[ ] - "
                             Text(text = check + Strings.Minor,
                                 style = AppTheme.typography.body1,

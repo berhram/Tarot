@@ -76,7 +76,6 @@ dependencies {
     implementation(Dependencies.Di.koin)
     implementation(Dependencies.Di.koinNavGraph)
     implementation(Dependencies.Di.koinCompose)
-    //implementation(Dependencies.Di.koinWM)
     testImplementation(Dependencies.Room.roomTest)
 }
 

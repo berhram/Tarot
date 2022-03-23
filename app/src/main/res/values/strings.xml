@@ -8,9 +8,7 @@
     <string name="meaning_up">Meaning (up side):</string>
     <string name="meaning_rev">Meaning (reversed side):</string>
     <string name="desc">Description:</string>
-    <string name="loading">Description:</string>
     <string name="button_back">Back button</string>
     <string name="button_filter">Filter button</string>
-    <string name="button_search">Search button</string>
     <string name="search">Search</string>
 </resources>
