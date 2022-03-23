@@ -1,8 +1,6 @@
 package com.velvet.domain
 
-import com.velvet.domain.usecase.FetchCardsUseCase
-import com.velvet.domain.usecase.GetAllCardsUseCase
-import com.velvet.domain.usecase.GetCardDetailsUseCase
+import com.velvet.domain.usecase.*
 import org.koin.dsl.module
 
 val domainModule = module {
@@ -16,5 +14,13 @@ val domainModule = module {
 
     factory {
         GetAllCardsUseCase(repository = get())
+    }
+
+    factory {
+        SearchCardsUseCase(repository = get())
+    }
+
+    factory {
+        FilterCardsUseCase(repository = get())
     }
 }
