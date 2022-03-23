@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Tarot</string>
+    <string name="tarot_dir">~/tarot</string>
+    <string name="card_dir">.card</string>
     <string name="no_cards">Oops, there is no cards for some reason!</string>
     <string name="type">Type:</string>
     <string name="name">Name:</string>
@@ -8,4 +10,7 @@
     <string name="desc">Description:</string>
     <string name="loading">Description:</string>
     <string name="button_back">Back button</string>
+    <string name="button_filter">Filter button</string>
+    <string name="button_search">Search button</string>
+    <string name="search">Search</string>
 </resources>
