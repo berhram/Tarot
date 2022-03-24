@@ -2,13 +2,12 @@ package com.velvet.tarot.feed
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.velvet.data.Strings
+import com.velvet.data.card.CardFilter
+import com.velvet.data.card.CardTypes
 import com.velvet.domain.usecase.FetchCardsUseCase
 import com.velvet.domain.usecase.FilterCardsUseCase
 import com.velvet.domain.usecase.GetAllCardsUseCase
 import com.velvet.domain.usecase.SearchCardsUseCase
-import com.velvet.tarot.feed.state.CardFilter
-import com.velvet.tarot.feed.state.FeedState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -32,18 +31,20 @@ class FeedViewModel(
         cards = emptyList(),
         filter = CardFilter(isMajorEnabled = false, isMinorEnabled = false),
         searchText = "",
-            isExpanded = false))
+        isExpanded = false))
     private var searchJob: Job? = null
 
-    init {
-        refresh()
-    }
+    init { refresh() }
 
     fun refresh() = intent {
         fetchCardsUseCase.invoke()
         val cards = getAllCardsUseCase.invoke()
         reduce {
-            state.copy(isLoading = false, cards = cards, searchText = "", filter = CardFilter(isMinorEnabled = true, isMajorEnabled = true), isExpanded = false)
+            state.copy(isLoading = false,
+                cards = cards,
+                searchText = "",
+                filter = CardFilter(isMinorEnabled = true, isMajorEnabled = true),
+                isExpanded = false)
         }
     }
 
@@ -52,38 +53,26 @@ class FeedViewModel(
     }
 
     fun filterClick() = intent {
-        reduce {
-            state.copy(isExpanded = !state.isExpanded)
-        }
+        reduce { state.copy(isExpanded = !state.isExpanded) }
     }
 
-    fun setFilter(filter: String) = intent {
-        if (filter == Strings.Major) {
+    fun setFilter(filterKey: CardTypes) = intent {
+        if (filterKey == CardTypes.MAJOR) {
             reduce { state.copy(filter = CardFilter(isMinorEnabled = state.filter.isMinorEnabled, isMajorEnabled = !state.filter.isMajorEnabled)) }
-        } else {
+        } else if (filterKey == CardTypes.MINOR) {
             reduce { state.copy(filter = CardFilter(isMinorEnabled = !state.filter.isMinorEnabled, isMajorEnabled = state.filter.isMajorEnabled)) }
         }
-        val cards = filterCardsUseCase(isMajor = state.filter.isMajorEnabled, isMinor = state.filter.isMinorEnabled)
-        reduce {
-            state.copy(cards = cards)
-        }
+        val cards = filterCardsUseCase(isMajorEnabled = state.filter.isMajorEnabled, isMinorEnabled = state.filter.isMinorEnabled)
+        reduce { state.copy(cards = cards) }
     }
 
     fun searchCard(searchWord: String) = intent {
         searchJob?.cancel()
         searchJob = viewModelScope.launch(Dispatchers.IO) {
-            reduce {
-                state.copy(
-                    searchText = searchWord
-                )
-            }
+            reduce { state.copy(searchText = searchWord) }
             val cards = searchCardsUseCase(state.searchText)
             delay(1000)
-            reduce {
-                state.copy(
-                    cards = cards,
-                )
-            }
+            reduce { state.copy(cards = cards) }
         }
     }
 }

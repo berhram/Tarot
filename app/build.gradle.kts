@@ -34,7 +34,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Dependencies.Compose.version
+        kotlinCompilerExtensionVersion = Dependencies.versionCompose
     }
 
     compileOptions {
@@ -70,9 +70,11 @@ dependencies {
     implementation(Dependencies.Core.coreKtx)
     implementation(Dependencies.Core.material)
     implementation(Dependencies.Navigation.navigationCompose)
-    implementation(Dependencies.Testing.jUnit)
-    implementation(Dependencies.Testing.jUnitExt)
-    implementation(Dependencies.Testing.espresso)
+    testImplementation(Dependencies.Testing.jUnit)
+    testImplementation(Dependencies.Testing.mockk)
+    androidTestImplementation(Dependencies.Testing.mockkAndroid)
+    androidTestImplementation(Dependencies.Testing.composeUiTest)
+    debugImplementation(Dependencies.Testing.composeTestRule)
     implementation(Dependencies.Di.koin)
     implementation(Dependencies.Di.koinNavGraph)
     implementation(Dependencies.Di.koinCompose)

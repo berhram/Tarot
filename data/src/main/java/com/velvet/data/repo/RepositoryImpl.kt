@@ -1,9 +1,9 @@
 package com.velvet.data.repo
 
 import com.velvet.data.card.Card
+import com.velvet.data.card.CardTypes
 import com.velvet.data.card.schemas.CardScheme
 import com.velvet.data.network.Network
-import com.velvet.data.Strings
 import com.velvet.data.local.arts.CardArtStore
 import com.velvet.data.local.room.CardDao
 
@@ -31,12 +31,31 @@ class RepositoryImpl(
 
     private fun CardScheme.toCard() : Card {
         return Card(
-            type = if (this.type == "major") Strings.Major else if (this.type == "minor") Strings.Minor else Strings.Unknown,
-            name = this.name ?: Strings.Unknown,
-            meaningUp =  this.meaningUp ?: Strings.Unknown,
-            meaningRev =  this.meaningRev ?: Strings.Unknown,
-            description = this.description ?: Strings.Unknown,
-            art =  if (this.name != null) arts.getArt(this.name) else Strings.Blank
+            type = if (this.type == "major") CardTypes.MAJOR else if (this.type == "minor") CardTypes.MINOR else CardTypes.NONE,
+            name = this.name ?: "",
+            meaningUp =  this.meaningUp ?: "",
+            meaningRev =  this.meaningRev ?: "",
+            description = this.description ?: "",
+            art =  arts.getArt(this.name) ?: "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n" +
+            "XXXXXXXXXXXXXXXXXXXXX\n"
         )
     }
 

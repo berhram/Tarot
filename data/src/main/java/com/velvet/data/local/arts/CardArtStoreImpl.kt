@@ -3,7 +3,6 @@ package com.velvet.data.local.arts
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.velvet.data.Strings
 import com.velvet.data.card.schemas.CardArtScheme
 import java.io.IOException
 import java.lang.reflect.Type
@@ -13,17 +12,20 @@ class CardArtStoreImpl(appContext: Context) : CardArtStore {
     private val listCardArtType: Type = object : TypeToken<List<CardArtScheme>>() {}.type
     private val arts: List<CardArtScheme> = gson.fromJson(appContext.assets.open("ASCIIarts.json").bufferedReader().use { it.readText() }, listCardArtType)
 
-    override fun getArt(name: String) : String {
+    override fun getArt(name: String?) : String? {
+        if (name == null) {
+            return null
+        }
         try {
             for (art in arts) {
                 if (art.name == name) {
                     return art.art
                 }
             }
-            return Strings.Blank
+            return null
         } catch (ioException: IOException) {
             ioException.printStackTrace()
-            return Strings.Blank
+            return null
         }
     }
 

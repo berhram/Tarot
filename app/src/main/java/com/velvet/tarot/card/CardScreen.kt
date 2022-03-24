@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.velvet.data.card.Card
+import com.velvet.data.card.CardTypes
 import com.velvet.tarot.R
 import com.velvet.tarot.theme.AppTheme
 import kotlinx.coroutines.flow.collectLatest
@@ -63,31 +64,33 @@ fun ShowCard(card: Card) {
             color = AppTheme.colors.textPrimary, modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         Text(
-            text = stringResource(id = R.string.type) + " " + card.type,
+            text = stringResource(id = R.string.type) + " " + if (card.type == CardTypes.MAJOR) stringResource(
+                id = R.string.major
+            ) else if (card.type == CardTypes.MINOR) stringResource(id = R.string.minor) else stringResource(id = R.string.unknown),
             style = AppTheme.typography.body1,
             textAlign = TextAlign.Start,
             color = AppTheme.colors.textPrimary
         )
         Text(
-            text = stringResource(id = R.string.name) + " " + card.name,
+            text = stringResource(id = R.string.name) + " " + card.name.ifEmpty { stringResource(id = R.string.unknown) },
             style = AppTheme.typography.body1,
             textAlign = TextAlign.Start,
             color = AppTheme.colors.textPrimary
         )
         Text(
-            text = stringResource(id = R.string.meaning_up) + " " + card.meaningUp,
+            text = stringResource(id = R.string.meaning_up) + " " + card.meaningUp.ifEmpty { stringResource(id = R.string.unknown) },
             style = AppTheme.typography.body1,
             textAlign = TextAlign.Start,
             color = AppTheme.colors.textPrimary
         )
         Text(
-            text = stringResource(id = R.string.meaning_rev) + " " + card.meaningRev,
+            text = stringResource(id = R.string.meaning_rev) + " " + card.meaningRev.ifEmpty { stringResource(id = R.string.unknown) },
             style = AppTheme.typography.body1,
             textAlign = TextAlign.Start,
             color = AppTheme.colors.textPrimary
         )
         Text(
-            text = stringResource(id = R.string.desc) + " " + card.description,
+            text = stringResource(id = R.string.desc) + " " + card.description.ifEmpty { stringResource(id = R.string.unknown) },
             style = AppTheme.typography.body1,
             textAlign = TextAlign.Start,
             color = AppTheme.colors.textPrimary

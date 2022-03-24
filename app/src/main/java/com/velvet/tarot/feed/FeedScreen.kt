@@ -17,8 +17,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.velvet.data.Strings
 import com.velvet.data.card.Card
+import com.velvet.data.card.CardTypes
 import com.velvet.tarot.R
 import com.velvet.tarot.theme.AppTheme
 import kotlinx.coroutines.flow.collectLatest
@@ -42,16 +42,16 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                     color = AppTheme.colors.textPrimary)
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     DropdownMenu(expanded = state.value.isExpanded, onDismissRequest = { viewModel.filterClick() }, modifier = Modifier.background(AppTheme.colors.background)) {
-                        DropdownMenuItem(onClick = { viewModel.setFilter(Strings.Major) }) {
+                        DropdownMenuItem(onClick = { viewModel.setFilter(CardTypes.MAJOR) }) {
                             val check = if (state.value.filter.isMajorEnabled) "[X] - " else "[ ] - "
-                            Text(text = check + Strings.Major,
+                            Text(text = check + stringResource(id = R.string.major),
                                 style = AppTheme.typography.body1,
                                 textAlign = TextAlign.Start,
                                 color = AppTheme.colors.textPrimary)
                         }
-                        DropdownMenuItem(onClick = { viewModel.setFilter(Strings.Minor) }) {
+                        DropdownMenuItem(onClick = { viewModel.setFilter(CardTypes.MINOR) }) {
                             val check = if (state.value.filter.isMinorEnabled) "[X] - " else "[ ] - "
-                            Text(text = check + Strings.Minor,
+                            Text(text = check + stringResource(id = R.string.major),
                                 style = AppTheme.typography.body1,
                                 textAlign = TextAlign.Start,
                                 color = AppTheme.colors.textPrimary)

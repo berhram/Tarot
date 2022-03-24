@@ -10,5 +10,8 @@
     <string name="desc">Description:</string>
     <string name="button_back">Back button</string>
     <string name="button_filter">Filter button</string>
+    <string name="unknown">Unknown</string>
     <string name="search">Search</string>
+    <string name="major">Major</string>
+    <string name="minor">Minor</string>
 </resources>

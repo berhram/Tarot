@@ -1,4 +1,7 @@
 object Dependencies {
+    const val versionCompose = "1.1.1"
+
+
     object OkHttp {
         const val version = "4.9.3"
 
@@ -28,18 +31,17 @@ object Dependencies {
     }
 
     object Compose {
-        const val version = "1.1.1"
         const val versionAccompanist = "0.23.1"
 
-        const val runtime = "androidx.compose.runtime:runtime:$version"
+        const val runtime = "androidx.compose.runtime:runtime:$versionCompose"
         const val systemUiController = "com.google.accompanist:accompanist-systemuicontroller:$versionAccompanist"
-        const val compiler = "androidx.compose.compiler:compiler:$version"
-        const val ui = "androidx.compose.ui:ui:$version"
-        const val foundation = "androidx.compose.foundation:foundation:$version"
-        const val foundation_layout = "androidx.compose.foundation:foundation-layout:$version"
-        const val material = "androidx.compose.material:material:$version"
-        const val runtimeLivedata = "androidx.compose.runtime:runtime-livedata:$version"
-        const val uiTooling = "androidx.compose.ui:ui-tooling:$version"
+        const val compiler = "androidx.compose.compiler:compiler:$versionCompose"
+        const val ui = "androidx.compose.ui:ui:$versionCompose"
+        const val foundation = "androidx.compose.foundation:foundation:$versionCompose"
+        const val foundation_layout = "androidx.compose.foundation:foundation-layout:$versionCompose"
+        const val material = "androidx.compose.material:material:$versionCompose"
+        const val runtimeLivedata = "androidx.compose.runtime:runtime-livedata:$versionCompose"
+        const val uiTooling = "androidx.compose.ui:ui-tooling:$versionCompose"
         const val accompanist = "com.google.accompanist:accompanist-swiperefresh:$versionAccompanist"
     }
 
@@ -72,7 +74,6 @@ object Dependencies {
         const val version = "3.1.5"
 
         const val koin = "io.insert-koin:koin-android:$version"
-        //const val koinWM = "io.insert-koin:koin-androidx-workmanager:$versionKoin"
         const val koinNavGraph = "io.insert-koin:koin-androidx-navigation:$version"
         const val koinCompose = "io.insert-koin:koin-androidx-compose:$version"
     }
@@ -80,12 +81,13 @@ object Dependencies {
 
     object Testing {
         const val versionJUnit = "4.13.2"
-        const val versionJUnitExt = "1.1.3"
-        const val versionEspresso = "3.4.0"
+        const val versionMockk = "1.12.3"
 
         const val jUnit = "junit:junit:$versionJUnit"
-        const val jUnitExt = "androidx.test.ext:junit:$versionJUnitExt"
-        const val espresso = "androidx.test.espresso:espresso-core:$versionEspresso"
+        const val mockk =  "io.mockk:mockk:$versionMockk"
+        const val mockkAndroid =  "io.mockk:mockk-android:$versionMockk"
+        const val composeUiTest =  "androidx.compose.ui:ui-test-junit4:$versionCompose"
+        const val composeTestRule = "androidx.compose.ui:ui-test-manifest:$versionCompose"
 
     }
 
