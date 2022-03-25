@@ -25,18 +25,13 @@ class FeedViewModel(
     private val searchCardsUseCase: SearchCardsUseCase,
     private val filterCardsUseCase: FilterCardsUseCase) : ContainerHost<FeedState, FeedEffect>,
     ViewModel() {
-    override val container: Container<FeedState, FeedEffect> = container(
-        FeedState(
-        isLoading = true,
-        cards = emptyList(),
-        filter = CardFilter(isMajorEnabled = false, isMinorEnabled = false),
-        searchText = "",
-        isExpanded = false))
+    override val container: Container<FeedState, FeedEffect> = container(FeedState())
     private var searchJob: Job? = null
 
     init { refresh() }
 
     fun refresh() = intent {
+        reduce { state.copy(isLoading = true) }
         fetchCardsUseCase.invoke()
         val cards = getAllCardsUseCase.invoke()
         reduce {

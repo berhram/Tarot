@@ -4,8 +4,8 @@ import com.velvet.data.card.Card
 import com.velvet.data.card.CardFilter
 
 data class FeedState
-    (val isLoading: Boolean,
-     val cards: List<Card>,
-     val searchText: String,
-     val filter: CardFilter,
-     val isExpanded: Boolean)
+    (val isLoading: Boolean = false,
+     val cards: List<Card> = emptyList(),
+     val searchText: String = "",
+     val filter: CardFilter = CardFilter(),
+     val isExpanded: Boolean = false)

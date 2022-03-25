@@ -56,7 +56,7 @@ dependencies {
     implementation(Dependencies.Room.room)
     implementation(Dependencies.Orbit.orbit)
     implementation(Dependencies.Orbit.orbitCore)
-    implementation(Dependencies.Orbit.orbitTest)
+    testImplementation(Dependencies.Orbit.orbitTest)
     implementation(Dependencies.Compose.runtime)
     implementation(Dependencies.Compose.compiler)
     implementation(Dependencies.Compose.ui)
