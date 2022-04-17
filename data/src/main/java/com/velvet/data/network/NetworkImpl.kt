@@ -20,9 +20,6 @@ class NetworkImpl : Network {
         }
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(logging)
-        httpClient.readTimeout(10, TimeUnit.SECONDS)
-        httpClient.writeTimeout(10, TimeUnit.SECONDS)
-        httpClient.connectTimeout(10, TimeUnit.SECONDS)
         val retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient.build())
