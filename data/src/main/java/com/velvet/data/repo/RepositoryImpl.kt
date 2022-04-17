@@ -1,6 +1,5 @@
 package com.velvet.data.repo
 
-import android.util.Log
 import com.velvet.data.cache.CacheRepository
 import com.velvet.data.card.Card
 import com.velvet.data.card.CardTypes
@@ -8,9 +7,6 @@ import com.velvet.data.card.schemas.CardScheme
 import com.velvet.data.network.Network
 import com.velvet.data.local.arts.CardArtStore
 import com.velvet.data.local.room.CardDao
-import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.flow.single
-import kotlin.coroutines.coroutineContext
 
 class RepositoryImpl(
     private val network: Network,
@@ -20,19 +16,15 @@ class RepositoryImpl(
     ) : Repository {
 
     override suspend fun fetch() {
-        Log.d("CARDS", "fetch invoked: $coroutineContext")
         val cardsResult = network.getCards()
         cardsResult.getOrNull()?.let {
             dao.deleteAll(cards = it.toCardList())
             dao.insertAll(cards = it.toCardList())
         }
-        Log.d("CARDS", "fetch: $coroutineContext")
     }
 
     override suspend fun getCards() {
-        Log.d("CARDS", "getCards: $coroutineContext")
         dao.getAllDistinctUntilChanged().collect {
-            Log.d("CARDS", "getCards collected: $coroutineContext")
             cache.sendCards(it)
         }
     }

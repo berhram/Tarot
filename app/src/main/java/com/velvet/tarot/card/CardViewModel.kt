@@ -24,8 +24,8 @@ class CardViewModel(
     init {
         intent {
             viewModelScope.launch(Dispatchers.IO) {
-                repository.getCard(cardName)
-                cache.getCardChannel().receiveCatching().onSuccess { reduce { state.copy(card = it, isLoading = false) } }.onFailure { goBack() }
+                launch { repository.getCard(cardName) }
+                launch { cache.getCardChannel().receiveCatching().onSuccess { reduce { state.copy(card = it, isLoading = false) } }.onFailure { goBack() } }
             }
         }
     }

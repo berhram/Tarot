@@ -94,7 +94,7 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                         }
                     } else {
                         items(
-                            items = state.cards,
+                            items = state.cards.filter { state.filter.filterCard(it) && it.name.contains(state.searchText, ignoreCase = true) },
                             key = { it.name }
                         ) { CardItem(it, viewModel = viewModel) }
                     }

@@ -1,6 +1,5 @@
 package com.velvet.data.cache
 
-import android.util.Log
 import com.velvet.data.card.Card
 import com.velvet.data.repo.Status
 import kotlinx.coroutines.channels.Channel
@@ -20,7 +19,6 @@ class CacheImpl : CacheClient, CacheRepository {
     }
 
     override suspend fun sendCards(cards: List<Card>) {
-        Log.d("CARDS", "sendCards: $this")
         cardsChannel.send(cards)
     }
 
@@ -29,7 +27,6 @@ class CacheImpl : CacheClient, CacheRepository {
     }
 
     override fun getCardsChannel(): ReceiveChannel<List<Card>> {
-        Log.d("CARDS", "getCards: $this")
         return cardsChannel
     }
 
