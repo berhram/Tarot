@@ -48,12 +48,8 @@ android {
 }
 
 dependencies {
-
-    implementation(project(":domain"))
     implementation(project(":data"))
-    kapt(Dependencies.Room.roomKapt)
     implementation(Dependencies.Compose.systemUiController)
-    implementation(Dependencies.Room.room)
     implementation(Dependencies.Orbit.orbit)
     implementation(Dependencies.Orbit.orbitCore)
     testImplementation(Dependencies.Orbit.orbitTest)
@@ -78,7 +74,7 @@ dependencies {
     implementation(Dependencies.Di.koin)
     implementation(Dependencies.Di.koinNavGraph)
     implementation(Dependencies.Di.koinCompose)
-    testImplementation(Dependencies.Room.roomTest)
+    debugImplementation(Dependencies.Leak.leakCanary)
 }
 
 kapt {

@@ -98,4 +98,10 @@ object Dependencies {
         const val kapt = "kapt"
         const val hilt = "dagger.hilt.android.plugin"
     }
+
+    object Leak {
+        const val version = "2.8.1"
+
+        const val leakCanary = "com.squareup.leakcanary:leakcanary-android:$version"
+    }
 }

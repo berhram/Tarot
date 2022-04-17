@@ -36,7 +36,6 @@ android {
 
 dependencies {
     kapt(Dependencies.Room.roomKapt)
-
     implementation(Dependencies.Retrofit.converterGson)
     implementation(Dependencies.Retrofit.retrofit)
     implementation(Dependencies.Gson.gson)
@@ -50,10 +49,8 @@ dependencies {
     testImplementation(Dependencies.Testing.mockk)
     androidTestImplementation(Dependencies.Testing.mockkAndroid)
     androidTestImplementation(Dependencies.Testing.composeUiTest)
-    debugImplementation(Dependencies.Testing.composeTestRule)
     implementation(Dependencies.Room.room)
     testImplementation(Dependencies.Room.roomTest)
     implementation(Dependencies.Di.koin)
-    implementation(Dependencies.Di.koinNavGraph)
-    implementation(Dependencies.Di.koinCompose)
+    debugImplementation(Dependencies.Leak.leakCanary)
 }
