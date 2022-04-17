@@ -50,6 +50,7 @@ dependencies {
     androidTestImplementation(Dependencies.Testing.mockkAndroid)
     androidTestImplementation(Dependencies.Testing.composeUiTest)
     implementation(Dependencies.Room.room)
+    implementation(Dependencies.Room.roomKtx)
     testImplementation(Dependencies.Room.roomTest)
     implementation(Dependencies.Di.koin)
     debugImplementation(Dependencies.Leak.leakCanary)

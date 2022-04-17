@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit) {
-    val state = viewModel.container.stateFlow.collectAsState()
+    val state = viewModel.container.stateFlow.collectAsState().value
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collectLatest {
             when (it) {
@@ -41,16 +41,16 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                     textAlign = TextAlign.Start,
                     color = AppTheme.colors.textPrimary)
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    DropdownMenu(expanded = state.value.isExpanded, onDismissRequest = { viewModel.filterClick() }, modifier = Modifier.background(AppTheme.colors.background)) {
+                    DropdownMenu(expanded = state.isExpanded, onDismissRequest = { viewModel.filterClick() }, modifier = Modifier.background(AppTheme.colors.background)) {
                         DropdownMenuItem(onClick = { viewModel.setFilter(CardTypes.MAJOR) }) {
-                            val check = if (state.value.filter.isMajorEnabled) "[X] - " else "[ ] - "
+                            val check = if (state.filter.isMajorEnabled) "[X] - " else "[ ] - "
                             Text(text = check + stringResource(id = R.string.major),
                                 style = AppTheme.typography.body1,
                                 textAlign = TextAlign.Start,
                                 color = AppTheme.colors.textPrimary)
                         }
                         DropdownMenuItem(onClick = { viewModel.setFilter(CardTypes.MINOR) }) {
-                            val check = if (state.value.filter.isMinorEnabled) "[X] - " else "[ ] - "
+                            val check = if (state.filter.isMinorEnabled) "[X] - " else "[ ] - "
                             Text(text = check + stringResource(id = R.string.major),
                                 style = AppTheme.typography.body1,
                                 textAlign = TextAlign.Start,
@@ -58,7 +58,7 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                         }
                     }
                     IconButton(onClick = { viewModel.filterClick() },
-                        modifier = if (state.value.filter.isEnable()) Modifier.background(AppTheme.colors.effect) else Modifier.background(AppTheme.colors.background)) {
+                        modifier = if (state.filter.isEnable()) Modifier.background(AppTheme.colors.effect) else Modifier.background(AppTheme.colors.background)) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_filter), contentDescription = stringResource(
                                 id = R.string.button_filter
@@ -70,14 +70,14 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
         }
     }, backgroundColor = AppTheme.colors.background) {
         Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-            SearchBar(searchText = state.value.searchText, onChangedSearchText = { viewModel.searchCard(it) })
+            SearchBar(searchText = state.searchText, onChangedSearchText = { viewModel.searchCard(it) })
             SwipeRefresh(
-                state = rememberSwipeRefreshState(isRefreshing = state.value.isLoading),
+                state = rememberSwipeRefreshState(isRefreshing = state.isLoading),
                 onRefresh = { viewModel.refresh() },
                 modifier = Modifier.fillMaxSize()
             ) {
                 LazyColumn {
-                    if (state.value.cards.isNullOrEmpty()) {
+                    if (state.cards.isNullOrEmpty()) {
                         items(items = listOf(System.currentTimeMillis()), key = { it }) {
                             Column(
                                 modifier = Modifier
@@ -94,7 +94,7 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                         }
                     } else {
                         items(
-                            items = state.value.cards,
+                            items = state.cards,
                             key = { it.name }
                         ) { CardItem(it, viewModel = viewModel) }
                     }

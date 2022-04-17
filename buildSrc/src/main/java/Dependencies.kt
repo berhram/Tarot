@@ -12,6 +12,7 @@ object Dependencies {
     object Room {
         const val version = "2.4.2"
 
+        const val roomKtx = "androidx.room:room-ktx:$version"
         const val room = "androidx.room:room-runtime:$version"
         const val roomKapt = "androidx.room:room-compiler:$version"
         const val roomTest = "androidx.room:room-testing:$version"

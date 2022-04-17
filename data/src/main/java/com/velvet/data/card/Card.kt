@@ -11,15 +11,4 @@ data class Card (
     val meaningUp: String,
     val meaningRev: String,
     val description: String,
-) {
-    companion object {
-        fun initial() = Card(
-                name = "",
-                art = "",
-                type = CardTypes.NONE,
-                meaningUp = "",
-                meaningRev = "",
-            description = ""
-        )
-    }
-}
+)

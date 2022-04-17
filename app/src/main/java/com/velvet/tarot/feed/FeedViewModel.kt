@@ -1,73 +1,75 @@
 package com.velvet.tarot.feed
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.velvet.data.card.CardFilter
+import com.velvet.data.cache.CacheClient
 import com.velvet.data.card.CardTypes
-import com.velvet.domain.usecase.FetchCardsUseCase
-import com.velvet.domain.usecase.FilterCardsUseCase
-import com.velvet.domain.usecase.GetAllCardsUseCase
-import com.velvet.domain.usecase.SearchCardsUseCase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.velvet.data.repo.Repository
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.receiveAsFlow
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
+import kotlin.coroutines.coroutineContext
 
 class FeedViewModel(
-    private val fetchCardsUseCase: FetchCardsUseCase,
-    private val getAllCardsUseCase: GetAllCardsUseCase,
-    private val searchCardsUseCase: SearchCardsUseCase,
-    private val filterCardsUseCase: FilterCardsUseCase) : ContainerHost<FeedState, FeedEffect>,
+    private val cache: CacheClient,
+    private val repository: Repository
+    ) : ContainerHost<FeedState, FeedEffect>,
     ViewModel() {
     override val container: Container<FeedState, FeedEffect> = container(FeedState())
-    private var searchJob: Job? = null
 
-    init { refresh() }
+    init {
+        observeCards()
+        refresh()
+    }
 
-    fun refresh() = intent {
-        reduce { state.copy(isLoading = true) }
-        fetchCardsUseCase.invoke()
-        val cards = getAllCardsUseCase.invoke()
+    private fun update() = intent {
         reduce {
-            state.copy(isLoading = false,
-                cards = cards,
-                searchText = "",
-                filter = CardFilter(isMinorEnabled = true, isMajorEnabled = true),
-                isExpanded = false)
+            state.copy(cards = state.cards.filter { state.filter.filterCard(it) && it.name.contains(state.searchText, ignoreCase = true) })
         }
     }
 
-    fun showCard(cardName: String) = intent {
-        postSideEffect(FeedEffect.ShowCard(cardName = cardName))
+    private fun observeCards() = intent {
+        viewModelScope.launch(Dispatchers.IO) {
+            launch { repository.getCards() }
+            launch {
+                cache.getCardsChannel().receiveAsFlow().collect { cards ->
+                    Log.d("CARDS", "observeCards collected")
+                    reduce {
+                        state.copy(cards = cards.filter { card -> state.filter.filterCard(card) && card.name.contains(state.searchText, ignoreCase = true) })
+                    }
+                }
+            }
+        }
     }
 
-    fun filterClick() = intent {
-        reduce { state.copy(isExpanded = !state.isExpanded) }
+    fun refresh() = intent {
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d("CARDS", "refresh: $coroutineContext")
+            repository.fetch()
+        }
     }
+
+    fun showCard(cardName: String) = intent { postSideEffect(FeedEffect.ShowCard(cardName = cardName)) }
+
+    fun filterClick() = intent { reduce { state.copy(isExpanded = !state.isExpanded) } }
 
     fun setFilter(filterKey: CardTypes) = intent {
         if (filterKey == CardTypes.MAJOR) {
-            reduce { state.copy(filter = CardFilter(isMinorEnabled = state.filter.isMinorEnabled, isMajorEnabled = !state.filter.isMajorEnabled)) }
+            reduce { state.copy(filter = state.filter.copy(isMajorEnabled = !state.filter.isMajorEnabled)) }
         } else if (filterKey == CardTypes.MINOR) {
-            reduce { state.copy(filter = CardFilter(isMinorEnabled = !state.filter.isMinorEnabled, isMajorEnabled = state.filter.isMajorEnabled)) }
+            reduce { state.copy(filter = state.filter.copy(isMinorEnabled = !state.filter.isMinorEnabled)) }
         }
-        val cards = filterCardsUseCase(isMajorEnabled = state.filter.isMajorEnabled, isMinorEnabled = state.filter.isMinorEnabled)
-        reduce { state.copy(cards = cards) }
+        update()
     }
 
     fun searchCard(searchWord: String) = intent {
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch(Dispatchers.IO) {
-            reduce { state.copy(searchText = searchWord) }
-            val cards = searchCardsUseCase(state.searchText)
-            delay(1000)
-            reduce { state.copy(cards = cards) }
-        }
+        reduce { state.copy(searchText = searchWord) }
+        update()
     }
 }

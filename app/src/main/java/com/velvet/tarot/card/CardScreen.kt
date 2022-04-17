@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
-    val state = viewModel.container.stateFlow.collectAsState()
+    val state = viewModel.container.stateFlow.collectAsState().value
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collectLatest {
             when (it) {
@@ -30,8 +30,8 @@ fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
     Scaffold(topBar = {
         TopAppBar(backgroundColor = AppTheme.colors.background, elevation = 0.dp, modifier = Modifier.fillMaxWidth()) {
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = state.value.card.name.lowercase().replace(" ", "_") + stringResource(
-                    id = R.string.card_dir),
+                Text(text = state.card?.let { it.name.lowercase().replace(" ", "_") + stringResource(
+                    id = R.string.card_dir) } ?: stringResource(id = R.string.unknown),
                     style = AppTheme.typography.h1,
                     textAlign = TextAlign.Start,
                     color = AppTheme.colors.textPrimary)
@@ -45,7 +45,18 @@ fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
             }
         }
     }, backgroundColor = AppTheme.colors.background) {
-        ShowCard(card = state.value.card)
+        if (state.card == null) {
+            Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                Text(
+                    text = stringResource(id = R.string.loading),
+                    style = AppTheme.typography.h1,
+                    textAlign = TextAlign.Center,
+                    color = AppTheme.colors.textPrimary
+                )
+            }
+        } else {
+            ShowCard(card = state.card)
+        }
     }
 }
 
@@ -64,9 +75,11 @@ fun ShowCard(card: Card) {
             color = AppTheme.colors.textPrimary, modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         Text(
-            text = stringResource(id = R.string.type) + " " + if (card.type == CardTypes.MAJOR) stringResource(
-                id = R.string.major
-            ) else if (card.type == CardTypes.MINOR) stringResource(id = R.string.minor) else stringResource(id = R.string.unknown),
+            text = stringResource(id = R.string.type) + " " + when (card.type) {
+                CardTypes.MAJOR -> stringResource(id = R.string.major)
+                CardTypes.MINOR -> stringResource(id = R.string.minor)
+                else -> stringResource(id = R.string.unknown)
+            },
             style = AppTheme.typography.body1,
             textAlign = TextAlign.Start,
             color = AppTheme.colors.textPrimary

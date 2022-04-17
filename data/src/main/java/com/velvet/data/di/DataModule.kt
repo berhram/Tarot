@@ -1,6 +1,9 @@
 package com.velvet.data.di
 
 import androidx.room.Room
+import com.velvet.data.cache.CacheClient
+import com.velvet.data.cache.CacheImpl
+import com.velvet.data.cache.CacheRepository
 import com.velvet.data.local.arts.CardArtStore
 import com.velvet.data.local.arts.CardArtStoreImpl
 import com.velvet.data.local.room.CardDatabase
@@ -9,6 +12,7 @@ import com.velvet.data.network.NetworkImpl
 import com.velvet.data.repo.Repository
 import com.velvet.data.repo.RepositoryImpl
 import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.binds
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -16,7 +20,8 @@ val dataModule = module {
         RepositoryImpl(
             network = get(),
             dao = get(),
-            arts = get()
+            arts = get(),
+            cache = get()
         )
     }
 
@@ -31,4 +36,6 @@ val dataModule = module {
     factory<CardArtStore> {
         CardArtStoreImpl(androidContext())
     }
+
+    single { CacheImpl() }.binds(arrayOf(CacheClient::class, CacheRepository::class))
 }

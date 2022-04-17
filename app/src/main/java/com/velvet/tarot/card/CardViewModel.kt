@@ -1,23 +1,31 @@
 package com.velvet.tarot.card
 
 import androidx.lifecycle.ViewModel
-import com.velvet.domain.usecase.GetCardDetailsUseCase
-import com.velvet.data.card.Card
+import androidx.lifecycle.viewModelScope
+import com.velvet.data.cache.CacheClient
+import com.velvet.data.repo.Repository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.onFailure
+import kotlinx.coroutines.channels.onSuccess
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
-class CardViewModel(private val getCardDetailsUse: GetCardDetailsUseCase, private val cardName: String) : ContainerHost<CardState, CardEffect>, ViewModel() {
-
-    override val container = container<CardState, CardEffect>(CardState(card = Card.initial(), isLoading = true))
+class CardViewModel(
+    private val cardName: String,
+    private val cache: CacheClient,
+    private val repository: Repository
+    ) : ContainerHost<CardState, CardEffect>, ViewModel() {
+    override val container = container<CardState, CardEffect>(CardState())
 
     init {
         intent {
-            val card = getCardDetailsUse.invoke(cardName = cardName)
-            reduce {
-                state.copy(card = card, isLoading = false)
+            viewModelScope.launch(Dispatchers.IO) {
+                repository.getCard(cardName)
+                cache.getCardChannel().receiveCatching().onSuccess { reduce { state.copy(card = it, isLoading = false) } }.onFailure { goBack() }
             }
         }
     }

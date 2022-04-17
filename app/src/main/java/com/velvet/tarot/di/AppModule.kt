@@ -33,18 +33,14 @@ inline fun <reified T : ViewModel> getComposeViewModel(
 
 val appModule = module {
     viewModel {
-        FeedViewModel(
-            fetchCardsUseCase = get(),
-            getAllCardsUseCase = get(),
-            filterCardsUseCase = get(),
-            searchCardsUseCase = get()
-        )
+        FeedViewModel(cache = get(), repository = get())
     }
 
     viewModel { (name: String) ->
         CardViewModel(
             cardName = name,
-            getCardDetailsUse = get()
+            cache = get(),
+            repository = get()
         )
     }
 }

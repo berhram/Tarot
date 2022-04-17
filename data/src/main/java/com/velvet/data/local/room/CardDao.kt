@@ -2,6 +2,8 @@ package com.velvet.data.local.room
 
 import androidx.room.*
 import com.velvet.data.card.Card
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Dao
 interface CardDao {
@@ -9,7 +11,9 @@ interface CardDao {
     fun findByName(cardName: String): Card
 
     @Query("SELECT * FROM card")
-    fun getAll(): List<Card>
+    fun getAll(): Flow<List<Card>>
+
+    fun getAllDistinctUntilChanged() = getAll().distinctUntilChanged()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(cards: List<Card>)
