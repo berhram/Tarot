@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.velvet.data.cache.CacheClient
 import com.velvet.data.card.CardTypes
 import com.velvet.data.repo.Repository
+import com.velvet.data.repo.Status
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.orbitmvi.orbit.Container
@@ -22,8 +23,19 @@ class FeedViewModel(
     override val container: Container<FeedState, FeedEffect> = container(FeedState())
 
     init {
+        observeStatuses()
         observeCards()
         refresh()
+    }
+
+    private fun observeStatuses() = intent {
+        viewModelScope.launch(Dispatchers.IO) {
+            cache.getStatusChannel().receiveAsFlow().collect { status ->
+                when (status) {
+                    Status.ERROR_REFRESH -> postSideEffect(FeedEffect.ErrorRefresh)
+                }
+            }
+        }
     }
 
     private fun observeCards() = intent {
@@ -39,11 +51,7 @@ class FeedViewModel(
         }
     }
 
-    fun refresh() = intent {
-        viewModelScope.launch(Dispatchers.IO) {
-            launch { repository.fetch() }
-        }
-    }
+    fun refresh() = intent { viewModelScope.launch(Dispatchers.IO) { repository.fetch() } }
 
     fun showCard(cardName: String) = intent { postSideEffect(FeedEffect.ShowCard(cardName = cardName)) }
 
@@ -57,7 +65,5 @@ class FeedViewModel(
         }
     }
 
-    fun searchCard(searchWord: String) = intent {
-        reduce { state.copy(searchText = searchWord) }
-    }
+    fun searchCard(searchWord: String) = intent { reduce { state.copy(searchText = searchWord) } }
 }

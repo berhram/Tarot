@@ -29,9 +29,7 @@ class NetworkImpl : Network {
 
     override suspend fun getCards() : Result<List<CardScheme>> {
         return try {
-            val cards = service.getCards().cards ?: run {
-                ArrayList()
-            }
+            val cards = service.getCards().cards
             Result.success(cards)
         } catch (e: Exception) {
             Result.failure(exception = e)

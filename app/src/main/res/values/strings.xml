@@ -14,5 +14,6 @@
     <string name="search">Search</string>
     <string name="major">Major</string>
     <string name="minor">Minor</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading…</string>
+    <string name="error_refresh">Can\'t refresh! Check your connection!</string>
 </resources>

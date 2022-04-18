@@ -1,5 +1,6 @@
 package com.velvet.tarot.feed
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -26,10 +28,12 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit) {
     val state = viewModel.container.stateFlow.collectAsState().value
+    val context = LocalContext.current
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collectLatest {
             when (it) {
                 is FeedEffect.ShowCard -> onShowCard(it.cardName)
+                is FeedEffect.ErrorRefresh -> Toast.makeText(context, R.string.error_refresh, Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -84,11 +88,11 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                                     .fillParentMaxHeight()
                                     .fillMaxWidth(),
                                 horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center,
+                                verticalArrangement = Arrangement.Center
                             ) {
                                 Text(
                                     textAlign = TextAlign.Center,
-                                    text = stringResource(id = R.string.no_cards),
+                                    text = stringResource(id = R.string.no_cards)
                                 )
                             }
                         }
@@ -131,6 +135,7 @@ fun SearchBar(
             value = searchText,
             textStyle = AppTheme.typography.body1,
             onValueChange = onChangedSearchText,
+            singleLine = true,
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = AppTheme.colors.effect,

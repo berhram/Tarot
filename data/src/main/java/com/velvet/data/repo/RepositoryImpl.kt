@@ -17,6 +17,9 @@ class RepositoryImpl(
 
     override suspend fun fetch() {
         val cardsResult = network.getCards()
+        cardsResult.exceptionOrNull()?.let {
+            cache.sendStatus(Status.ERROR_REFRESH)
+        }
         cardsResult.getOrNull()?.let {
             dao.deleteAll(cards = it.toCardList())
             dao.insertAll(cards = it.toCardList())
@@ -36,30 +39,11 @@ class RepositoryImpl(
     private fun CardScheme.toCard() : Card {
         return Card(
             type = if (this.type == "major") CardTypes.MAJOR else if (this.type == "minor") CardTypes.MINOR else throw Exception("Unknown card type"),
-            name = this.name ?: "",
-            meaningUp =  this.meaningUp ?: "",
-            meaningRev =  this.meaningRev ?: "",
-            description = this.description ?: "",
-            art =  arts.getArt(this.name) ?: "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXX\n"
+            name = this.name,
+            meaningUp = this.meaningUp,
+            meaningRev = this.meaningRev,
+            description = this.description,
+            art =  arts.getArt(this.name)
         )
     }
 

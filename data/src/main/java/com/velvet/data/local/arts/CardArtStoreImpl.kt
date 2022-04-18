@@ -12,23 +12,40 @@ class CardArtStoreImpl(appContext: Context) : CardArtStore {
     private val listCardArtType: Type = object : TypeToken<List<CardArtScheme>>() {}.type
     private val arts: List<CardArtScheme> = gson.fromJson(appContext.assets.open("ASCIIarts.json").bufferedReader().use { it.readText() }, listCardArtType)
 
-    override fun getArt(name: String?) : String? {
-        if (name == null) {
-            return null
-        }
+    override fun getArt(name: String) : String {
         try {
             for (art in arts) {
                 if (art.name == name) {
                     return art.art
                 }
             }
-            return null
+            return BLANK_ART
         } catch (ioException: IOException) {
             ioException.printStackTrace()
-            return null
+            return BLANK_ART
         }
     }
 
-
-
+    companion object {
+        const val BLANK_ART = "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n" +
+                "XXXXXXXXXXXXXXXXXXXXX\n"
+    }
 }

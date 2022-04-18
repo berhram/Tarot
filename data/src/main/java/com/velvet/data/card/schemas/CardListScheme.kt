@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 
 data class CardListScheme (
     @SerializedName("nhits") val nhits: Int = 0,
-    @SerializedName("cards") val cards: List<CardScheme>? = null
+    @SerializedName("cards") val cards: List<CardScheme>
 )
