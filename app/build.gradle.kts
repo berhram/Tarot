@@ -1,7 +1,7 @@
 plugins {
-    id(Dependencies.Plugins.application)
-    id(Dependencies.Plugins.kotlinAndroid)
-    kotlin(Dependencies.Plugins.kapt)
+    id("org.jetbrains.kotlin.android")
+    id("com.android.application")
+    kotlin("kapt")
 }
 
 repositories {
@@ -10,16 +10,16 @@ repositories {
 }
 
 android {
-    compileSdk = Config.compileSdk
+    compileSdk = 32
 
     defaultConfig {
-        applicationId = Config.appId
-        minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
-        versionCode = Config.versionCode
-        versionName = Config.versionName
+        applicationId = "com.velvet.tarot"
+        minSdk = 26
+        targetSdk = 32
+        versionCode = 1
+        versionName = "1.0"
 
-        testInstrumentationRunner = Config.testInstrumentationRunner
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -34,7 +34,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Dependencies.versionCompose
+        kotlinCompilerExtensionVersion = "1.1.1"
     }
 
     compileOptions {
@@ -49,32 +49,23 @@ android {
 
 dependencies {
     implementation(project(":data"))
-    implementation(Dependencies.Compose.systemUiController)
-    implementation(Dependencies.Orbit.orbit)
-    implementation(Dependencies.Orbit.orbitCore)
-    testImplementation(Dependencies.Orbit.orbitTest)
-    implementation(Dependencies.Compose.runtime)
-    implementation(Dependencies.Compose.compiler)
-    implementation(Dependencies.Compose.ui)
-    implementation(Dependencies.Compose.foundation)
-    implementation(Dependencies.Compose.foundation_layout)
-    implementation(Dependencies.Compose.material)
-    implementation(Dependencies.Compose.runtimeLivedata)
-    implementation(Dependencies.Compose.uiTooling)
-    implementation(Dependencies.Compose.accompanist)
-    implementation(Dependencies.Core.appCompat)
-    implementation(Dependencies.Core.coreKtx)
-    implementation(Dependencies.Core.material)
-    implementation(Dependencies.Navigation.navigationCompose)
-    testImplementation(Dependencies.Testing.jUnit)
-    testImplementation(Dependencies.Testing.mockk)
-    androidTestImplementation(Dependencies.Testing.mockkAndroid)
-    androidTestImplementation(Dependencies.Testing.composeUiTest)
-    debugImplementation(Dependencies.Testing.composeTestRule)
-    implementation(Dependencies.Di.koin)
-    implementation(Dependencies.Di.koinNavGraph)
-    implementation(Dependencies.Di.koinCompose)
-    debugImplementation(Dependencies.Leak.leakCanary)
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(libs.bundles.coroutines)
+    implementation(libs.bundles.orbit)
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
+    kapt(libs.room.compiler)
+    testImplementation(libs.room.testing)
+    implementation(libs.bundles.activity)
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.koin)
+    implementation(libs.bundles.accompanist)
+    testImplementation(libs.orbit.test)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.android)
+    androidTestImplementation(libs.ui.test.junit4)
 }
 
 kapt {

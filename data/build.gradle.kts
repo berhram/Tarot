@@ -1,7 +1,7 @@
 plugins {
-    id(Dependencies.Plugins.library)
-    id(Dependencies.Plugins.kotlinAndroid)
-    kotlin(Dependencies.Plugins.kapt)
+    id("org.jetbrains.kotlin.android")
+    id("com.android.library")
+    kotlin("kapt")
 }
 
 repositories {
@@ -10,13 +10,13 @@ repositories {
 }
 
 android {
-    compileSdk = Config.compileSdk
+    compileSdk = 32
 
     defaultConfig {
-        minSdk = Config.minSdk
-        targetSdk = Config.targetSdk
+        minSdk = 26
+        targetSdk = 32
 
-        testInstrumentationRunner = Config.testInstrumentationRunner
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -35,23 +35,21 @@ android {
 }
 
 dependencies {
-    kapt(Dependencies.Room.roomKapt)
-    implementation(Dependencies.Retrofit.converterGson)
-    implementation(Dependencies.Retrofit.retrofit)
-    implementation(Dependencies.Gson.gson)
-    implementation(Dependencies.OkHttp.okHttp)
-    implementation(Dependencies.OkHttp.loggingInterceptor)
-    implementation(Dependencies.Core.coroutines)
-    implementation(Dependencies.Core.appCompat)
-    implementation(Dependencies.Core.coreKtx)
-    implementation(Dependencies.Core.material)
-    testImplementation(Dependencies.Testing.jUnit)
-    testImplementation(Dependencies.Testing.mockk)
-    androidTestImplementation(Dependencies.Testing.mockkAndroid)
-    androidTestImplementation(Dependencies.Testing.composeUiTest)
-    implementation(Dependencies.Room.room)
-    implementation(Dependencies.Room.roomKtx)
-    testImplementation(Dependencies.Room.roomTest)
-    implementation(Dependencies.Di.koin)
-    debugImplementation(Dependencies.Leak.leakCanary)
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.material)
+    implementation(libs.bundles.coroutines)
+    implementation(libs.bundles.orbit)
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
+    kapt(libs.room.compiler)
+    testImplementation(libs.room.testing)
+    implementation(libs.bundles.activity)
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.koin)
+    implementation(libs.bundles.accompanist)
+    testImplementation(libs.orbit.test)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.junit.android)
+    androidTestImplementation(libs.ui.test.junit4)
 }
