@@ -13,7 +13,7 @@ class RepositoryImpl(
     private val dao: CardDao,
     private val arts: CardArtStore,
     private val cache: CacheRepository
-    ) : Repository {
+) : Repository {
 
     override suspend fun fetch() {
         val cardsResult = network.getCards()
@@ -36,18 +36,20 @@ class RepositoryImpl(
         cache.sendCard(dao.findByName(cardName))
     }
 
-    private fun CardScheme.toCard() : Card {
+    private fun CardScheme.toCard(): Card {
         return Card(
-            type = if (this.type == "major") CardTypes.MAJOR else if (this.type == "minor") CardTypes.MINOR else throw Exception("Unknown card type"),
+            type = if (this.type == "major") CardTypes.MAJOR else if (this.type == "minor") CardTypes.MINOR else throw Exception(
+                "Unknown card type"
+            ),
             name = this.name,
             meaningUp = this.meaningUp,
             meaningRev = this.meaningRev,
             description = this.description,
-            art =  arts.getArt(this.name)
+            art = arts.getArt(this.name)
         )
     }
 
-    private fun List<CardScheme>.toCardList() : List<Card> {
+    private fun List<CardScheme>.toCardList(): List<Card> {
         val output: ArrayList<Card> = ArrayList()
         for (cardScheme in this) {
             output.add(cardScheme.toCard())

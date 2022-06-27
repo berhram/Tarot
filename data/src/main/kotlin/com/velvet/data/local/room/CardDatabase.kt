@@ -9,6 +9,7 @@ import com.velvet.data.card.Card
 @TypeConverters(Converters::class)
 abstract class CardDatabase : RoomDatabase() {
     abstract fun cardDao(): CardDao
+
     companion object {
         const val DB_NAME = "app-card-database"
     }

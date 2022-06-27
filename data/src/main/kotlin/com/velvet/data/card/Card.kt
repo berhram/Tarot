@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class Card (
+data class Card(
     @PrimaryKey val name: String,
     val art: String,
     val type: CardTypes,

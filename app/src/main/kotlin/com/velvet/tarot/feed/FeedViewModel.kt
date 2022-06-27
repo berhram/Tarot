@@ -18,7 +18,7 @@ import org.orbitmvi.orbit.viewmodel.container
 class FeedViewModel(
     private val cache: CacheClient,
     private val repository: Repository
-    ) : ContainerHost<FeedState, FeedEffect>,
+) : ContainerHost<FeedState, FeedEffect>,
     ViewModel() {
     override val container: Container<FeedState, FeedEffect> = container(FeedState())
 
@@ -44,7 +44,12 @@ class FeedViewModel(
             launch {
                 cache.getCardsChannel().receiveAsFlow().collect { cards ->
                     reduce {
-                        state.copy(cards = cards.filter { card -> state.filter.filterCard(card) && card.name.contains(state.searchText, ignoreCase = true) })
+                        state.copy(cards = cards.filter { card ->
+                            state.filter.filterCard(card) && card.name.contains(
+                                state.searchText,
+                                ignoreCase = true
+                            )
+                        })
                     }
                 }
             }

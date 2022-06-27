@@ -47,8 +47,25 @@ dependencyResolutionManagement {
             //Koin
             version("koin", "3.2.0")
             library("koin-android", "io.insert-koin", "koin-android").versionRef("koin")
+            library("koin-androidx-navigation", "io.insert-koin", "koin-androidx-navigation").versionRef("koin")
             library("koin-androidx-compose", "io.insert-koin", "koin-androidx-compose").versionRef("koin")
             bundle("koin", listOf("koin-android", "koin-androidx-compose"))
+            //Navigation
+            version("navigation", "2.4.1")
+            library("navigation-compose", "androidx.navigation", "navigation-compose").versionRef("navigation")
+            //Gson
+            version("gson","2.8.6")
+            library("gson", "com.google.code.gson", "gson").versionRef("gson")
+            //Retrofit
+            version("retrofit", "2.9.0")
+            library("retrofit", "com.squareup.retrofit2", "retrofit").versionRef("retrofit")
+            library("retrofitConverter", "com.squareup.retrofit2", "converter-gson").versionRef("retrofit")
+            //OkHttp
+            version("okHttp", "4.9.3")
+            library("loggingInterceptor", "com.squareup.okhttp3", "logging-interceptor").versionRef("okHttp")
+            library("okHttp", "com.squareup.okhttp3", "okhttp").versionRef("okHttp")
+            //Internet
+            bundle("internet", listOf("retrofit", "retrofitConverter", "loggingInterceptor", "okHttp"))
             //Accompanist
             version("accompanist", "0.23.1")
             library("accompanist-systemuicontroller", "com.google.accompanist", "accompanist-systemuicontroller").versionRef("accompanist")

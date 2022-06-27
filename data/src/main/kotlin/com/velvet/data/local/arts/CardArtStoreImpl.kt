@@ -10,9 +10,10 @@ import java.lang.reflect.Type
 class CardArtStoreImpl(appContext: Context) : CardArtStore {
     private val gson = Gson()
     private val listCardArtType: Type = object : TypeToken<List<CardArtScheme>>() {}.type
-    private val arts: List<CardArtScheme> = gson.fromJson(appContext.assets.open("ASCIIarts.json").bufferedReader().use { it.readText() }, listCardArtType)
+    private val arts: List<CardArtScheme> =
+        gson.fromJson(appContext.assets.open("ASCIIarts.json").bufferedReader().use { it.readText() }, listCardArtType)
 
-    override fun getArt(name: String) : String {
+    override fun getArt(name: String): String {
         try {
             for (art in arts) {
                 if (art.name == name) {
