@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.velvet.data.card.Card
 import com.velvet.data.card.CardTypes
 import com.velvet.tarot.R
-import com.velvet.tarot.theme.AppTheme
+import com.velvet.tarot.ui.AppTheme
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable

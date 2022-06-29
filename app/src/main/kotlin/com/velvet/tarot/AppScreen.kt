@@ -12,7 +12,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.velvet.tarot.card.CardScreen
 import com.velvet.tarot.di.getComposeViewModel
 import com.velvet.tarot.feed.FeedScreen
-import com.velvet.tarot.theme.AppTheme
+import com.velvet.tarot.ui.AppTheme
 import org.koin.core.parameter.parametersOf
 
 

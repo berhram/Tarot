@@ -7,8 +7,7 @@
         android:icon="@mipmap/ic_launcher"
         android:name=".App"
         android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.Tarot">
+        android:supportsRtl="true">
         <activity
             android:name=".AppActivity"
             android:exported="true">

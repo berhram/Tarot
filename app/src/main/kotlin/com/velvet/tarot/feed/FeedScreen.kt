@@ -22,7 +22,9 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.velvet.data.card.Card
 import com.velvet.data.card.CardTypes
 import com.velvet.tarot.R
-import com.velvet.tarot.theme.AppTheme
+import com.velvet.tarot.ui.AppTheme
+import com.velvet.tarot.ui.CardItem
+import com.velvet.tarot.ui.SearchBar
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -92,7 +94,7 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
         }
     }, backgroundColor = AppTheme.colors.background) {
         Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-            SearchBar(searchText = state.searchText, onChangedSearchText = { viewModel.searchCard(it) })
+            SearchBar(state.searchBarState)
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing = state.isLoading),
                 onRefresh = { viewModel.refresh() },
@@ -130,50 +132,3 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
         }
     }
 }
-
-@Composable
-fun CardItem(card: Card, viewModel: FeedViewModel) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(5.dp)
-            .clickable { viewModel.showCard(card.name) }) {
-        Text(
-            text = card.name,
-            style = AppTheme.typography.h1,
-            textAlign = TextAlign.Start,
-            color = AppTheme.colors.textPrimary
-        )
-    }
-}
-
-@Composable
-fun SearchBar(
-    searchText: String,
-    onChangedSearchText: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Box(modifier = modifier) {
-        OutlinedTextField(
-            value = searchText,
-            textStyle = AppTheme.typography.body1,
-            onValueChange = onChangedSearchText,
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-            colors = TextFieldDefaults.outlinedTextFieldColors(
-                focusedBorderColor = AppTheme.colors.effect,
-                unfocusedBorderColor = AppTheme.colors.primary,
-                textColor = AppTheme.colors.textPrimary,
-                cursorColor = AppTheme.colors.effect
-            ),
-            label = {
-                Text(
-                    text = stringResource(R.string.search),
-                    color = AppTheme.colors.textPrimary,
-                    style = AppTheme.typography.subtitle
-                )
-            }
-        )
-    }
-}
-
