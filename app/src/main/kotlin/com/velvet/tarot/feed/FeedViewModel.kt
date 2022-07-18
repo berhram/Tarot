@@ -6,6 +6,7 @@ import com.velvet.data.cache.CacheClient
 import com.velvet.data.card.CardTypes
 import com.velvet.data.repo.Repository
 import com.velvet.data.repo.Status
+import com.velvet.domain.CardsUseCase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.receiveAsFlow
 import org.orbitmvi.orbit.Container
@@ -16,59 +17,29 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
 class FeedViewModel(
-    private val cache: CacheClient,
-    private val repository: Repository
+    private val cardsUseCase: CardsUseCase
 ) : ContainerHost<FeedState, FeedEffect>,
     ViewModel() {
     override val container: Container<FeedState, FeedEffect> = container(FeedState())
 
     init {
-        observeStatuses()
-        observeCards()
         refresh()
     }
 
-    private fun observeStatuses() = intent {
-        viewModelScope.launch(Dispatchers.IO) {
-            cache.getStatusChannel().receiveAsFlow().collect { status ->
-                when (status) {
-                    Status.ERROR_REFRESH -> postSideEffect(FeedEffect.ErrorRefresh)
-                }
-            }
-        }
-    }
 
-    private fun observeCards() = intent {
-        viewModelScope.launch(Dispatchers.IO) {
-            launch { repository.getCards() }
-            launch {
-                cache.getCardsChannel().receiveAsFlow().collect { cards ->
-                    reduce {
-                        state.copy(cards = cards.filter { card ->
-                            state.filter.filterCard(card) && card.name.contains(
-                                state.searchText,
-                                ignoreCase = true
-                            )
-                        })
-                    }
-                }
-            }
-        }
-    }
-
-    fun refresh() = intent { viewModelScope.launch(Dispatchers.IO) { repository.fetch() } }
+    fun refresh() = intent { viewModelScope.launch(Dispatchers.IO) { cardsUseCase.cards(state.filter) } }
 
     fun showCard(cardName: String) = intent { postSideEffect(FeedEffect.ShowCard(cardName = cardName)) }
 
     fun filterClick() = intent { reduce { state.copy(isExpanded = !state.isExpanded) } }
 
-    fun setFilter(filterKey: CardTypes) = intent {
-        if (filterKey == CardTypes.MAJOR) {
-            reduce { state.copy(filter = state.filter.copy(isMajorEnabled = !state.filter.isMajorEnabled)) }
-        } else if (filterKey == CardTypes.MINOR) {
-            reduce { state.copy(filter = state.filter.copy(isMinorEnabled = !state.filter.isMinorEnabled)) }
-        }
-    }
+//    fun setFilter(filterKey: CardTypes) = intent {
+//        if (filterKey == CardTypes.MAJOR) {
+//            reduce { state.copy(filter = state.filter.copy(isMajorEnabled = !state.filter.isMajorEnabled)) }
+//        } else if (filterKey == CardTypes.MINOR) {
+//            reduce { state.copy(filter = state.filter.copy(isMinorEnabled = !state.filter.isMinorEnabled)) }
+//        }
+//    }
 
     fun searchCard(searchWord: String) = intent { reduce { state.copy(searchText = searchWord) } }
 }

@@ -10,11 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-
-data class CardItemState(
-    val title: String,
-    val onClick: (String) -> Unit
-)
+import com.velvet.domain.states.CardItemState
 
 @Composable
 fun CardItem(state: CardItemState) {

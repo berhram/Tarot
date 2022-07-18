@@ -1,8 +1,6 @@
 package com.velvet.tarot.feed
 
-import com.velvet.coremvi.Effect
-
-sealed class FeedEffect : Effect {
+sealed class FeedEffect {
     data class ShowCard(val cardName: String) : FeedEffect()
     object ErrorRefresh : FeedEffect()
 }

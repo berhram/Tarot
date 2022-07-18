@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.android.library")
     kotlin("kapt")
 }
 
@@ -31,24 +31,10 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
+
     implementation(libs.coreKtx)
-    implementation(libs.appcompat)
-    implementation(libs.material)
     implementation(libs.bundles.coroutines)
-    implementation(libs.bundles.orbit)
-    implementation(libs.roomKtx)
-    implementation(libs.roomRuntime)
-    kapt(libs.roomCompiler)
-    testImplementation(libs.roomTesting)
-    implementation(libs.bundles.activity)
-    implementation(libs.bundles.compose)
     implementation(libs.bundles.koin)
-    implementation(libs.bundles.accompanist)
-    implementation(libs.navigationCompose)
-    implementation(libs.gson)
-    implementation(libs.bundles.internet)
-    testImplementation(libs.orbitTest)
     testImplementation(libs.junit)
-    androidTestImplementation(libs.junitAndroid)
-    androidTestImplementation(libs.uiTestJunit4)
 }

@@ -93,42 +93,6 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
             }
         }
     }, backgroundColor = AppTheme.colors.background) {
-        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-            SearchBar(state.searchBarState)
-            SwipeRefresh(
-                state = rememberSwipeRefreshState(isRefreshing = state.isLoading),
-                onRefresh = { viewModel.refresh() },
-                modifier = Modifier.fillMaxSize()
-            ) {
-                LazyColumn {
-                    if (state.cards.isNullOrEmpty()) {
-                        items(items = listOf(System.currentTimeMillis()), key = { it }) {
-                            Column(
-                                modifier = Modifier
-                                    .fillParentMaxHeight()
-                                    .fillMaxWidth(),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
-                            ) {
-                                Text(
-                                    textAlign = TextAlign.Center,
-                                    text = stringResource(id = R.string.no_cards)
-                                )
-                            }
-                        }
-                    } else {
-                        items(
-                            items = state.cards.filter {
-                                state.filter.filterCard(it) && it.name.contains(
-                                    state.searchText,
-                                    ignoreCase = true
-                                )
-                            },
-                            key = { it.name }
-                        ) { CardItem(it, viewModel = viewModel) }
-                    }
-                }
-            }
-        }
+
     }
 }

@@ -9,13 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.velvet.domain.states.SearchBarState
 import com.velvet.tarot.R
-
-data class SearchBarState(
-    val searchText: String = "",
-    val onChangedSearchText: (String) -> Unit = { },
-    val modifier: Modifier = Modifier
-)
 
 @Composable
 fun SearchBar(

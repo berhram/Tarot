@@ -85,4 +85,4 @@ dependencyResolutionManagement {
 rootProject.name = "Tarot"
 include(":app")
 include(":data")
-include(":coremvi")
+include(":domain")
