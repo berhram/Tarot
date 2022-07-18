@@ -1,4 +1,6 @@
-package com.velvet.domain
+package com.velvet.domain.usecases
+
+import com.velvet.domain.CardUI
 
 interface SpecificCardUseCase {
 

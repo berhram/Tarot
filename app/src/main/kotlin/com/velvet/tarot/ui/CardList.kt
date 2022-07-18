@@ -15,12 +15,13 @@ import androidx.compose.ui.text.style.TextAlign
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.velvet.domain.CardUI
+import com.velvet.domain.states.CardItemState
 import com.velvet.tarot.R
 
 data class CardListState(
     val onRefresh: () -> Unit = { },
     val cards: List<CardItemState> = emptyList(),
-    val isLoading: Boolean
+    val isLoading: Boolean = true
 )
 
 @Composable

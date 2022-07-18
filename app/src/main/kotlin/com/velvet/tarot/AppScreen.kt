@@ -10,9 +10,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.velvet.tarot.card.CardScreen
-import com.velvet.tarot.di.getComposeViewModel
 import com.velvet.tarot.feed.FeedScreen
 import com.velvet.tarot.ui.AppTheme
+import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
 
@@ -25,13 +25,13 @@ fun AppScreen() {
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = Screen.Feed.route) {
                 composable(route = Screen.Feed.route) {
-                    FeedScreen(viewModel = getComposeViewModel(), onShowCard = { cardName ->
+                    FeedScreen(viewModel = getViewModel(), onShowCard = { cardName ->
                         navController.navigate(route = Screen.Cards.createRoute(cardName))
                     })
                 }
                 composable(route = Screen.Cards.route) {
                     CardScreen(
-                        viewModel = getComposeViewModel(parameters = {
+                        viewModel = getViewModel(parameters = {
                             parametersOf(
                                 Screen.Cards.getArgumentId(
                                     it

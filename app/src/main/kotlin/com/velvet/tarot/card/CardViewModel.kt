@@ -2,7 +2,7 @@ package com.velvet.tarot.card
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.velvet.domain.SpecificCardUseCase
+import com.velvet.domain.usecases.SpecificCardUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.ContainerHost
