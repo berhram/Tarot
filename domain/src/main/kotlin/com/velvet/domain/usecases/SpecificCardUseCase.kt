@@ -1,8 +1,8 @@
 package com.velvet.domain.usecases
 
-import com.velvet.domain.CardUI
+import com.velvet.domain.states.CardDetailsState
 
 interface SpecificCardUseCase {
 
-    fun cardById(id: String): CardUI
+    fun cardById(id: String): CardDetailsState
 }

@@ -1,8 +1,6 @@
 package com.velvet.tarot
 
-import com.velvet.data.card.Card
 import com.velvet.data.card.CardFilter
-import com.velvet.data.card.CardTypes
 import com.velvet.domain.usecase.FetchCardsUseCase
 import com.velvet.domain.usecase.FilterCardsUseCase
 import com.velvet.domain.usecase.GetAllCardsUseCase

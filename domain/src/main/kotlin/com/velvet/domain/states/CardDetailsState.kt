@@ -1,5 +1,10 @@
 package com.velvet.domain.states
 
-import com.velvet.domain.CardUI
-
-data class CardDetailsState(val cardUI: CardUI)
+data class CardDetailsState(
+    val name: String,
+    val art: String,
+    val arcana: String,
+    val meaningUp: String,
+    val meaningRev: String,
+    val description: String,
+)

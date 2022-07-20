@@ -2,7 +2,7 @@ package com.velvet.domain.usecases
 
 import com.velvet.domain.states.CardItemState
 
-interface CardsByNameUseCase {
+interface CardsTitlesByNameUseCase {
 
     fun cardsByName(name: String): List<CardItemState>
 }

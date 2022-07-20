@@ -1,10 +1,7 @@
 package com.velvet.data.repo
 
 import com.velvet.data.cache.CacheRepository
-import com.velvet.data.card.Card
-import com.velvet.data.card.CardTypes
-import com.velvet.data.card.schemas.CardScheme
-import com.velvet.data.network.Network
+import com.velvet.data.Card
 import com.velvet.data.local.arts.CardArtStore
 import com.velvet.data.local.room.CardDao
 
@@ -36,7 +33,7 @@ class RepositoryImpl(
         cache.sendCard(dao.findByName(cardName))
     }
 
-    private fun CardScheme.toCard(): Card {
+    private fun Card.toCard(): Card {
         return Card(
             type = if (this.type == "major") CardTypes.MAJOR else if (this.type == "minor") CardTypes.MINOR else throw Exception(
                 "Unknown card type"
@@ -49,7 +46,7 @@ class RepositoryImpl(
         )
     }
 
-    private fun List<CardScheme>.toCardList(): List<Card> {
+    private fun List<Card>.toCardList(): List<Card> {
         val output: ArrayList<Card> = ArrayList()
         for (cardScheme in this) {
             output.add(cardScheme.toCard())

@@ -1,6 +1,5 @@
 package com.velvet.data.cache
 
-import com.velvet.data.card.Card
 import com.velvet.data.repo.Status
 
 interface CacheRepository {

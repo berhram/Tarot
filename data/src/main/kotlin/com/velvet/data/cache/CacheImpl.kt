@@ -1,6 +1,5 @@
 package com.velvet.data.cache
 
-import com.velvet.data.card.Card
 import com.velvet.data.repo.Status
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.ReceiveChannel
