@@ -6,7 +6,7 @@ import com.velvet.domain.usecase.FilterCardsUseCase
 import com.velvet.domain.usecase.GetAllCardsUseCase
 import com.velvet.domain.usecase.SearchCardsUseCase
 import com.velvet.tarot.feed.FeedEffect
-import com.velvet.tarot.feed.FeedState
+import com.velvet.tarot.feed.FeedScreenState
 import com.velvet.tarot.feed.FeedViewModel
 import io.mockk.*
 import kotlinx.coroutines.delay
@@ -53,13 +53,13 @@ class FeedViewModelTest {
             meaningUp = "Some meaning up 2",
             meaningRev = "Some meaning rev 2",
             description = "such a bad card!"))
-        val viewModel = FeedViewModel(fetchCardsUseCase = fetchCardsUseCase, getAllCardsUseCase = getAllCardsUseCase, searchCardsUseCase = searchCardsUseCase, filterCardsUseCase = filterCardsUseCase).test(FeedState())
+        val viewModel = FeedViewModel(fetchCardsUseCase = fetchCardsUseCase, getAllCardsUseCase = getAllCardsUseCase, searchCardsUseCase = searchCardsUseCase, filterCardsUseCase = filterCardsUseCase).test(FeedScreenState())
 
         //when
         runBlocking { viewModel.testIntent { setFilter(CardTypes.MAJOR) } }
 
         //then
-        viewModel.assert(FeedState()) {
+        viewModel.assert(FeedScreenState()) {
             states(
                 { copy(filter = CardFilter(isMajorEnabled = false, isMinorEnabled = true)) },
                 { copy(cards = listOf(Card(
@@ -111,13 +111,13 @@ class FeedViewModelTest {
             meaningUp = "Some meaning up 1",
             meaningRev = "Some meaning rev 1",
             description = "such a fun card!"))
-        val viewModel = FeedViewModel(fetchCardsUseCase = fetchCardsUseCase, getAllCardsUseCase = getAllCardsUseCase, searchCardsUseCase = searchCardsUseCase, filterCardsUseCase = filterCardsUseCase).test(FeedState())
+        val viewModel = FeedViewModel(fetchCardsUseCase = fetchCardsUseCase, getAllCardsUseCase = getAllCardsUseCase, searchCardsUseCase = searchCardsUseCase, filterCardsUseCase = filterCardsUseCase).test(FeedScreenState())
 
         //when
         runBlocking { viewModel.testIntent { setFilter(CardTypes.MINOR) } }
 
         //then
-        viewModel.assert(FeedState()) {
+        viewModel.assert(FeedScreenState()) {
             states(
                 { copy(filter = CardFilter(isMajorEnabled = true, isMinorEnabled = false)) },
                 { copy(cards = listOf(Card(
@@ -162,13 +162,13 @@ class FeedViewModelTest {
                 meaningUp = "",
                 meaningRev = "all be as bad as it can be!",
                 description = "Some desc"))
-        val viewModel = FeedViewModel(fetchCardsUseCase = fetchCardsUseCase, getAllCardsUseCase = getAllCardsUseCase, searchCardsUseCase = searchCardsUseCase, filterCardsUseCase = filterCardsUseCase).test(FeedState())
+        val viewModel = FeedViewModel(fetchCardsUseCase = fetchCardsUseCase, getAllCardsUseCase = getAllCardsUseCase, searchCardsUseCase = searchCardsUseCase, filterCardsUseCase = filterCardsUseCase).test(FeedScreenState())
 
         //when
         runBlocking { viewModel.testIntent { refresh() } }
 
         //then
-        viewModel.assert(FeedState()) {
+        viewModel.assert(FeedScreenState()) {
             states(
                 { copy(isLoading = true) },
                 { copy(filter = CardFilter(isMajorEnabled = true, isMinorEnabled = true), isLoading = false, cards = listOf(
@@ -227,13 +227,13 @@ class FeedViewModelTest {
                 meaningUp = "",
                 meaningRev = "all be as bad as it can be!",
                 description = "Some desc"))
-        val viewModel = FeedViewModel(fetchCardsUseCase = fetchCardsUseCase, getAllCardsUseCase = getAllCardsUseCase, searchCardsUseCase = searchCardsUseCase, filterCardsUseCase = filterCardsUseCase).test(FeedState())
+        val viewModel = FeedViewModel(fetchCardsUseCase = fetchCardsUseCase, getAllCardsUseCase = getAllCardsUseCase, searchCardsUseCase = searchCardsUseCase, filterCardsUseCase = filterCardsUseCase).test(FeedScreenState())
 
         //when
         runBlocking { viewModel.testIntent { filterClick() } }
 
         //then
-        viewModel.assert(FeedState()) { states({ copy(isExpanded = true) }) }
+        viewModel.assert(FeedScreenState()) { states({ copy(isExpanded = true) }) }
         coVerify(exactly = 1) { getAllCardsUseCase.invoke() }
         coVerify(exactly = 0) { filterCardsUseCase.invoke(isMinorEnabled = any(), isMajorEnabled = any())   }
         coVerify(exactly = 0) { searchCardsUseCase.invoke(any())  }
@@ -266,13 +266,13 @@ class FeedViewModelTest {
                 meaningUp = "",
                 meaningRev = "all be as bad as it can be!",
                 description = "Some desc"))
-        val viewModel = FeedViewModel(fetchCardsUseCase = fetchCardsUseCase, getAllCardsUseCase = getAllCardsUseCase, searchCardsUseCase = searchCardsUseCase, filterCardsUseCase = filterCardsUseCase).test(FeedState())
+        val viewModel = FeedViewModel(fetchCardsUseCase = fetchCardsUseCase, getAllCardsUseCase = getAllCardsUseCase, searchCardsUseCase = searchCardsUseCase, filterCardsUseCase = filterCardsUseCase).test(FeedScreenState())
 
         //when
         runBlocking { viewModel.testIntent { showCard("some card") } }
 
         //then
-        viewModel.assert(FeedState()) {
+        viewModel.assert(FeedScreenState()) {
             postedSideEffects(FeedEffect.ShowCard("some card")) }
         coVerify(exactly = 1) { getAllCardsUseCase.invoke() }
         coVerify(exactly = 0) { filterCardsUseCase.invoke(isMinorEnabled = any(), isMajorEnabled = any())   }
@@ -313,13 +313,13 @@ class FeedViewModelTest {
             meaningUp = "",
             meaningRev = "all be as bad as it can be!",
             description = "Some desc"))
-        val viewModel = FeedViewModel(fetchCardsUseCase = fetchCardsUseCase, getAllCardsUseCase = getAllCardsUseCase, searchCardsUseCase = searchCardsUseCase, filterCardsUseCase = filterCardsUseCase).test(FeedState())
+        val viewModel = FeedViewModel(fetchCardsUseCase = fetchCardsUseCase, getAllCardsUseCase = getAllCardsUseCase, searchCardsUseCase = searchCardsUseCase, filterCardsUseCase = filterCardsUseCase).test(FeedScreenState())
 
         //when
-        runBlocking { viewModel.testIntent { searchCard("Some name 2") } }
+        runBlocking { viewModel.testIntent { searchCards("Some name 2") } }
         runBlocking { delay(2000) }
         //then
-        viewModel.assert(FeedState()) { states(
+        viewModel.assert(FeedScreenState()) { states(
             { copy(searchText = "Some name 2") },
             { copy(cards = listOf(Card(
                 type = CardTypes.NONE,

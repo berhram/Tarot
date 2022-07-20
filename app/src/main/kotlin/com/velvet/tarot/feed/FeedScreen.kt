@@ -1,7 +1,10 @@
 package com.velvet.tarot.feed
 
 import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,8 +15,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.velvet.tarot.R
-import com.velvet.tarot.ui.CardList
+import com.velvet.tarot.ui.appTypography
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -48,6 +53,46 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
             }
         }
     }, backgroundColor = MaterialTheme.colors.background) {
-        CardList(modifier = Modifier.fillMaxSize(), state = state.cards)
+        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(isRefreshing = state.isLoading),
+                onRefresh = { viewModel.searchCards("") },
+                modifier = Modifier.fillMaxSize()
+            ) {
+                LazyColumn {
+                    if (state.cards.isEmpty()) {
+                        items(items = listOf(System.currentTimeMillis()), key = { it }) {
+                            Column(
+                                modifier = Modifier
+                                    .fillParentMaxHeight()
+                                    .fillMaxWidth(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Text(
+                                    textAlign = TextAlign.Center,
+                                    text = stringResource(id = R.string.no_cards)
+                                )
+                            }
+                        }
+                    } else {
+                        items(state.cards) {
+                            Row(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(5.dp)
+                                    .clickable { viewModel.showCard(it.title) }) {
+                                Text(
+                                    text = it.title,
+                                    style = MaterialTheme.appTypography.title,
+                                    textAlign = TextAlign.Start,
+                                    color = MaterialTheme.colors.onSurface
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

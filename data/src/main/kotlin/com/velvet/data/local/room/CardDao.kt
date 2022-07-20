@@ -1,7 +1,7 @@
 package com.velvet.data.local.room
 
 import androidx.room.*
-import com.velvet.data.Card
+import com.velvet.data.schemas.Card
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 

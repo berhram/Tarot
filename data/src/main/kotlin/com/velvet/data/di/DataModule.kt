@@ -1,39 +1,30 @@
 package com.velvet.data.di
 
 import androidx.room.Room
-import com.velvet.data.cache.CacheClient
-import com.velvet.data.cache.CacheImpl
-import com.velvet.data.cache.CacheRepository
+import com.google.gson.Gson
 import com.velvet.data.local.arts.CardArtStore
 import com.velvet.data.local.arts.BaseCardArtStore
 import com.velvet.data.local.room.CardDatabase
+import com.velvet.data.repo.BaseRepository
 import com.velvet.data.repo.Repository
-import com.velvet.data.repo.RepositoryImpl
 import org.koin.android.ext.koin.androidContext
-import org.koin.dsl.binds
 import org.koin.dsl.module
 
 val dataModule = module {
-    factory<Repository> {
-        RepositoryImpl(
-            network = get(),
-            dao = get(),
-            arts = get(),
-            cache = get()
-        )
+
+    single<Repository> {
+        BaseRepository()
     }
 
-    factory<Network> {
-        NetworkImpl()
-    }
-
-    factory {
+    single {
         Room.databaseBuilder(androidContext(), CardDatabase::class.java, CardDatabase.DB_NAME).build().cardDao()
     }
 
-    factory<CardArtStore> {
-        BaseCardArtStore(androidContext())
+    single {
+        Gson()
     }
 
-    single { CacheImpl() }.binds(arrayOf(CacheClient::class, CacheRepository::class))
+    single<CardArtStore> {
+        BaseCardArtStore(androidContext(), get())
+    }
 }

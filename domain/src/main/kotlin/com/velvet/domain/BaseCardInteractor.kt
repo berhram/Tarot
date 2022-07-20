@@ -1,20 +1,26 @@
 package com.velvet.domain
 
 import com.velvet.core.Mapper
-import com.velvet.data.Card
-import com.velvet.domain.states.CardDetailsState
-import com.velvet.domain.states.CardItemState
+import com.velvet.data.repo.Repository
+import com.velvet.data.schemas.Card
+import com.velvet.data.schemas.CardArt
+import com.velvet.domain.states.CardDetails
+import com.velvet.domain.states.CardItem
 
 class BaseCardInteractor(
-    private val cardItemStateMapper : Mapper<Card, CardItemState>,
-    private val cardDetailsState
+    private val repository: Repository,
+    private val fromCardArtToString: Mapper<CardArt, String>,
+    private val fromCardToCardDetails: Mapper<Card, CardDetails>,
+    private val fromCardToCardItem: Mapper<Card, CardItem>
 ) : CardInteractor {
 
-    override fun cardsByName(name: String): List<CardItemState> {
-        TODO("Not yet implemented")
+    override suspend fun cards(keyword: String): List<CardItem> = buildList {
+        repository.cards(keyword).forEach {
+            add(fromCardToCardItem.map(it))
+        }
     }
 
-    override fun cardById(id: String): CardDetailsState {
-        TODO("Not yet implemented")
-    }
+    override suspend fun cardById(id: String): CardDetails = fromCardToCardDetails.map(repository.card(id))
+
+    override suspend fun art(id: String): String = fromCardArtToString.map(repository.art(id))
 }

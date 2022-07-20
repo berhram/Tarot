@@ -3,14 +3,14 @@ package com.velvet.data.local.arts
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.velvet.data.CardArtScheme
+import com.velvet.data.schemas.CardArt
 import java.io.IOException
 import java.lang.reflect.Type
 
 class BaseCardArtStore(appContext: Context, gson: Gson) : CardArtStore {
 
-    private val listCardArtType: Type = object : TypeToken<List<CardArtScheme>>() {}.type
-    private val arts: List<CardArtScheme> =
+    private val listCardArtType: Type = object : TypeToken<List<CardArt>>() {}.type
+    private val arts: List<CardArt> =
         gson.fromJson(appContext.assets.open("ASCIIarts.json").bufferedReader().use { it.readText() }, listCardArtType)
 
     override fun art(name: String): String {

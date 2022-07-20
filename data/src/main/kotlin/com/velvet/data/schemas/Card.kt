@@ -1,4 +1,4 @@
-package com.velvet.data
+package com.velvet.data.schemas
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

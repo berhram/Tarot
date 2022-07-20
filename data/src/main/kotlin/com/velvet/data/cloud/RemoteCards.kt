@@ -1,7 +1,7 @@
 package com.velvet.data.cloud
 
 import com.google.gson.annotations.SerializedName
-import com.velvet.data.Card
+import com.velvet.data.schemas.Card
 import com.velvet.core.Read
 
 interface RemoteCards : Read<List<Card>> {
