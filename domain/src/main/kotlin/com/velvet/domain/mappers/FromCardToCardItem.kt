@@ -1,6 +1,6 @@
 package com.velvet.domain.mappers
 
-import com.velvet.core.Mapper
+import com.velvet.domain.Mapper
 import com.velvet.data.schemas.Card
 import com.velvet.domain.states.CardItem
 
