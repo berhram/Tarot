@@ -32,7 +32,6 @@ android {
 
 dependencies {
     implementation(project(":data"))
-    implementation(project(":core"))
     implementation(libs.coreKtx)
     implementation(libs.bundles.coroutines)
     implementation(libs.bundles.koin)

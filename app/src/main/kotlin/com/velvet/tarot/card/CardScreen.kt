@@ -73,7 +73,7 @@ fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
             ) {
                 Text(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    text = state.cardDetails.art,
+                    text = state.art,
                     style = MaterialTheme.typography.body2,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.onBackground

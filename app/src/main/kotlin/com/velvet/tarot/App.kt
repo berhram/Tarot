@@ -2,6 +2,7 @@ package com.velvet.tarot
 
 import android.app.Application
 import com.velvet.data.di.dataModule
+import com.velvet.domain.di.domainModule
 import com.velvet.tarot.di.appModule
 import org.koin.android.BuildConfig
 import org.koin.android.ext.koin.androidContext
@@ -15,7 +16,7 @@ class App : Application() {
         startKoin {
             androidLogger(if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
             androidContext(this@App)
-            modules(appModule,)
+            modules(appModule, domainModule, dataModule)
         }
     }
 }

@@ -35,7 +35,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
     implementation(libs.coreKtx)
     implementation(libs.bundles.coroutines)
     implementation(libs.roomKtx)

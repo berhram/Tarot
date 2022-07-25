@@ -3,6 +3,7 @@ package com.velvet.domain
 import com.velvet.data.repo.Repository
 import com.velvet.data.schemas.Card
 import com.velvet.data.schemas.CardArt
+import com.velvet.domain.mappers.Mapper
 import com.velvet.domain.states.CardDetails
 import com.velvet.domain.states.CardItem
 
