@@ -13,18 +13,15 @@ class BaseCardArtStore(appContext: Context, gson: Gson) : CardArtStore {
     private val arts: List<CardArt> =
         gson.fromJson(appContext.assets.open("ASCIIarts.json").bufferedReader().use { it.readText() }, listCardArtType)
 
+    //TODO wrapper with isEmpty fun
     override fun art(name: String): String {
-        try {
-            for (art in arts) {
-                if (art.name == name) {
-                    return art.art
-                }
+        for (art in arts) {
+            if (art.name == name) {
+                return art.art
             }
-            return BLANK_ART
-        } catch (ioException: IOException) {
-            ioException.printStackTrace()
-            return BLANK_ART
         }
+        val art = arts.find { it.name == name }
+
     }
 
     companion object {
