@@ -1,5 +1,7 @@
 package com.velvet.core
 
+import com.velvet.core.exception.HandleError
+
 interface CloudDataSource {
 
     suspend fun <T> handle(block: suspend () -> T): T

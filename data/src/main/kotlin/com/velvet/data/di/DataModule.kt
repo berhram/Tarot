@@ -4,8 +4,9 @@ import androidx.room.Room
 import com.google.gson.Gson
 import com.velvet.core.ManageResources
 import com.velvet.core.Read
+import com.velvet.core.exception.HandleError
 import com.velvet.data.cache.TarotCacheDataSource
-import com.velvet.data.cache.arts.CardArtStore
+import com.velvet.data.cache.arts.CardArtCacheDataSource
 import com.velvet.data.cache.arts.ReadCardArts
 import com.velvet.data.cache.room.CardDatabase
 import com.velvet.data.cloud.TarotCloudDataSource
@@ -38,8 +39,8 @@ val dataModule = module {
         ManageResources.Base(androidContext())
     }
 
-    factory<CardArtStore> {
-        CardArtStore.Base(get())
+    factory<CardArtCacheDataSource> {
+        CardArtCacheDataSource.Base(get())
     }
 
     factory<TarotCloudDataSource> {
@@ -48,6 +49,10 @@ val dataModule = module {
 
     factory<TarotCacheDataSource> {
         TarotCacheDataSource.Base(get())
+    }
+
+    factory<HandleError> {
+        HandleError.Base()
     }
 
     factory<Read<List<CardArt>>> {

@@ -2,7 +2,7 @@ package com.velvet.data.repo
 
 import com.velvet.data.cache.TarotCacheDataSource
 import com.velvet.data.cloud.TarotCloudDataSource
-import com.velvet.data.cache.arts.CardArtStore
+import com.velvet.data.cache.arts.CardArtCacheDataSource
 import com.velvet.data.schemas.Card
 import com.velvet.data.schemas.CardArt
 
@@ -17,12 +17,12 @@ interface Repository {
     suspend fun cards(keyword: String): List<Card>
 
     class Base(
-        private val cardArtStore: CardArtStore,
+        private val cardArtCacheDataSource: CardArtCacheDataSource,
         private val tarotCloudDataSource: TarotCloudDataSource,
         private val tarotCacheDataSource: TarotCacheDataSource
     ) : Repository {
 
-        override suspend fun art(id: String): CardArt = cardArtStore.art(id)
+        override suspend fun art(id: String): CardArt = cardArtCacheDataSource.art(id)
 
         override suspend fun card(id: String): Card = tarotCacheDataSource.card(id)
 

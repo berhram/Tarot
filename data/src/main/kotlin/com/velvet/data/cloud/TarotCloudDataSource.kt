@@ -1,7 +1,7 @@
 package com.velvet.data.cloud
 
 import com.velvet.core.CloudDataSource
-import com.velvet.core.HandleError
+import com.velvet.core.exception.HandleError
 import com.velvet.data.schemas.Card
 
 interface TarotCloudDataSource {
