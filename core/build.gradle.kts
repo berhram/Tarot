@@ -1,22 +1,17 @@
 plugins {
-    id("org.jetbrains.kotlin.android")
     id("com.android.library")
-    kotlin("kapt")
-}
-
-repositories {
-    google()
-    mavenCentral()
+    id("org.jetbrains.kotlin.android")
 }
 
 android {
     compileSdk = 32
 
     defaultConfig {
-        minSdk = 26
+        minSdk = 23
         targetSdk = 32
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -35,15 +30,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
     implementation(libs.coreKtx)
     implementation(libs.bundles.coroutines)
-    implementation(libs.roomKtx)
-    implementation(libs.roomRuntime)
-    kapt(libs.roomCompiler)
-    testImplementation(libs.roomTesting)
     implementation(libs.bundles.koin)
-    implementation(libs.gson)
-    implementation(libs.bundles.internet)
     testImplementation(libs.junit)
 }

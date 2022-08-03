@@ -1,4 +1,4 @@
-package com.velvet.domain.mappers
+package com.velvet.core
 
 interface Mapper<T, V> {
 

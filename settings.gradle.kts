@@ -10,11 +10,10 @@ dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
             //Core
-            library("coreKtx", "androidx.core", "core-ktx").version("1.7.0")
-            library("appcompat", "androidx.appcompat", "appcompat").version("1.4.1")
-            library("material", "com.google.android.material", "material").version("1.6.0")
+            library("coreKtx", "androidx.core", "core-ktx").version("1.8.0")
+            library("appcompat", "androidx.appcompat", "appcompat").version("1.4.2")
             //Coroutines
-            version("coroutines", "1.6.1")
+            version("coroutines", "1.6.4")
             library("kotlinxCoroutinesCore", "org.jetbrains.kotlinx" , "kotlinx-coroutines-core").versionRef("coroutines")
             library("kotlinxCoroutinesAndroid", "org.jetbrains.kotlinx" , "kotlinx-coroutines-android").versionRef("coroutines")
             bundle("coroutines", listOf("kotlinxCoroutinesCore", "kotlinxCoroutinesAndroid"))
@@ -24,25 +23,24 @@ dependencyResolutionManagement {
             library("orbitViewmodel", "org.orbit-mvi", "orbit-viewmodel").versionRef("orbit")
             bundle("orbit", listOf("orbitCore", "orbitViewmodel"))
             //Room
-            version("room", "2.4.2")
+            version("room", "2.4.3")
             library("roomKtx", "androidx.room", "room-ktx").versionRef("room")
             library("roomRuntime", "androidx.room", "room-runtime").versionRef("room")
             library("roomCompiler", "androidx.room", "room-compiler").versionRef("room")
             library("roomTesting", "androidx.room", "room-testing").versionRef("room")
             //Activity
-            version("activity", "1.4.0")
+            version("activity", "1.5.1")
             library("activityKtx", "androidx.activity", "activity-ktx").versionRef("activity")
             library("activityCompose", "androidx.activity", "activity-compose").versionRef("activity")
             bundle("activity", listOf("activityKtx", "activityCompose"))
             //Compose
-            version("compose", "1.1.1")
-            library("ui", "androidx.compose.ui", "ui").versionRef("compose")
-            library("uiUtil", "androidx.compose.ui", "ui-util").versionRef("compose")
-            library("uiTooling", "androidx.compose.ui", "ui-tooling").versionRef("compose")
-            library("foundation", "androidx.compose.foundation", "foundation").versionRef("compose")
-            library("material", "androidx.compose.material", "material").versionRef("compose")
-            library("materialIconsCore", "androidx.compose.material", "material-icons-core").versionRef("compose")
-            library("materialIconsExtended", "androidx.compose.material", "material-icons-extended").versionRef("compose")
+            library("ui", "androidx.compose.ui", "ui").version("1.2.0")
+            library("uiUtil", "androidx.compose.ui", "ui-util").version("1.2.0")
+            library("uiTooling", "androidx.compose.ui", "ui-tooling").version("1.2.0")
+            library("foundation", "androidx.compose.foundation", "foundation").version("1.2.0")
+            library("material", "androidx.compose.material", "material").version("1.2.0")
+            library("materialIconsCore", "androidx.compose.material", "material-icons-core").version("1.2.0")
+            library("materialIconsExtended", "androidx.compose.material", "material-icons-extended").version("1.2.0")
             bundle("compose", listOf("ui", "uiUtil", "uiTooling", "foundation", "material", "materialIconsCore", "materialIconsExtended"))
             //Koin
             version("koin", "3.2.0")
@@ -51,28 +49,28 @@ dependencyResolutionManagement {
             library("koinAndroidxCompose", "io.insert-koin", "koin-androidx-compose").versionRef("koin")
             bundle("koin", listOf("koinAndroid", "koinAndroidxCompose"))
             //Navigation
-            version("navigation", "2.4.1")
+            version("navigation", "2.5.1")
             library("navigationCompose", "androidx.navigation", "navigation-compose").versionRef("navigation")
             //Gson
-            version("gson","2.8.6")
+            version("gson","2.9.1")
             library("gson", "com.google.code.gson", "gson").versionRef("gson")
             //Retrofit
             version("retrofit", "2.9.0")
             library("retrofit", "com.squareup.retrofit2", "retrofit").versionRef("retrofit")
             library("retrofitConverter", "com.squareup.retrofit2", "converter-gson").versionRef("retrofit")
             //OkHttp
-            version("okHttp", "4.9.3")
+            version("okHttp", "4.10.0")
             library("loggingInterceptor", "com.squareup.okhttp3", "logging-interceptor").versionRef("okHttp")
             library("okHttp", "com.squareup.okhttp3", "okhttp").versionRef("okHttp")
             //Internet
             bundle("internet", listOf("retrofit", "retrofitConverter", "loggingInterceptor", "okHttp"))
             //Accompanist
-            version("accompanist", "0.23.1")
-            library("accompanistSystemuicontroller", "com.google.accompanist", "accompanist-systemuicontroller").versionRef("accompanist")
+            version("accompanist", "0.25.0")
+            library("accompanistSystemUiController", "com.google.accompanist", "accompanist-systemuicontroller").versionRef("accompanist")
             library("accompanistPager", "com.google.accompanist", "accompanist-pager").versionRef("accompanist")
-            library("accompanistSwiperefresh", "com.google.accompanist", "accompanist-swiperefresh").versionRef("accompanist")
+            library("accompanistSwipeRefresh", "com.google.accompanist", "accompanist-swiperefresh").versionRef("accompanist")
             library("accompanistPagerIndicators", "com.google.accompanist", "accompanist-pager-indicators").versionRef("accompanist")
-            bundle("accompanist", listOf("accompanistSystemuicontroller", "accompanistPager", "accompanistSwiperefresh", "accompanistPagerIndicators"))
+            bundle("accompanist", listOf("accompanistSystemUiController", "accompanistPager", "accompanistSwipeRefresh", "accompanistPagerIndicators"))
             //Testing
             library("orbitTest", "org.orbit-mvi", "orbit-test").version("4.3.2")
             library("junit", "junit", "junit").version("4.13.2")
@@ -86,3 +84,4 @@ rootProject.name = "Tarot"
 include(":app")
 include(":data")
 include(":domain")
+include(":core")
