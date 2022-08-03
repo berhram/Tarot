@@ -81,9 +81,9 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                                 Modifier
                                     .fillMaxWidth()
                                     .padding(5.dp)
-                                    .clickable { viewModel.showCard(it.title) }) {
+                                    .clickable { viewModel.showCard(it.name) }) {
                                 Text(
-                                    text = it.title,
+                                    text = it.name,
                                     style = MaterialTheme.appTypography.title,
                                     textAlign = TextAlign.Start,
                                     color = MaterialTheme.colors.onSurface

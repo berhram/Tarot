@@ -1,4 +1,4 @@
-package com.velvet.data.local.room
+package com.velvet.data.cache.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

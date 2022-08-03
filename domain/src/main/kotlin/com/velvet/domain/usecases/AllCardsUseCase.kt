@@ -2,7 +2,7 @@ package com.velvet.domain.usecases
 
 import com.velvet.data.schemas.Card
 
-interface CardDetailsUseCase {
+interface AllCardsUseCase {
 
-    suspend fun cardById(id: String): Card
+    suspend fun cards(): List<Card>
 }

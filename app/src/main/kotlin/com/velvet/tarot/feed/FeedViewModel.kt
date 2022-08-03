@@ -2,7 +2,7 @@ package com.velvet.tarot.feed
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.velvet.domain.usecases.CardItemsUseCase
+import com.velvet.domain.usecases.CardsByKeywordUseCase
 import kotlinx.coroutines.*
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.ContainerHost
@@ -12,7 +12,7 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
 class FeedViewModel(
-    private val cardsByNameUseCase: CardItemsUseCase
+    private val cardsByNameUseCase: CardsByKeywordUseCase
 ) : ContainerHost<FeedScreenState, FeedEffect>, ViewModel() {
 
     override val container: Container<FeedScreenState, FeedEffect> = container(FeedScreenState())

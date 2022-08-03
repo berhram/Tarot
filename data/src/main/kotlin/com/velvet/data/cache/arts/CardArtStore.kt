@@ -1,4 +1,4 @@
-package com.velvet.data.local.arts
+package com.velvet.data.cache.arts
 
 import com.velvet.core.Read
 import com.velvet.data.schemas.CardArt
@@ -7,15 +7,13 @@ interface CardArtStore {
 
     fun art(name: String): CardArt
 
-    class Base(private val readArts: Read<List<CardArt.Base>>) : CardArtStore {
+    class Base(private val readArts: Read<List<CardArt>>) : CardArtStore {
 
         override fun art(name: String): CardArt {
             val art = readArts.read().find { it.name == name }
             if (art != null)
                 return art
-            return CardArt.Empty()
+            return CardArt()
         }
-
-
     }
 }

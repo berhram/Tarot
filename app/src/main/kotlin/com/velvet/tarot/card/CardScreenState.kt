@@ -1,6 +1,6 @@
 package com.velvet.tarot.card
 
-import com.velvet.domain.states.CardDetails
+import com.velvet.domain.models.CardDetails
 
 data class CardScreenState(
     val cardDetails: CardDetails = CardDetails(),
