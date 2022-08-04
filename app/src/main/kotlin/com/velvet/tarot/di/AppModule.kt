@@ -6,12 +6,12 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
+
     viewModel {
         FeedViewModel(get())
     }
 
     viewModel { (name: String) ->
-        CardViewModel(name, get())
+        CardViewModel(name, get(), get())
     }
 }
-

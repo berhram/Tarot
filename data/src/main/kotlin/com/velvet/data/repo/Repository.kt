@@ -30,8 +30,7 @@ interface Repository {
 
         override suspend fun cards(): List<Card> {
             val cloudCards = tarotCloudDataSource.cards()
-            if (cloudCards.isNotEmpty())
-                tarotCacheDataSource.save(cloudCards)
+            tarotCacheDataSource.save(cloudCards)
             return tarotCacheDataSource.cards()
         }
     }

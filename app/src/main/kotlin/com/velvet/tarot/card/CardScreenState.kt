@@ -1,9 +1,11 @@
 package com.velvet.tarot.card
 
-import com.velvet.domain.models.CardDetails
+import com.velvet.data.schemas.Card
 
 data class CardScreenState(
-    val cardDetails: CardDetails = CardDetails(),
+    val cardDetails: Card = Card(),
     val art: String = "",
-    val isLoading: Boolean = true
+    val isLoading: Boolean = true,
+    val isNoInternetConnection: Boolean = false,
+    val isServiceUnavailable: Boolean = false
 )

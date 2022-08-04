@@ -36,7 +36,7 @@ fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = state.cardDetails.nameShort,
+                    text = state.cardDetails.id,
                     style = MaterialTheme.typography.h1,
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colors.onBackground
@@ -79,7 +79,7 @@ fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
                     color = MaterialTheme.colors.onBackground
                 )
                 Text(
-                    text = stringResource(id = R.string.type) + " " + state.cardDetails.arcana,
+                    text = stringResource(id = R.string.type) + " " + state.cardDetails.type,
                     style = MaterialTheme.typography.body2,
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colors.onBackground

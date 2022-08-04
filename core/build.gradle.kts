@@ -33,5 +33,6 @@ dependencies {
     implementation(libs.coreKtx)
     implementation(libs.bundles.coroutines)
     implementation(libs.bundles.koin)
+    implementation(libs.bundles.orbit)
     testImplementation(libs.junit)
 }
