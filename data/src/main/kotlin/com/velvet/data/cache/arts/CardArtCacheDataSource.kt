@@ -8,6 +8,8 @@ interface CardArtCacheDataSource {
 
     fun art(name: String): CardArt
 
+    fun defaultArt(): CardArt
+
     class Base(private val readArts: Read<List<CardArt>>) : CardArtCacheDataSource {
 
         override fun art(name: String): CardArt {
@@ -15,6 +17,31 @@ interface CardArtCacheDataSource {
             if (art != null)
                 return art
             throw NoSuchArtException()
+        }
+
+        override fun defaultArt(): CardArt = CardArt("default", BLANK_ART)
+
+        companion object {
+            const val BLANK_ART = "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n"
         }
     }
 }

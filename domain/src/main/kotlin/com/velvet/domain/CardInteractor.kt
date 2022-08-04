@@ -4,12 +4,9 @@ import com.velvet.core.Mapper
 import com.velvet.data.repo.Repository
 import com.velvet.data.schemas.Card
 import com.velvet.data.schemas.CardArt
-import com.velvet.domain.usecases.AllCardsUseCase
-import com.velvet.domain.usecases.CardArtUseCase
-import com.velvet.domain.usecases.CardsByKeywordUseCase
-import com.velvet.domain.usecases.CardDetailsUseCase
+import com.velvet.domain.usecases.*
 
-interface CardInteractor : CardDetailsUseCase, CardsByKeywordUseCase, CardArtUseCase, AllCardsUseCase {
+interface CardInteractor : CardDetailsUseCase, CardsByKeywordUseCase, CardArtUseCase, AllCardsUseCase, DefaultArtUseCase {
 
     class Base(
         private val repository: Repository,
@@ -23,5 +20,7 @@ interface CardInteractor : CardDetailsUseCase, CardsByKeywordUseCase, CardArtUse
         override suspend fun cardById(id: String): Card = repository.card(id)
 
         override suspend fun art(id: String): String = fromCardArtToString.map(repository.art(id))
+
+        override suspend fun defaultArt(): String = fromCardArtToString.map(repository.defaultArt())
     }
 }

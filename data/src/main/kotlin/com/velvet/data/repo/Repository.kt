@@ -16,11 +16,15 @@ interface Repository {
 
     suspend fun cards(keyword: String): List<Card>
 
+    suspend fun defaultArt(): CardArt
+
     class Base(
         private val cardArtCacheDataSource: CardArtCacheDataSource,
         private val tarotCloudDataSource: TarotCloudDataSource,
         private val tarotCacheDataSource: TarotCacheDataSource
     ) : Repository {
+
+        override suspend fun defaultArt(): CardArt = cardArtCacheDataSource.defaultArt()
 
         override suspend fun art(id: String): CardArt = cardArtCacheDataSource.art(id)
 
