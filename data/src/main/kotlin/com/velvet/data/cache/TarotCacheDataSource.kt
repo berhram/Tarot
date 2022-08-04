@@ -1,6 +1,7 @@
 package com.velvet.data.cache
 
 import com.velvet.data.cache.room.CardDao
+import com.velvet.data.exception.NoSuchCardException
 import com.velvet.data.schemas.Card
 
 interface TarotCacheDataSource {
@@ -23,7 +24,7 @@ interface TarotCacheDataSource {
         override suspend fun card(id: String): Card {
             if (dao.cardExists(id))
                 return dao.findById(id)
-            return Card()
+            throw NoSuchCardException()
         }
     }
 }
