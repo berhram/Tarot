@@ -8,10 +8,10 @@ import org.koin.dsl.module
 val appModule = module {
 
     viewModel {
-        FeedViewModel(get())
+        FeedViewModel(get(), get())
     }
 
     viewModel { (name: String) ->
-        CardViewModel(name, get(), get())
+        CardViewModel(name, get(), get(), get())
     }
 }
