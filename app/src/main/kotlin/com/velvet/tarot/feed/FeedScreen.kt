@@ -1,6 +1,7 @@
 package com.velvet.tarot.feed
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,6 +13,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -50,6 +52,18 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colors.onBackground
                 )
+                IconButton(
+                    onClick = { viewModel.toggleSearch() },
+                    modifier = if (state.isSearchExpanded) Modifier.background(MaterialTheme.colors.error) else Modifier.background(
+                        MaterialTheme.colors.background
+                    )
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_q), contentDescription = stringResource(
+                            id = R.string.search
+                        ), tint = MaterialTheme.colors.onBackground
+                    )
+                }
             }
         }
     }, backgroundColor = MaterialTheme.colors.background) {

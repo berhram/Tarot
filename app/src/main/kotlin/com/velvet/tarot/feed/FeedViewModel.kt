@@ -44,6 +44,8 @@ class FeedViewModel(
 
     fun showCard(cardName: String) = intent { postSideEffect(FeedEffect.ShowCard(cardName = cardName)) }
 
+    fun toggleSearch() = intent { reduce { state.copy() } }
+
     fun searchCards(searchWord: String) = intent {
         searchJob?.cancel()
         searchJob = viewModelScope.launch(Dispatchers.IO) {

@@ -4,6 +4,7 @@ import com.velvet.core.ReactiveViewModel
 import com.velvet.core.exception.NoInternetConnectionException
 import com.velvet.core.exception.ServiceUnavailableException
 import com.velvet.data.exception.NoSuchArtException
+import com.velvet.data.exception.NoSuchCardException
 import com.velvet.domain.usecases.CardArtUseCase
 import com.velvet.domain.usecases.CardDetailsUseCase
 import com.velvet.domain.usecases.DefaultArtUseCase
@@ -50,6 +51,7 @@ class CardViewModel(
             is NoInternetConnectionException -> intent { reduce { state.copy(isNoInternetConnection = true) } }
             is ServiceUnavailableException -> intent { reduce { state.copy(isServiceUnavailable = true) } }
             is NoSuchArtException -> defaultArt()
+            is NoSuchCardException -> intent { reduce { state.copy(isNoSuchCard = true) } }
         }
     }
 }

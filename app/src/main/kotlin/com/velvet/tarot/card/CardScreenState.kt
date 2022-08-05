@@ -7,5 +7,6 @@ data class CardScreenState(
     val art: String = "",
     val isLoading: Boolean = true,
     val isNoInternetConnection: Boolean = false,
-    val isServiceUnavailable: Boolean = false
+    val isServiceUnavailable: Boolean = false,
+    val isNoSuchCard: Boolean = false
 )

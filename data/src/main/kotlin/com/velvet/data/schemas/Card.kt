@@ -8,15 +8,15 @@ import com.google.gson.annotations.SerializedName
 data class Card(
     @PrimaryKey
     @SerializedName("name_short")
-    val id: String,
+    val id: String = "",
     @SerializedName("name")
-    val name: String,
+    val name: String = "",
     @SerializedName("type")
-    val type: String,
+    val type: String = "",
     @SerializedName("meaning_up")
-    val meaningUp: String,
+    val meaningUp: String = "",
     @SerializedName("meaning_rev")
-    val meaningRev: String,
+    val meaningRev: String = "",
     @SerializedName("desc")
-    val description: String
+    val description: String = ""
 )

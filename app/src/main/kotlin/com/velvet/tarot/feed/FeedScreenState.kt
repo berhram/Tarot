@@ -7,5 +7,6 @@ data class FeedScreenState(
     val isLoading: Boolean = true,
     val isNoInternetConnection: Boolean = false,
     val isServiceUnavailable: Boolean = false,
-    val searchText: String = ""
+    val searchText: String = "",
+    val isSearchExpanded: Boolean = false
 )
