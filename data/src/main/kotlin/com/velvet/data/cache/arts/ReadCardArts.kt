@@ -7,8 +7,7 @@ import com.velvet.core.Read
 import com.velvet.data.schemas.CardArt
 import java.lang.reflect.Type
 
-//TODO handle error
-
+//TODO filename
 class ReadCardArts(private val gson: Gson, private val manageResources: ManageResources) : Read<List<CardArt>> {
 
     private val typeList: Type = object : TypeToken<List<CardArt>>() {}.type

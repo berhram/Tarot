@@ -8,6 +8,7 @@ import com.velvet.core.exception.HandleError
 import com.velvet.data.cache.TarotCacheDataSource
 import com.velvet.data.cache.arts.CardArtCacheDataSource
 import com.velvet.data.cache.arts.ReadCardArts
+import com.velvet.data.cache.arts.ReadDefaultArt
 import com.velvet.data.cache.room.CardDatabase
 import com.velvet.data.cloud.TarotCloudDataSource
 import com.velvet.data.cloud.TarotService
@@ -40,7 +41,7 @@ val dataModule = module {
     }
 
     factory<CardArtCacheDataSource> {
-        CardArtCacheDataSource.Base(get())
+        CardArtCacheDataSource.Base(get(), get())
     }
 
     factory<TarotCloudDataSource> {
@@ -57,6 +58,10 @@ val dataModule = module {
 
     factory<Read<List<CardArt>>> {
         ReadCardArts(get(), get())
+    }
+
+    factory<Read<CardArt>> {
+        ReadDefaultArt()
     }
 
     factory<GsonConverterFactory> {
