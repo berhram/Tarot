@@ -6,19 +6,19 @@ import com.velvet.data.schemas.CardArt
 
 interface CardArtCacheDataSource {
 
-    fun art(name: String): CardArt
+    suspend fun art(name: String): CardArt
 
-    fun defaultArt(): CardArt
+    suspend fun defaultArt(): CardArt
 
     class Base(private val arts: Read<List<CardArt>>, private val defaultArt: Read<CardArt>) : CardArtCacheDataSource {
 
-        override fun art(name: String): CardArt {
+        override suspend fun art(name: String): CardArt {
             val art = arts.read().find { it.name == name }
             if (art != null)
                 return art
             throw NoSuchArtException()
         }
 
-        override fun defaultArt(): CardArt = defaultArt.read()
+        override suspend fun defaultArt(): CardArt = defaultArt.read()
     }
 }

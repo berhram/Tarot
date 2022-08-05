@@ -7,10 +7,10 @@ import retrofit2.http.Query
 interface TarotService {
 
     @GET("search")
-    fun searchByKeyword(
+    suspend fun searchByKeyword(
         @Query("q") keyword: String
     ): RemoteCards
 
     @GET
-    fun allCards(): RemoteCards
+    suspend fun allCards(): RemoteCards
 }

@@ -46,9 +46,9 @@ internal class TarotCloudDataSourceTest {
 
     private class TestService(private val foundCards: List<Card>, private val allCards: List<Card>) : TarotService {
 
-        override fun searchByKeyword(keyword: String): RemoteCards =
+        override suspend fun searchByKeyword(keyword: String): RemoteCards =
             RemoteCards(if (keyword == "someKeyword") foundCards else emptyList())
 
-        override fun allCards(): RemoteCards = RemoteCards(allCards)
+        override suspend fun allCards(): RemoteCards = RemoteCards(allCards)
     }
 }

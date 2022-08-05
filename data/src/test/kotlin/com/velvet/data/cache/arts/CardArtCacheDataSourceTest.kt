@@ -1,14 +1,16 @@
 package com.velvet.data.cache.arts
 
 import com.velvet.core.Read
+import com.velvet.data.exception.NoSuchArtException
 import com.velvet.data.schemas.CardArt
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test
 
 internal class CardArtCacheDataSourceTest {
 
     @Test
-    fun `success art by id`() {
+    fun `success art by id`() = runBlocking {
         val cardArtCacheDataSource = CardArtCacheDataSource.Base(TestCards(), TestDefaultArt())
         Assert.assertEquals("someArt", cardArtCacheDataSource.art("someId"))
     }
@@ -16,11 +18,11 @@ internal class CardArtCacheDataSourceTest {
     @Test
     fun `failed art by id`() {
         val cardArtCacheDataSource = CardArtCacheDataSource.Base(TestCards(), TestDefaultArt())
-        Assert.assertEquals("defaultArt", cardArtCacheDataSource.art("abrakadabra"))
+        Assert.assertThrows(NoSuchArtException::class.java) { runBlocking { cardArtCacheDataSource.art("abrakadabra") } }
     }
 
     @Test
-    fun `success default art`() {
+    fun `success default art`() = runBlocking {
         val cardArtCacheDataSource = CardArtCacheDataSource.Base(TestCards(), TestDefaultArt())
         Assert.assertEquals("defaultArt", cardArtCacheDataSource.defaultArt())
     }
