@@ -34,7 +34,7 @@ class CardViewModel(
     fun refresh() = intent {
         reduce { state.copy(isLoading = true, isNoInternetConnection = false, isServiceUnavailable = false) }
         intercept { cardDetailsUseCase.cardById(cardId) }.map { details -> reduce { state.copy(cardDetails = details) } }
-        intercept { cardArtUseCase.art(cardId) }.map { art -> reduce { state.copy(art = art) } }
+        intercept { cardArtUseCase.art(state.cardDetails.name) }.map { art -> reduce { state.copy(art = art) } }
         reduce { state.copy(isLoading = false) }
     }
 
@@ -48,10 +48,24 @@ class CardViewModel(
 
     override suspend fun interceptError(error: Exception) {
         when (error) {
-            is NoInternetConnectionException -> intent { reduce { state.copy(isNoInternetConnection = true) } }
-            is ServiceUnavailableException -> intent { reduce { state.copy(isServiceUnavailable = true) } }
+            is NoInternetConnectionException -> intent {
+                reduce {
+                    state.copy(
+                        isNoInternetConnection = true,
+                        isLoading = false
+                    )
+                }
+            }
+            is ServiceUnavailableException -> intent {
+                reduce {
+                    state.copy(
+                        isServiceUnavailable = true,
+                        isLoading = false
+                    )
+                }
+            }
             is NoSuchArtException -> defaultArt()
-            is NoSuchCardException -> intent { reduce { state.copy(isNoSuchCard = true) } }
+            is NoSuchCardException -> intent { reduce { state.copy(isNoSuchCard = true, isLoading = false) } }
         }
     }
 }

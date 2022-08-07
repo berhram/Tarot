@@ -13,9 +13,3 @@ data class Dimensions(
     val large: Dp = 40.dp
 )
 
-val LocalDimensions = staticCompositionLocalOf { Dimensions() }
-
-val MaterialTheme.dimensions: Dimensions
-    @Composable
-    @ReadOnlyComposable
-    get() = LocalDimensions.current

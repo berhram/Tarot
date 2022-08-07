@@ -19,7 +19,7 @@ interface CardInteractor : CardDetailsUseCase, CardsByKeywordUseCase, CardArtUse
 
         override suspend fun cardById(id: String): Card = repository.card(id)
 
-        override suspend fun art(id: String): String = fromCardArtToString.map(repository.art(id))
+        override suspend fun art(name: String): String = fromCardArtToString.map(repository.art(name))
 
         override suspend fun defaultArt(): String = fromCardArtToString.map(repository.defaultArt())
     }

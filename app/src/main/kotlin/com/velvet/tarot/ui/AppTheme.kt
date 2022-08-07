@@ -6,6 +6,8 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 @Composable
@@ -48,3 +50,17 @@ fun AppTheme(content: @Composable () -> Unit) {
         )
     }
 }
+
+val LocalDimensions = staticCompositionLocalOf { Dimensions() }
+
+val MaterialTheme.dimensions: Dimensions
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalDimensions.current
+
+val LocalTypography = staticCompositionLocalOf { AppTypography() }
+
+val MaterialTheme.appTypography: AppTypography
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalTypography.current

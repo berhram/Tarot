@@ -1,6 +1,5 @@
 package com.velvet.data.cache.arts
 
-import com.velvet.core.Read
 import com.velvet.data.exception.NoSuchArtException
 import com.velvet.data.schemas.CardArt
 import kotlinx.coroutines.runBlocking
@@ -27,12 +26,12 @@ internal class CardArtCacheDataSourceTest {
         Assert.assertEquals("defaultArt", cardArtCacheDataSource.defaultArt())
     }
 
-    private class TestCards : Read<List<CardArt>> {
+    private class TestCards : ReadCardArts {
 
         override fun read(): List<CardArt> = listOf(CardArt("someId", "someArt"))
     }
 
-    private class TestDefaultArt : Read<CardArt> {
+    private class TestDefaultArt : ReadDefaultArt {
 
         override fun read(): CardArt = CardArt("default", "defaultArt")
     }

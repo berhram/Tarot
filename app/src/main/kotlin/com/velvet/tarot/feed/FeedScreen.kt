@@ -1,5 +1,6 @@
 package com.velvet.tarot.feed
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -21,6 +23,7 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.velvet.tarot.R
 import com.velvet.tarot.ui.appTypography
+import com.velvet.tarot.ui.dimensions
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -48,7 +51,7 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
             ) {
                 Text(
                     text = stringResource(id = R.string.tarot_dir),
-                    style = MaterialTheme.typography.h1,
+                    style = MaterialTheme.appTypography.title,
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colors.onBackground
                 )
@@ -67,41 +70,75 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
             }
         }
     }, backgroundColor = MaterialTheme.colors.background) {
-        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-            SwipeRefresh(
-                state = rememberSwipeRefreshState(isRefreshing = state.isLoading),
-                onRefresh = { viewModel.searchCards("") },
-                modifier = Modifier.fillMaxSize()
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(isRefreshing = state.isLoading),
+            onRefresh = {
+                Log.d("REF", "SwipeRefresh")
+                viewModel.refresh()
+            },
+            modifier = Modifier.fillMaxSize().padding(horizontal = MaterialTheme.dimensions.medium)
+        ) {
+            Column(
+                Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                LazyColumn {
-                    if (state.cards.isEmpty()) {
-                        items(items = listOf(System.currentTimeMillis()), key = { it }) {
-                            Column(
-                                modifier = Modifier
-                                    .fillParentMaxHeight()
-                                    .fillMaxWidth(),
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
-                            ) {
-                                Text(
-                                    textAlign = TextAlign.Center,
-                                    text = stringResource(id = R.string.no_cards)
-                                )
+                if (state.isLoading || state.isServiceUnavailable || state.isNoInternetConnection) {
+                    if (state.isLoading) {
+                        Text(
+                            text = stringResource(id = R.string.loading),
+                            style = MaterialTheme.appTypography.bodyBold,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colors.onBackground
+                        )
+                    }
+                    if (state.isServiceUnavailable) {
+                        Text(
+                            text = stringResource(id = R.string.service_unavailable),
+                            style = MaterialTheme.appTypography.bodyBold,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colors.onBackground
+                        )
+                    }
+                    if (state.isNoInternetConnection) {
+                        Text(
+                            text = stringResource(id = R.string.no_internet_connection),
+                            style = MaterialTheme.appTypography.bodyBold,
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colors.onBackground
+                        )
+                    }
+                } else {
+                    LazyColumn {
+                        if (state.cards.isEmpty() && !state.isLoading) {
+                            item {
+                                Column(
+                                    modifier = Modifier
+                                        .fillParentMaxHeight()
+                                        .fillMaxWidth(),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center
+                                ) {
+                                    Text(
+                                        textAlign = TextAlign.Center,
+                                        text = stringResource(id = R.string.no_cards)
+                                    )
+                                }
                             }
-                        }
-                    } else {
-                        items(state.cards) {
-                            Row(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(5.dp)
-                                    .clickable { viewModel.showCard(it.name) }) {
-                                Text(
-                                    text = it.name,
-                                    style = MaterialTheme.appTypography.title,
-                                    textAlign = TextAlign.Start,
-                                    color = MaterialTheme.colors.onSurface
-                                )
+                        } else {
+                            items(state.cards) {
+                                Row(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(5.dp)
+                                        .clickable { viewModel.showCard(it.id) }) {
+                                    Text(
+                                        text = it.name,
+                                        style = MaterialTheme.appTypography.title,
+                                        textAlign = TextAlign.Start,
+                                        color = MaterialTheme.colors.onSurface
+                                    )
+                                }
                             }
                         }
                     }

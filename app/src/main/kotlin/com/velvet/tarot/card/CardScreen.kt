@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -14,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.velvet.tarot.R
+import com.velvet.tarot.ui.appTypography
+import com.velvet.tarot.ui.dimensions
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -38,8 +41,8 @@ fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = state.cardDetails.id,
-                    style = MaterialTheme.typography.h1,
+                    text = "~/tarot/" + state.cardDetails.id + ".card",
+                    style = MaterialTheme.appTypography.title,
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colors.onBackground
                 )
@@ -54,19 +57,22 @@ fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
         }
     }, backgroundColor = MaterialTheme.colors.background) {
         if (state.isLoading || state.isServiceUnavailable || state.isNoSuchCard || state.isNoInternetConnection) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+            SwipeRefresh(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = MaterialTheme.dimensions.medium),
+                state = rememberSwipeRefreshState(isRefreshing = state.isLoading),
+                onRefresh = { viewModel.refresh() }
             ) {
-                SwipeRefresh(
+                Column(
                     modifier = Modifier.fillMaxSize(),
-                    state = rememberSwipeRefreshState(isRefreshing = state.isLoading),
-                    onRefresh = { viewModel.refresh() }) {
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
                     if (state.isLoading) {
                         Text(
                             text = stringResource(id = R.string.loading),
-                            style = MaterialTheme.typography.h1,
+                            style = MaterialTheme.appTypography.bodyBold,
                             textAlign = TextAlign.Center,
                             color = MaterialTheme.colors.onBackground
                         )
@@ -74,7 +80,7 @@ fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
                     if (state.isServiceUnavailable) {
                         Text(
                             text = stringResource(id = R.string.service_unavailable),
-                            style = MaterialTheme.typography.h1,
+                            style = MaterialTheme.appTypography.bodyBold,
                             textAlign = TextAlign.Center,
                             color = MaterialTheme.colors.onBackground
                         )
@@ -82,7 +88,7 @@ fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
                     if (state.isNoSuchCard) {
                         Text(
                             text = stringResource(id = R.string.no_such_card),
-                            style = MaterialTheme.typography.h1,
+                            style = MaterialTheme.appTypography.bodyBold,
                             textAlign = TextAlign.Center,
                             color = MaterialTheme.colors.onBackground
                         )
@@ -90,7 +96,7 @@ fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
                     if (state.isNoInternetConnection) {
                         Text(
                             text = stringResource(id = R.string.no_internet_connection),
-                            style = MaterialTheme.typography.h1,
+                            style = MaterialTheme.appTypography.bodyBold,
                             textAlign = TextAlign.Center,
                             color = MaterialTheme.colors.onBackground
                         )
@@ -98,50 +104,67 @@ fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
                 }
             }
         } else {
-            Column(
-                Modifier
+            SwipeRefresh(
+                modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.Start
+                    .padding(horizontal = MaterialTheme.dimensions.medium),
+                state = rememberSwipeRefreshState(isRefreshing = state.isLoading),
+                onRefresh = { viewModel.refresh() }
             ) {
-                SwipeRefresh(
-                    modifier = Modifier.fillMaxSize(),
-                    state = rememberSwipeRefreshState(isRefreshing = state.isLoading),
-                    onRefresh = { viewModel.refresh() }) {
+                Column(
+                    Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    val fontStyle = MaterialTheme.appTypography.title
+                    var textStyle by remember { mutableStateOf(fontStyle) }
+                    var readyToDraw by remember { mutableStateOf(false) }
                     Text(
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        modifier = Modifier.align(Alignment.CenterHorizontally).drawWithContent {
+                            if (readyToDraw) drawContent()
+                        },
                         text = state.art,
-                        style = MaterialTheme.typography.body2,
+                        maxLines = 20,
+                        softWrap = false,
+                        style = textStyle,
                         textAlign = TextAlign.Center,
+                        onTextLayout = { textLayoutResult ->
+                            if (textLayoutResult.didOverflowWidth) {
+                                textStyle = textStyle.copy(fontSize = textStyle.fontSize * 0.9)
+                            } else {
+                                readyToDraw = true
+                            }
+                        },
                         color = MaterialTheme.colors.onBackground
                     )
                     Text(
                         text = stringResource(id = R.string.type) + " " + state.cardDetails.type,
-                        style = MaterialTheme.typography.body2,
+                        style = MaterialTheme.appTypography.body,
                         textAlign = TextAlign.Start,
                         color = MaterialTheme.colors.onBackground
                     )
                     Text(
                         text = stringResource(id = R.string.name) + " " + state.cardDetails.name,
-                        style = MaterialTheme.typography.body2,
+                        style = MaterialTheme.appTypography.body,
                         textAlign = TextAlign.Start,
                         color = MaterialTheme.colors.onBackground
                     )
                     Text(
                         text = stringResource(id = R.string.meaning_up) + " " + state.cardDetails.meaningUp,
-                        style = MaterialTheme.typography.body2,
+                        style = MaterialTheme.appTypography.body,
                         textAlign = TextAlign.Start,
                         color = MaterialTheme.colors.onBackground
                     )
                     Text(
                         text = stringResource(id = R.string.meaning_rev) + " " + state.cardDetails.meaningRev,
-                        style = MaterialTheme.typography.body2,
+                        style = MaterialTheme.appTypography.body,
                         textAlign = TextAlign.Start,
                         color = MaterialTheme.colors.onBackground
                     )
                     Text(
                         text = stringResource(id = R.string.desc) + " " + state.cardDetails.description,
-                        style = MaterialTheme.typography.body2,
+                        style = MaterialTheme.appTypography.body,
                         textAlign = TextAlign.Start,
                         color = MaterialTheme.colors.onBackground
                     )

@@ -15,7 +15,6 @@ import com.velvet.tarot.ui.AppTheme
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
 
-
 @Composable
 fun AppScreen() {
     AppTheme {

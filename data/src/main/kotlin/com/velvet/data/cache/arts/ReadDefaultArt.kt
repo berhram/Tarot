@@ -3,31 +3,34 @@ package com.velvet.data.cache.arts
 import com.velvet.core.Read
 import com.velvet.data.schemas.CardArt
 
-class ReadDefaultArt : Read<CardArt> {
+interface ReadDefaultArt : Read<CardArt> {
 
-    override fun read(): CardArt = CardArt("default", BLANK_ART)
+    class Base : ReadDefaultArt {
 
-    companion object {
+        override fun read(): CardArt = CardArt("default", BLANK_ART)
 
-        const val BLANK_ART = "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n" +
-                "XXXXXXXXXXXXXXXXXXXXX\n"
+        companion object {
+
+            const val BLANK_ART = "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n" +
+                    "XXXXXXXXXXXXXXXXXXXXX\n"
+        }
     }
 }

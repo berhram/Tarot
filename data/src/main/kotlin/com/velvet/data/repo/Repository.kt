@@ -8,7 +8,7 @@ import com.velvet.data.schemas.CardArt
 
 interface Repository {
 
-    suspend fun art(id: String): CardArt
+    suspend fun art(name: String): CardArt
 
     suspend fun card(id: String): Card
 

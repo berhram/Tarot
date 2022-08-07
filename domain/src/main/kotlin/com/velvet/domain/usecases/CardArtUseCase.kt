@@ -2,5 +2,5 @@ package com.velvet.domain.usecases
 
 interface CardArtUseCase {
 
-    suspend fun art(id: String): String
+    suspend fun art(name: String): String
 }

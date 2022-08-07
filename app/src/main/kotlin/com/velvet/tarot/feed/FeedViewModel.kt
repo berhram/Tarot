@@ -30,7 +30,7 @@ class FeedViewModel(
     }
 
     fun refresh() = intent {
-        reduce { state.copy(isLoading = true) }
+        reduce { state.copy(isLoading = true, isServiceUnavailable = false, isNoInternetConnection = false) }
         intercept { allCardsUseCase.cards() }.map { cards ->
             reduce {
                 state.copy(
@@ -58,8 +58,22 @@ class FeedViewModel(
 
     override suspend fun interceptError(error: Exception) {
         when (error) {
-            is NoInternetConnectionException -> intent { reduce { state.copy(isNoInternetConnection = true) } }
-            is ServiceUnavailableException -> intent { reduce { state.copy(isServiceUnavailable = true) } }
+            is NoInternetConnectionException -> intent {
+                reduce {
+                    state.copy(
+                        isNoInternetConnection = true,
+                        isLoading = false
+                    )
+                }
+            }
+            is ServiceUnavailableException -> intent {
+                reduce {
+                    state.copy(
+                        isServiceUnavailable = true,
+                        isLoading = false
+                    )
+                }
+            }
         }
     }
 }
