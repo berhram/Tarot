@@ -7,7 +7,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -15,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.velvet.tarot.R
+import com.velvet.tarot.ui.AutoSizeText
 import com.velvet.tarot.ui.appTypography
 import com.velvet.tarot.ui.dimensions
 import kotlinx.coroutines.flow.collectLatest
@@ -40,8 +40,9 @@ fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
+                AutoSizeText(
                     text = "~/tarot/" + state.cardDetails.id + ".card",
+                    lines = 1,
                     style = MaterialTheme.appTypography.title,
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colors.onBackground
@@ -117,25 +118,12 @@ fun CardScreen(viewModel: CardViewModel, onBack: () -> Unit) {
                         .verticalScroll(rememberScrollState()),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    val fontStyle = MaterialTheme.appTypography.title
-                    var textStyle by remember { mutableStateOf(fontStyle) }
-                    var readyToDraw by remember { mutableStateOf(false) }
-                    Text(
-                        modifier = Modifier.align(Alignment.CenterHorizontally).drawWithContent {
-                            if (readyToDraw) drawContent()
-                        },
-                        text = state.art,
-                        maxLines = 20,
-                        softWrap = false,
-                        style = textStyle,
+                    AutoSizeText(
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        text = state.cardDetails.art,
+                        lines = 20,
+                        style = MaterialTheme.appTypography.title,
                         textAlign = TextAlign.Center,
-                        onTextLayout = { textLayoutResult ->
-                            if (textLayoutResult.didOverflowWidth) {
-                                textStyle = textStyle.copy(fontSize = textStyle.fontSize * 0.9)
-                            } else {
-                                readyToDraw = true
-                            }
-                        },
                         color = MaterialTheme.colors.onBackground
                     )
                     Text(

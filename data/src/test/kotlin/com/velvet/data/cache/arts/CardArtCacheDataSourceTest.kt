@@ -1,6 +1,5 @@
 package com.velvet.data.cache.arts
 
-import com.velvet.data.exception.NoSuchArtException
 import com.velvet.data.schemas.CardArt
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert

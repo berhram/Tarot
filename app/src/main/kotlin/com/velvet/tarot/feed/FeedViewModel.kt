@@ -4,8 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.velvet.core.ReactiveViewModel
 import com.velvet.core.exception.NoInternetConnectionException
 import com.velvet.core.exception.ServiceUnavailableException
-import com.velvet.domain.usecases.AllCardsUseCase
 import com.velvet.domain.usecases.CardsByKeywordUseCase
+import com.velvet.domain.usecases.CardsUseCase
 import kotlinx.coroutines.*
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.syntax.simple.intent
@@ -14,8 +14,8 @@ import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
 class FeedViewModel(
-    private val cardsByNameUseCase: CardsByKeywordUseCase,
-    private val allCardsUseCase: AllCardsUseCase
+    private val cardsUseCase: CardsUseCase,
+    private val cardsByKeywordUseCase: CardsByKeywordUseCase
 ) : ReactiveViewModel<FeedScreenState, FeedEffect>() {
 
     private var searchJob: Job? = null
@@ -31,16 +31,17 @@ class FeedViewModel(
 
     fun refresh() = intent {
         reduce { state.copy(isLoading = true, isServiceUnavailable = false, isNoInternetConnection = false) }
-        intercept { allCardsUseCase.cards() }.map { cards ->
+        intercept { cardsUseCase.cards() }.map { cards ->
             reduce {
                 state.copy(
-                    cards = cards,
+                    cards = cards.map { CardFeed.fromCardDomain(it) },
                     isLoading = false,
                     searchText = ""
                 )
             }
         }
     }
+
 
     fun showCard(cardName: String) = intent { postSideEffect(FeedEffect.ShowCard(cardName = cardName)) }
 
@@ -50,8 +51,8 @@ class FeedViewModel(
         searchJob?.cancel()
         searchJob = viewModelScope.launch(Dispatchers.IO) {
             reduce { state.copy(isLoading = true, searchText = searchWord) }
-            intercept { cardsByNameUseCase.cards(searchWord) }.map { cards ->
-                reduce { state.copy(isLoading = false, cards = cards) }
+            intercept { cardsByKeywordUseCase.cards(searchWord) }.map { cards ->
+                reduce { state.copy(isLoading = false, cards = cards.map { CardFeed.fromCardDomain(it) }) }
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.velvet.data.cache.arts
 
-import com.velvet.data.exception.NoSuchArtException
 import com.velvet.data.schemas.CardArt
 
 interface CardArtCacheDataSource {
@@ -15,7 +14,7 @@ interface CardArtCacheDataSource {
             val art = arts.read().find { it.name == name }
             if (art != null)
                 return art
-            throw NoSuchArtException()
+            return CardArt()
         }
 
         override suspend fun defaultArt(): CardArt = defaultArt.read()

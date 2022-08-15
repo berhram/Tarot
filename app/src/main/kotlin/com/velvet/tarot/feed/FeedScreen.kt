@@ -1,27 +1,28 @@
 package com.velvet.tarot.feed
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.velvet.tarot.R
+import com.velvet.tarot.ui.AutoSizeText
 import com.velvet.tarot.ui.appTypography
 import com.velvet.tarot.ui.dimensions
 import kotlinx.coroutines.flow.collectLatest
@@ -55,31 +56,26 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colors.onBackground
                 )
-                IconButton(
-                    onClick = { viewModel.toggleSearch() },
-                    modifier = if (state.isSearchExpanded) Modifier.background(MaterialTheme.colors.error) else Modifier.background(
-                        MaterialTheme.colors.background
-                    )
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_q), contentDescription = stringResource(
-                            id = R.string.search
-                        ), tint = MaterialTheme.colors.onBackground
-                    )
-                }
+                Text(
+                    text = ":F",
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .background(if (state.isSearchExpanded) MaterialTheme.colors.onBackground else MaterialTheme.colors.background)
+                        .clickable { viewModel.toggleSearch() },
+                    style = MaterialTheme.appTypography.title,
+                    color = MaterialTheme.colors.onBackground
+                )
             }
         }
     }, backgroundColor = MaterialTheme.colors.background) {
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = state.isLoading),
-            onRefresh = {
-                Log.d("REF", "SwipeRefresh")
-                viewModel.refresh()
-            },
-            modifier = Modifier.fillMaxSize().padding(horizontal = MaterialTheme.dimensions.medium)
+            onRefresh = viewModel::refresh,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = MaterialTheme.dimensions.medium)
         ) {
             Column(
-                Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -87,7 +83,7 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                     if (state.isLoading) {
                         Text(
                             text = stringResource(id = R.string.loading),
-                            style = MaterialTheme.appTypography.bodyBold,
+                            style = MaterialTheme.appTypography.body,
                             textAlign = TextAlign.Center,
                             color = MaterialTheme.colors.onBackground
                         )
@@ -95,7 +91,7 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                     if (state.isServiceUnavailable) {
                         Text(
                             text = stringResource(id = R.string.service_unavailable),
-                            style = MaterialTheme.appTypography.bodyBold,
+                            style = MaterialTheme.appTypography.body,
                             textAlign = TextAlign.Center,
                             color = MaterialTheme.colors.onBackground
                         )
@@ -103,45 +99,50 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                     if (state.isNoInternetConnection) {
                         Text(
                             text = stringResource(id = R.string.no_internet_connection),
-                            style = MaterialTheme.appTypography.bodyBold,
+                            style = MaterialTheme.appTypography.body,
                             textAlign = TextAlign.Center,
                             color = MaterialTheme.colors.onBackground
                         )
                     }
                 } else {
-                    LazyColumn {
-                        if (state.cards.isEmpty() && !state.isLoading) {
-                            item {
-                                Column(
-                                    modifier = Modifier
-                                        .fillParentMaxHeight()
-                                        .fillMaxWidth(),
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.Center
-                                ) {
-                                    Text(
-                                        textAlign = TextAlign.Center,
-                                        text = stringResource(id = R.string.no_cards)
-                                    )
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(MaterialTheme.dimensions.medium),
+                        content = {
+                            if (state.cards.isEmpty() && !state.isLoading) {
+                                item {
+                                    Column(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center
+                                    ) {
+                                        Text(
+                                            textAlign = TextAlign.Center,
+                                            text = stringResource(id = R.string.no_cards)
+                                        )
+                                    }
                                 }
-                            }
-                        } else {
-                            items(state.cards) {
-                                Row(
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .padding(5.dp)
-                                        .clickable { viewModel.showCard(it.id) }) {
-                                    Text(
-                                        text = it.name,
-                                        style = MaterialTheme.appTypography.title,
-                                        textAlign = TextAlign.Start,
-                                        color = MaterialTheme.colors.onSurface
-                                    )
+                            } else {
+                                items(state.cards) {
+                                    Column(
+                                        Modifier
+                                            .padding(5.dp)
+                                            .clickable { viewModel.showCard(it.id) },
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        AutoSizeText(text = it.art, lines = 20)
+                                        AutoSizeText(
+                                            text = it.name,
+                                            lines = 1,
+                                            style = MaterialTheme.appTypography.title,
+                                            textAlign = TextAlign.Start,
+                                            color = MaterialTheme.colors.onSurface
+                                        )
+                                    }
                                 }
                             }
                         }
-                    }
+                    )
                 }
             }
         }

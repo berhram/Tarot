@@ -1,8 +1,8 @@
 package com.velvet.domain.usecases
 
-import com.velvet.data.schemas.Card
+import com.velvet.domain.CardDomain
 
 interface CardDetailsUseCase {
 
-    suspend fun cardById(id: String): Card
+    suspend fun cardById(id: String): CardDomain
 }
