@@ -12,6 +12,6 @@ val appModule = module {
     }
 
     viewModel { (name: String) ->
-        CardViewModel(name, get(), get(), get())
+        CardViewModel(name, get())
     }
 }

@@ -18,11 +18,9 @@ val domainModule = module {
         CardInteractor.Base(get(), get())
     }.binds(
         arrayOf(
-            CardArtUseCase::class,
+            CardsByKeywordUseCase::class,
             CardDetailsUseCase::class,
-            CardsUseCase::class,
-            AllCardsUseCase::class,
-            DefaultArtUseCase::class
+            CardsUseCase::class
         )
     )
 }

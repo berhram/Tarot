@@ -107,7 +107,6 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                 } else {
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
-                        contentPadding = PaddingValues(MaterialTheme.dimensions.medium),
                         content = {
                             if (state.cards.isEmpty() && !state.isLoading) {
                                 item {
@@ -126,16 +125,21 @@ fun FeedScreen(viewModel: FeedViewModel, onShowCard: (cardName: String) -> Unit)
                                 items(state.cards) {
                                     Column(
                                         Modifier
-                                            .padding(5.dp)
+                                            .padding(MaterialTheme.dimensions.medium)
                                             .clickable { viewModel.showCard(it.id) },
-                                        horizontalAlignment = Alignment.CenterHorizontally
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center
                                     ) {
-                                        AutoSizeText(text = it.art, lines = 20)
-                                        AutoSizeText(
+                                        Text(
+                                            text = it.art,
+                                            style = MaterialTheme.appTypography.caption,
+                                            color = MaterialTheme.colors.onBackground
+                                        )
+                                        Spacer(modifier = Modifier.size(MaterialTheme.dimensions.small))
+                                        Text(
                                             text = it.name,
-                                            lines = 1,
-                                            style = MaterialTheme.appTypography.title,
-                                            textAlign = TextAlign.Start,
+                                            style = MaterialTheme.appTypography.body,
+                                            textAlign = TextAlign.Center,
                                             color = MaterialTheme.colors.onSurface
                                         )
                                     }

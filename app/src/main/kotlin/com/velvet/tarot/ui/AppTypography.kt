@@ -8,8 +8,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.velvet.tarot.R
 
-
-
 @Immutable
 data class AppTypography(
     val title: TextStyle = TextStyle(
