@@ -8,6 +8,8 @@ import com.velvet.data.schemas.CardArt
 
 interface Repository {
 
+    suspend fun cachedCards(): List<Card>
+
     suspend fun art(name: String): CardArt
 
     suspend fun card(id: String): Card
@@ -23,6 +25,8 @@ interface Repository {
         private val tarotCloudDataSource: TarotCloudDataSource,
         private val tarotCacheDataSource: TarotCacheDataSource
     ) : Repository {
+
+        override suspend fun cachedCards(): List<Card> = tarotCacheDataSource.cards()
 
         override suspend fun defaultArt(): CardArt = cardArtCacheDataSource.defaultArt()
 

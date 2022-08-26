@@ -16,7 +16,7 @@
     <string name="minor">Minor</string>
     <string name="loading">Loading…</string>
     <string name="error_refresh">Can\'t refresh! Check your connection!</string>
-    <string name="no_internet_connection">There is no internet connection\nSwipe to refresh</string>
+    <string name="no_internet_connection">There is no internet connection\nClick to refresh</string>
     <string name="service_unavailable">Looks like service is not available</string>
     <string name="no_such_card">There is no card with this id</string>
 </resources>

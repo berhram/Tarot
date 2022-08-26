@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.velvet.core.ReactiveViewModel
 import com.velvet.core.exception.NoInternetConnectionException
 import com.velvet.core.exception.ServiceUnavailableException
+import com.velvet.domain.usecases.CachedCardsUseCase
 import com.velvet.domain.usecases.CardsByKeywordUseCase
 import com.velvet.domain.usecases.CardsUseCase
 import kotlinx.coroutines.*
@@ -15,6 +16,7 @@ import org.orbitmvi.orbit.viewmodel.container
 
 class FeedViewModel(
     private val cardsUseCase: CardsUseCase,
+    private val cachedCardsUseCase: CachedCardsUseCase,
     private val cardsByKeywordUseCase: CardsByKeywordUseCase
 ) : ReactiveViewModel<FeedScreenState, FeedEffect>() {
 
@@ -25,6 +27,18 @@ class FeedViewModel(
 
     init {
         refresh()
+    }
+
+    private fun cachedCards() = intent {
+        intercept { cachedCardsUseCase.cachedCards() }.map { cards ->
+            reduce {
+                state.copy(
+                    cards = CardFeedList(cards.map { CardFeed.fromCardDomain(it) }),
+                    isLoading = false,
+                    searchText = ""
+                )
+            }
+        }
     }
 
     fun refresh() = intent {
@@ -48,14 +62,13 @@ class FeedViewModel(
 
     fun toggleSearch() = intent {
         if (state.isSearchExpanded)
-            refresh()
+            cachedCards()
         reduce { state.copy(searchText = "", isSearchExpanded = !state.isSearchExpanded) }
     }
 
     fun searchCards(searchWord: String) = intent {
         reduce { state.copy(searchText = searchWord) }
         viewModelScope.launch(Dispatchers.IO) {
-            delay(1000)
             reduce { state.copy(isLoading = true) }
             intercept { cardsByKeywordUseCase.cards(searchWord.trim()) }.map { cards ->
                 reduce {

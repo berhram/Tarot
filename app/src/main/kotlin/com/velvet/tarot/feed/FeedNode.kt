@@ -22,8 +22,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.velvet.tarot.R
 import com.velvet.tarot.ui.appTypography
 import com.velvet.tarot.ui.dimensions
@@ -84,112 +82,114 @@ class FeedNode(
                 }
             }
         }, backgroundColor = MaterialTheme.colors.background) {
-            SwipeRefresh(
-                state = rememberSwipeRefreshState(isRefreshing = state.value.isLoading),
-                onRefresh = viewModel::refresh,
+
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = MaterialTheme.dimensions.medium)
+                    .padding(horizontal = MaterialTheme.dimensions.medium),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    if (state.value.isSearchExpanded) {
-                        TextField(
-                            value = state.value.searchText,
-                            onValueChange = { viewModel.searchCards(it) })
+                if (state.value.isSearchExpanded) {
+                    TextField(
+                        modifier = Modifier.padding(MaterialTheme.dimensions.small),
+                        value = state.value.searchText,
+                        textStyle = MaterialTheme.appTypography.body,
+                        onValueChange = { viewModel.searchCards(it) })
+                }
+                if (state.value.isLoading || state.value.isServiceUnavailable || state.value.isNoInternetConnection || state.value.cards.list.isEmpty()) {
+                    if (state.value.isLoading) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text(
+                                text = stringResource(id = R.string.loading),
+                                style = MaterialTheme.appTypography.title,
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colors.onBackground
+                            )
+                        }
                     }
-                    if (state.value.isLoading || state.value.isServiceUnavailable || state.value.isNoInternetConnection || state.value.cards.list.isEmpty()) {
-                        if (state.value.isLoading) {
-                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                Text(
-                                    text = stringResource(id = R.string.loading),
-                                    style = MaterialTheme.appTypography.title,
-                                    textAlign = TextAlign.Center,
-                                    color = MaterialTheme.colors.onBackground
-                                )
-                            }
+                    if (state.value.isServiceUnavailable) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text(
+                                text = stringResource(id = R.string.service_unavailable),
+                                style = MaterialTheme.appTypography.title,
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colors.onBackground
+                            )
                         }
-                        if (state.value.isServiceUnavailable) {
-                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                Text(
-                                    text = stringResource(id = R.string.service_unavailable),
-                                    style = MaterialTheme.appTypography.title,
-                                    textAlign = TextAlign.Center,
-                                    color = MaterialTheme.colors.onBackground
-                                )
-                            }
+                    }
+                    if (state.value.isNoInternetConnection) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clickable { viewModel.refresh() },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.no_internet_connection),
+                                style = MaterialTheme.appTypography.title,
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colors.onBackground
+                            )
                         }
-                        if (state.value.isNoInternetConnection) {
-                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                Text(
-                                    text = stringResource(id = R.string.no_internet_connection),
-                                    style = MaterialTheme.appTypography.title,
-                                    textAlign = TextAlign.Center,
-                                    color = MaterialTheme.colors.onBackground
-                                )
-                            }
+                    }
+                    if (state.value.cards.list.isEmpty() && !state.value.isLoading) {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text(
+                                text = stringResource(id = R.string.no_cards),
+                                style = MaterialTheme.appTypography.title,
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colors.onBackground
+                            )
                         }
-                        if (state.value.cards.list.isEmpty() && !state.value.isLoading) {
-                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                                Text(
-                                    text = stringResource(id = R.string.no_cards),
-                                    style = MaterialTheme.appTypography.title,
-                                    textAlign = TextAlign.Center,
-                                    color = MaterialTheme.colors.onBackground
-                                )
+                    }
+                } else {
+                    if (state.value.isSimpleList) {
+                        LazyColumn(modifier = Modifier.fillMaxSize(), content = {
+                            items(state.value.cards.list) {
+                                Row(
+                                    Modifier
+                                        .clickable { viewModel.showCard(it.id) }
+                                ) {
+                                    Text(
+                                        text = it.name,
+                                        maxLines = 1,
+                                        style = MaterialTheme.appTypography.title,
+                                        textAlign = TextAlign.Start,
+                                        overflow = TextOverflow.Ellipsis,
+                                        color = MaterialTheme.colors.onSurface
+                                    )
+                                }
                             }
-                        }
+                        })
                     } else {
-                        if (state.value.isSimpleList) {
-                            LazyColumn(modifier = Modifier.fillMaxSize(), content = {
+                        LazyVerticalGrid(
+                            modifier = Modifier.fillMaxSize(),
+                            columns = GridCells.Fixed(2),
+                            content = {
                                 items(state.value.cards.list) {
-                                    Row(
+                                    Column(
                                         Modifier
-                                            .clickable { viewModel.showCard(it.id) }
+                                            .padding(MaterialTheme.dimensions.small)
+                                            .clickable { viewModel.showCard(it.id) },
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.Center
                                     ) {
                                         Text(
+                                            text = it.art,
+                                            style = MaterialTheme.appTypography.caption,
+                                            color = MaterialTheme.colors.onBackground
+                                        )
+                                        Text(
                                             text = it.name,
-                                            maxLines = 1,
-                                            style = MaterialTheme.appTypography.title,
-                                            textAlign = TextAlign.Start,
-                                            overflow = TextOverflow.Ellipsis,
+                                            style = MaterialTheme.appTypography.body,
+                                            textAlign = TextAlign.Center,
                                             color = MaterialTheme.colors.onSurface
                                         )
                                     }
                                 }
-                            })
-                        } else {
-                            LazyVerticalGrid(
-                                modifier = Modifier.fillMaxSize(),
-                                columns = GridCells.Fixed(2),
-                                content = {
-                                    items(state.value.cards.list) {
-                                        Column(
-                                            Modifier
-                                                .padding(MaterialTheme.dimensions.small)
-                                                .clickable { viewModel.showCard(it.id) },
-                                            horizontalAlignment = Alignment.CenterHorizontally,
-                                            verticalArrangement = Arrangement.Center
-                                        ) {
-                                            Text(
-                                                text = it.art,
-                                                style = MaterialTheme.appTypography.caption,
-                                                color = MaterialTheme.colors.onBackground
-                                            )
-                                            Text(
-                                                text = it.name,
-                                                style = MaterialTheme.appTypography.body,
-                                                textAlign = TextAlign.Center,
-                                                color = MaterialTheme.colors.onSurface
-                                            )
-                                        }
-                                    }
-                                }
-                            )
-                        }
+                            }
+                        )
                     }
                 }
             }

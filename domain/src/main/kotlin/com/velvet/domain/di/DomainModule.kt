@@ -20,7 +20,8 @@ val domainModule = module {
         arrayOf(
             CardsByKeywordUseCase::class,
             CardDetailsUseCase::class,
-            CardsUseCase::class
+            CardsUseCase::class,
+            CachedCardsUseCase::class
         )
     )
 }
