@@ -19,22 +19,25 @@ import com.velvet.tarot.R
 import com.velvet.tarot.ui.AutoSizeText
 import com.velvet.tarot.ui.appTypography
 import com.velvet.tarot.ui.dimensions
-import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.getViewModel
 import org.koin.core.parameter.parametersOf
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
-class CardNode(buildContext: BuildContext, private val cardId: String, private val onBack: () -> Unit) :
+class CardNode(
+    buildContext: BuildContext,
+    private val cardId: String,
+    private val onBack: () -> Unit
+) :
     Node(buildContext) {
 
     @Composable
     override fun View(modifier: Modifier) {
         val viewModel: CardViewModel = getViewModel(parameters = { parametersOf(cardId) })
-        val state = viewModel.container.stateFlow.collectAsState().value
-        LaunchedEffect(viewModel) {
-            viewModel.container.sideEffectFlow.collectLatest {
-                when (it) {
-                    is CardScreenEffect.GoBack -> onBack()
-                }
+        val state = viewModel.collectAsState()
+        viewModel.collectSideEffect {
+            when (it) {
+                is CardScreenEffect.GoBack -> onBack()
             }
         }
         Scaffold(topBar = {
@@ -49,7 +52,7 @@ class CardNode(buildContext: BuildContext, private val cardId: String, private v
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     AutoSizeText(
-                        text = "~/tarot/" + state.cardDetails.id + ".card",
+                        text = "~/tarot/" + state.value.cardDetails.id + ".card",
                         lines = 1,
                         style = MaterialTheme.appTypography.title,
                         textAlign = TextAlign.Start,
@@ -65,12 +68,12 @@ class CardNode(buildContext: BuildContext, private val cardId: String, private v
                 }
             }
         }, backgroundColor = MaterialTheme.colors.background) {
-            if (state.isLoading || state.isServiceUnavailable || state.isNoSuchCard || state.isNoInternetConnection) {
+            if (state.value.isLoading || state.value.isServiceUnavailable || state.value.isNoSuchCard || state.value.isNoInternetConnection) {
                 SwipeRefresh(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = MaterialTheme.dimensions.medium),
-                    state = rememberSwipeRefreshState(isRefreshing = state.isLoading),
+                    state = rememberSwipeRefreshState(isRefreshing = state.value.isLoading),
                     onRefresh = { viewModel.refresh() }
                 ) {
                     Column(
@@ -78,7 +81,7 @@ class CardNode(buildContext: BuildContext, private val cardId: String, private v
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                     ) {
-                        if (state.isLoading) {
+                        if (state.value.isLoading) {
                             Text(
                                 text = stringResource(id = R.string.loading),
                                 style = MaterialTheme.appTypography.bodyBold,
@@ -86,7 +89,7 @@ class CardNode(buildContext: BuildContext, private val cardId: String, private v
                                 color = MaterialTheme.colors.onBackground
                             )
                         }
-                        if (state.isServiceUnavailable) {
+                        if (state.value.isServiceUnavailable) {
                             Text(
                                 text = stringResource(id = R.string.service_unavailable),
                                 style = MaterialTheme.appTypography.bodyBold,
@@ -94,7 +97,7 @@ class CardNode(buildContext: BuildContext, private val cardId: String, private v
                                 color = MaterialTheme.colors.onBackground
                             )
                         }
-                        if (state.isNoSuchCard) {
+                        if (state.value.isNoSuchCard) {
                             Text(
                                 text = stringResource(id = R.string.no_such_card),
                                 style = MaterialTheme.appTypography.bodyBold,
@@ -102,7 +105,7 @@ class CardNode(buildContext: BuildContext, private val cardId: String, private v
                                 color = MaterialTheme.colors.onBackground
                             )
                         }
-                        if (state.isNoInternetConnection) {
+                        if (state.value.isNoInternetConnection) {
                             Text(
                                 text = stringResource(id = R.string.no_internet_connection),
                                 style = MaterialTheme.appTypography.bodyBold,
@@ -117,7 +120,7 @@ class CardNode(buildContext: BuildContext, private val cardId: String, private v
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = MaterialTheme.dimensions.medium),
-                    state = rememberSwipeRefreshState(isRefreshing = state.isLoading),
+                    state = rememberSwipeRefreshState(isRefreshing = state.value.isLoading),
                     onRefresh = { viewModel.refresh() }
                 ) {
                     Column(
@@ -128,38 +131,38 @@ class CardNode(buildContext: BuildContext, private val cardId: String, private v
                     ) {
                         AutoSizeText(
                             modifier = Modifier.align(Alignment.CenterHorizontally),
-                            text = state.cardDetails.art,
+                            text = state.value.cardDetails.art,
                             lines = 20,
                             style = MaterialTheme.appTypography.title,
                             textAlign = TextAlign.Center,
                             color = MaterialTheme.colors.onBackground
                         )
                         Text(
-                            text = stringResource(id = R.string.type) + " " + state.cardDetails.type,
+                            text = stringResource(id = R.string.type) + " " + state.value.cardDetails.type,
                             style = MaterialTheme.appTypography.body,
                             textAlign = TextAlign.Start,
                             color = MaterialTheme.colors.onBackground
                         )
                         Text(
-                            text = stringResource(id = R.string.name) + " " + state.cardDetails.name,
+                            text = stringResource(id = R.string.name) + " " + state.value.cardDetails.name,
                             style = MaterialTheme.appTypography.body,
                             textAlign = TextAlign.Start,
                             color = MaterialTheme.colors.onBackground
                         )
                         Text(
-                            text = stringResource(id = R.string.meaning_up) + " " + state.cardDetails.meaningUp,
+                            text = stringResource(id = R.string.meaning_up) + " " + state.value.cardDetails.meaningUp,
                             style = MaterialTheme.appTypography.body,
                             textAlign = TextAlign.Start,
                             color = MaterialTheme.colors.onBackground
                         )
                         Text(
-                            text = stringResource(id = R.string.meaning_rev) + " " + state.cardDetails.meaningRev,
+                            text = stringResource(id = R.string.meaning_rev) + " " + state.value.cardDetails.meaningRev,
                             style = MaterialTheme.appTypography.body,
                             textAlign = TextAlign.Start,
                             color = MaterialTheme.colors.onBackground
                         )
                         Text(
-                            text = stringResource(id = R.string.desc) + " " + state.cardDetails.description,
+                            text = stringResource(id = R.string.desc) + " " + state.value.cardDetails.description,
                             style = MaterialTheme.appTypography.body,
                             textAlign = TextAlign.Start,
                             color = MaterialTheme.colors.onBackground

@@ -10,8 +10,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,22 +24,21 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.velvet.tarot.R
 import com.velvet.tarot.ui.appTypography
 import com.velvet.tarot.ui.dimensions
-import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.getViewModel
+import org.orbitmvi.orbit.compose.collectAsState
+import org.orbitmvi.orbit.compose.collectSideEffect
 
 class FeedNode(buildContext: BuildContext, private val onShowCard: (cardName: String) -> Unit) : Node(buildContext) {
 
     @Composable
     override fun View(modifier: Modifier) {
         val viewModel: FeedViewModel = getViewModel()
-        val state = viewModel.container.stateFlow.collectAsState().value
+        val state = viewModel.collectAsState()
         val context = LocalContext.current
-        LaunchedEffect(viewModel) {
-            viewModel.container.sideEffectFlow.collectLatest {
-                when (it) {
-                    FeedEffect.ErrorRefresh -> Toast.makeText(context, R.string.error_refresh, Toast.LENGTH_LONG).show()
-                    is FeedEffect.ShowCard -> onShowCard(it.cardName)
-                }
+        viewModel.collectSideEffect {
+            when (it) {
+                FeedEffect.ErrorRefresh -> Toast.makeText(context, R.string.error_refresh, Toast.LENGTH_LONG).show()
+                is FeedEffect.ShowCard -> onShowCard(it.cardName)
             }
         }
         Scaffold(topBar = {
@@ -65,7 +62,7 @@ class FeedNode(buildContext: BuildContext, private val onShowCard: (cardName: St
                         text = ":F",
                         modifier = Modifier
                             .clip(CircleShape)
-                            .background(if (state.isSearchExpanded) MaterialTheme.colors.onBackground else MaterialTheme.colors.background)
+                            .background(if (state.value.isSearchExpanded) MaterialTheme.colors.onBackground else MaterialTheme.colors.background)
                             .clickable { viewModel.toggleSearch() },
                         style = MaterialTheme.appTypography.title,
                         color = MaterialTheme.colors.onBackground
@@ -74,7 +71,7 @@ class FeedNode(buildContext: BuildContext, private val onShowCard: (cardName: St
             }
         }, backgroundColor = MaterialTheme.colors.background) {
             SwipeRefresh(
-                state = rememberSwipeRefreshState(isRefreshing = state.isLoading),
+                state = rememberSwipeRefreshState(isRefreshing = state.value.isLoading),
                 onRefresh = viewModel::refresh,
                 modifier = Modifier
                     .fillMaxSize()
@@ -84,8 +81,8 @@ class FeedNode(buildContext: BuildContext, private val onShowCard: (cardName: St
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    if (state.isLoading || state.isServiceUnavailable || state.isNoInternetConnection) {
-                        if (state.isLoading) {
+                    if (state.value.isLoading || state.value.isServiceUnavailable || state.value.isNoInternetConnection) {
+                        if (state.value.isLoading) {
                             Text(
                                 text = stringResource(id = R.string.loading),
                                 style = MaterialTheme.appTypography.body,
@@ -93,7 +90,7 @@ class FeedNode(buildContext: BuildContext, private val onShowCard: (cardName: St
                                 color = MaterialTheme.colors.onBackground
                             )
                         }
-                        if (state.isServiceUnavailable) {
+                        if (state.value.isServiceUnavailable) {
                             Text(
                                 text = stringResource(id = R.string.service_unavailable),
                                 style = MaterialTheme.appTypography.body,
@@ -101,7 +98,7 @@ class FeedNode(buildContext: BuildContext, private val onShowCard: (cardName: St
                                 color = MaterialTheme.colors.onBackground
                             )
                         }
-                        if (state.isNoInternetConnection) {
+                        if (state.value.isNoInternetConnection) {
                             Text(
                                 text = stringResource(id = R.string.no_internet_connection),
                                 style = MaterialTheme.appTypography.body,
@@ -113,7 +110,7 @@ class FeedNode(buildContext: BuildContext, private val onShowCard: (cardName: St
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
                             content = {
-                                if (state.cards.isEmpty() && !state.isLoading) {
+                                if (state.value.cards.isEmpty() && !state.value.isLoading) {
                                     item {
                                         Column(
                                             modifier = Modifier.fillMaxWidth(),
@@ -127,7 +124,7 @@ class FeedNode(buildContext: BuildContext, private val onShowCard: (cardName: St
                                         }
                                     }
                                 } else {
-                                    items(state.cards) {
+                                    items(state.value.cards) {
                                         Column(
                                             Modifier
                                                 .padding(MaterialTheme.dimensions.medium)

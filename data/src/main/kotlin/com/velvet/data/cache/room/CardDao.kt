@@ -2,8 +2,6 @@ package com.velvet.data.cache.room
 
 import androidx.room.*
 import com.velvet.data.schemas.Card
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Dao
 interface CardDao {
