@@ -9,6 +9,7 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 @Composable
 fun SystemUiSetup() {
     val systemUiController = rememberSystemUiController()
+    //        systemUiController.setStatusBarColor(color = Color.Transparent)
     val isLightTheme = MaterialTheme.colors.isLight
     val systemBarColor = MaterialTheme.colors.surface
     val transparentColor: (Color) -> Color = { original ->

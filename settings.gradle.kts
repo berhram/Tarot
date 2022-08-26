@@ -12,6 +12,7 @@ dependencyResolutionManagement {
             //Core
             library("coreKtx", "androidx.core", "core-ktx").version("1.8.0")
             library("appcompat", "androidx.appcompat", "appcompat").version("1.4.2")
+            library(    "androidMaterial", "com.google.android.material","material").version("1.6.1")
             //Coroutines
             version("coroutines", "1.6.4")
             library("kotlinxCoroutinesCore", "org.jetbrains.kotlinx" , "kotlinx-coroutines-core").versionRef("coroutines")
@@ -76,6 +77,11 @@ dependencyResolutionManagement {
             library("junit", "junit", "junit").version("4.13.2")
             library("junitAndroid", "androidx.test.ext", "junit").version("1.1.3")
             library("uiTestJunit4", "androidx.compose.ui", "ui-test-junit4").version("1.1.1")
+            version("appyx", "1.0-alpha05")
+            library("appyxCore", "com.bumble.appyx",  "core").versionRef("appyx")
+            library("appyxTesting", "com.bumble.appyx", "testing-ui").versionRef("appyx")
+            library("appyxTestingUnit", "com.bumble.appyx", "testing-unit-common").versionRef("appyx")
+            library("appyxJunit", "com.bumble.appyx", "testing-junit4").versionRef("appyx")
         }
     }
 }

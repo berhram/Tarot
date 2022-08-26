@@ -1,6 +1,7 @@
 plugins {
     id("org.jetbrains.kotlin.android")
     id("com.android.application")
+    id("kotlin-parcelize")
     kotlin("kapt")
 }
 
@@ -52,6 +53,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":core"))
     implementation(libs.coreKtx)
+    implementation(libs.androidMaterial)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.bundles.coroutines)
@@ -61,10 +63,14 @@ dependencies {
     implementation(libs.bundles.koin)
     implementation(libs.bundles.accompanist)
     implementation(libs.navigationCompose)
+    implementation(libs.appyxCore)
+    testImplementation(libs.appyxJunit)
+    testImplementation(libs.appyxTestingUnit)
     testImplementation(libs.orbitTest)
     testImplementation(libs.junit)
     androidTestImplementation(libs.junitAndroid)
     androidTestImplementation(libs.uiTestJunit4)
+    androidTestImplementation(libs.appyxTesting)
 }
 
 kapt {
