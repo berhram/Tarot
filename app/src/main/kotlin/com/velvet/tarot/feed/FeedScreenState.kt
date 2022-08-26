@@ -10,5 +10,5 @@ data class FeedScreenState(
     val isServiceUnavailable: Boolean = false,
     val searchText: String = "",
     val isSearchExpanded: Boolean = false,
-    val simpleList: Boolean = false
+    val isSimpleList: Boolean = false
 )

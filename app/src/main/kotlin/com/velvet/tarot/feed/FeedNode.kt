@@ -4,9 +4,11 @@ import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -16,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
@@ -70,6 +73,14 @@ class FeedNode(
                         style = MaterialTheme.appTypography.title,
                         color = MaterialTheme.colors.onBackground
                     )
+                    Text(
+                        text = ":v",
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .clickable { viewModel.switchView() },
+                        style = MaterialTheme.appTypography.title,
+                        color = MaterialTheme.colors.onBackground
+                    )
                 }
             }
         }, backgroundColor = MaterialTheme.colors.background) {
@@ -81,14 +92,15 @@ class FeedNode(
                     .padding(horizontal = MaterialTheme.dimensions.medium)
             ) {
                 Column(
+                    modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    if (state.value.isLoading || state.value.isServiceUnavailable || state.value.isNoInternetConnection) {
+                    if (state.value.isLoading || state.value.isServiceUnavailable || state.value.isNoInternetConnection || state.value.cards.list.isEmpty()) {
                         if (state.value.isLoading) {
                             Text(
                                 text = stringResource(id = R.string.loading),
-                                style = MaterialTheme.appTypography.body,
+                                style = MaterialTheme.appTypography.title,
                                 textAlign = TextAlign.Center,
                                 color = MaterialTheme.colors.onBackground
                             )
@@ -96,7 +108,7 @@ class FeedNode(
                         if (state.value.isServiceUnavailable) {
                             Text(
                                 text = stringResource(id = R.string.service_unavailable),
-                                style = MaterialTheme.appTypography.body,
+                                style = MaterialTheme.appTypography.title,
                                 textAlign = TextAlign.Center,
                                 color = MaterialTheme.colors.onBackground
                             )
@@ -104,33 +116,47 @@ class FeedNode(
                         if (state.value.isNoInternetConnection) {
                             Text(
                                 text = stringResource(id = R.string.no_internet_connection),
-                                style = MaterialTheme.appTypography.body,
+                                style = MaterialTheme.appTypography.title,
+                                textAlign = TextAlign.Center,
+                                color = MaterialTheme.colors.onBackground
+                            )
+                        }
+                        if (state.value.cards.list.isEmpty() && !state.value.isLoading) {
+                            Text(
+                                text = stringResource(id = R.string.no_cards),
+                                style = MaterialTheme.appTypography.title,
                                 textAlign = TextAlign.Center,
                                 color = MaterialTheme.colors.onBackground
                             )
                         }
                     } else {
-                        LazyVerticalGrid(
-                            columns = GridCells.Fixed(2),
-                            content = {
-                                if (state.value.cards.list.isEmpty() && !state.value.isLoading) {
-                                    item {
-                                        Column(
-                                            modifier = Modifier.fillMaxWidth(),
-                                            horizontalAlignment = Alignment.CenterHorizontally,
-                                            verticalArrangement = Arrangement.Center
-                                        ) {
-                                            Text(
-                                                textAlign = TextAlign.Center,
-                                                text = stringResource(id = R.string.no_cards)
-                                            )
-                                        }
+                        if (state.value.isSimpleList) {
+                            LazyColumn(modifier = Modifier.fillMaxSize(), content = {
+                                items(state.value.cards.list) {
+                                    Row(
+                                        Modifier
+                                            .clickable { viewModel.showCard(it.id) }
+                                    ) {
+                                        Text(
+                                            text = it.name,
+                                            maxLines = 1,
+                                            style = MaterialTheme.appTypography.title,
+                                            textAlign = TextAlign.Start,
+                                            overflow = TextOverflow.Ellipsis,
+                                            color = MaterialTheme.colors.onSurface
+                                        )
                                     }
-                                } else {
+                                }
+                            })
+                        } else {
+                            LazyVerticalGrid(
+                                modifier = Modifier.fillMaxSize(),
+                                columns = GridCells.Fixed(2),
+                                content = {
                                     items(state.value.cards.list) {
                                         Column(
                                             Modifier
-                                                .padding(MaterialTheme.dimensions.medium)
+                                                .padding(MaterialTheme.dimensions.small)
                                                 .clickable { viewModel.showCard(it.id) },
                                             horizontalAlignment = Alignment.CenterHorizontally,
                                             verticalArrangement = Arrangement.Center
@@ -149,8 +175,8 @@ class FeedNode(
                                         }
                                     }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }

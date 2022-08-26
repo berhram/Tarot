@@ -42,6 +42,9 @@ class FeedViewModel(
         }
     }
 
+    fun switchView() = intent {
+        reduce { state.copy(isSimpleList = !state.isSimpleList) }
+    }
 
     fun showCard(cardName: String) = intent { postSideEffect(FeedEffect.ShowCard(cardName = cardName)) }
 
