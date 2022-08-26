@@ -21,8 +21,9 @@ dependencyResolutionManagement {
             //Orbit
             version("orbit", "4.3.2")
             library("orbitCore", "org.orbit-mvi", "orbit-core").versionRef("orbit")
-            library("orbitViewmodel", "org.orbit-mvi", "orbit-viewmodel").versionRef("orbit")
-            bundle("orbit", listOf("orbitCore", "orbitViewmodel"))
+            library("orbitViewModel", "org.orbit-mvi", "orbit-viewmodel").versionRef("orbit")
+            library("orbitCompose", "org.orbit-mvi", "orbit-compose").versionRef("orbit")
+            bundle("orbit", listOf("orbitCore", "orbitViewModel", "orbitCompose"))
             //Room
             version("room", "2.4.3")
             library("roomKtx", "androidx.room", "room-ktx").versionRef("room")
@@ -49,9 +50,6 @@ dependencyResolutionManagement {
             library("koinAndroidxNavigation", "io.insert-koin", "koin-androidx-navigation").versionRef("koin")
             library("koinAndroidxCompose", "io.insert-koin", "koin-androidx-compose").versionRef("koin")
             bundle("koin", listOf("koinAndroid", "koinAndroidxCompose"))
-            //Navigation
-            version("navigation", "2.5.1")
-            library("navigationCompose", "androidx.navigation", "navigation-compose").versionRef("navigation")
             //Gson
             version("gson","2.9.1")
             library("gson", "com.google.code.gson", "gson").versionRef("gson")
@@ -78,6 +76,7 @@ dependencyResolutionManagement {
             library("junitAndroid", "androidx.test.ext", "junit").version("1.1.3")
             library("uiTestJunit4", "androidx.compose.ui", "ui-test-junit4").version("1.1.1")
             version("appyx", "1.0-alpha05")
+            //Appyx
             library("appyxCore", "com.bumble.appyx",  "core").versionRef("appyx")
             library("appyxTesting", "com.bumble.appyx", "testing-ui").versionRef("appyx")
             library("appyxTestingUnit", "com.bumble.appyx", "testing-unit-common").versionRef("appyx")

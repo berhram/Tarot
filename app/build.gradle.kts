@@ -62,7 +62,6 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(libs.bundles.koin)
     implementation(libs.bundles.accompanist)
-    implementation(libs.navigationCompose)
     implementation(libs.appyxCore)
     testImplementation(libs.appyxJunit)
     testImplementation(libs.appyxTestingUnit)
