@@ -28,7 +28,10 @@ import org.koin.androidx.compose.getViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
-class FeedNode(buildContext: BuildContext, private val onShowCard: (cardName: String) -> Unit) : Node(buildContext) {
+class FeedNode(
+    buildContext: BuildContext,
+    private val onShowCard: (cardName: String) -> Unit
+) : Node(buildContext) {
 
     @Composable
     override fun View(modifier: Modifier) {
@@ -110,7 +113,7 @@ class FeedNode(buildContext: BuildContext, private val onShowCard: (cardName: St
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
                             content = {
-                                if (state.value.cards.isEmpty() && !state.value.isLoading) {
+                                if (state.value.cards.list.isEmpty() && !state.value.isLoading) {
                                     item {
                                         Column(
                                             modifier = Modifier.fillMaxWidth(),
@@ -124,7 +127,7 @@ class FeedNode(buildContext: BuildContext, private val onShowCard: (cardName: St
                                         }
                                     }
                                 } else {
-                                    items(state.value.cards) {
+                                    items(state.value.cards.list) {
                                         Column(
                                             Modifier
                                                 .padding(MaterialTheme.dimensions.medium)

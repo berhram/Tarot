@@ -1,7 +1,9 @@
 package com.velvet.tarot.card
 
+import androidx.compose.runtime.Immutable
 import com.velvet.domain.CardDomain
 
+@Immutable
 data class CardDetails(
     val id: String = "",
     val name: String = "",

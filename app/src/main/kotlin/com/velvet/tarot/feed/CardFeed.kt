@@ -1,7 +1,9 @@
 package com.velvet.tarot.feed
 
+import androidx.compose.runtime.Immutable
 import com.velvet.domain.CardDomain
 
+@Immutable
 data class CardFeed(
     val id: String,
     val art: String,

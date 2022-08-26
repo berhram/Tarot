@@ -34,7 +34,7 @@ class FeedViewModel(
         intercept { cardsUseCase.cards() }.map { cards ->
             reduce {
                 state.copy(
-                    cards = cards.map { CardFeed.fromCardDomain(it) },
+                    cards = CardFeedList(cards.map { CardFeed.fromCardDomain(it) }),
                     isLoading = false,
                     searchText = ""
                 )
@@ -52,7 +52,12 @@ class FeedViewModel(
         searchJob = viewModelScope.launch(Dispatchers.IO) {
             reduce { state.copy(isLoading = true, searchText = searchWord) }
             intercept { cardsByKeywordUseCase.cards(searchWord) }.map { cards ->
-                reduce { state.copy(isLoading = false, cards = cards.map { CardFeed.fromCardDomain(it) }) }
+                reduce {
+                    state.copy(
+                        isLoading = false,
+                        cards = CardFeedList(cards.map { CardFeed.fromCardDomain(it) })
+                    )
+                }
             }
         }
     }
