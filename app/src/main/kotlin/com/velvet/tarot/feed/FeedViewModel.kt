@@ -18,8 +18,6 @@ class FeedViewModel(
     private val cardsByKeywordUseCase: CardsByKeywordUseCase
 ) : ReactiveViewModel<FeedScreenState, FeedEffect>() {
 
-    private var searchJob: Job? = null
-
     override val container: Container<FeedScreenState, FeedEffect> = container(
         FeedScreenState(),
         Container.Settings(intentDispatcher = Dispatchers.IO)
@@ -48,13 +46,18 @@ class FeedViewModel(
 
     fun showCard(cardName: String) = intent { postSideEffect(FeedEffect.ShowCard(cardName = cardName)) }
 
-    fun toggleSearch() = intent { reduce { state.copy() } }
+    fun toggleSearch() = intent {
+        if (state.isSearchExpanded)
+            refresh()
+        reduce { state.copy(searchText = "", isSearchExpanded = !state.isSearchExpanded) }
+    }
 
     fun searchCards(searchWord: String) = intent {
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch(Dispatchers.IO) {
-            reduce { state.copy(isLoading = true, searchText = searchWord) }
-            intercept { cardsByKeywordUseCase.cards(searchWord) }.map { cards ->
+        reduce { state.copy(searchText = searchWord) }
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(1000)
+            reduce { state.copy(isLoading = true) }
+            intercept { cardsByKeywordUseCase.cards(searchWord.trim()) }.map { cards ->
                 reduce {
                     state.copy(
                         isLoading = false,

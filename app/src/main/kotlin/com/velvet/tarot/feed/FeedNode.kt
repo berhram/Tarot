@@ -71,7 +71,7 @@ class FeedNode(
                             .background(if (state.value.isSearchExpanded) MaterialTheme.colors.onBackground else MaterialTheme.colors.background)
                             .clickable { viewModel.toggleSearch() },
                         style = MaterialTheme.appTypography.title,
-                        color = MaterialTheme.colors.onBackground
+                        color = if (state.value.isSearchExpanded) MaterialTheme.colors.background else MaterialTheme.colors.onBackground
                     )
                     Text(
                         text = ":v",
@@ -96,38 +96,51 @@ class FeedNode(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
+                    if (state.value.isSearchExpanded) {
+                        TextField(
+                            value = state.value.searchText,
+                            onValueChange = { viewModel.searchCards(it) })
+                    }
                     if (state.value.isLoading || state.value.isServiceUnavailable || state.value.isNoInternetConnection || state.value.cards.list.isEmpty()) {
                         if (state.value.isLoading) {
-                            Text(
-                                text = stringResource(id = R.string.loading),
-                                style = MaterialTheme.appTypography.title,
-                                textAlign = TextAlign.Center,
-                                color = MaterialTheme.colors.onBackground
-                            )
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                Text(
+                                    text = stringResource(id = R.string.loading),
+                                    style = MaterialTheme.appTypography.title,
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colors.onBackground
+                                )
+                            }
                         }
                         if (state.value.isServiceUnavailable) {
-                            Text(
-                                text = stringResource(id = R.string.service_unavailable),
-                                style = MaterialTheme.appTypography.title,
-                                textAlign = TextAlign.Center,
-                                color = MaterialTheme.colors.onBackground
-                            )
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                Text(
+                                    text = stringResource(id = R.string.service_unavailable),
+                                    style = MaterialTheme.appTypography.title,
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colors.onBackground
+                                )
+                            }
                         }
                         if (state.value.isNoInternetConnection) {
-                            Text(
-                                text = stringResource(id = R.string.no_internet_connection),
-                                style = MaterialTheme.appTypography.title,
-                                textAlign = TextAlign.Center,
-                                color = MaterialTheme.colors.onBackground
-                            )
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                Text(
+                                    text = stringResource(id = R.string.no_internet_connection),
+                                    style = MaterialTheme.appTypography.title,
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colors.onBackground
+                                )
+                            }
                         }
                         if (state.value.cards.list.isEmpty() && !state.value.isLoading) {
-                            Text(
-                                text = stringResource(id = R.string.no_cards),
-                                style = MaterialTheme.appTypography.title,
-                                textAlign = TextAlign.Center,
-                                color = MaterialTheme.colors.onBackground
-                            )
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                Text(
+                                    text = stringResource(id = R.string.no_cards),
+                                    style = MaterialTheme.appTypography.title,
+                                    textAlign = TextAlign.Center,
+                                    color = MaterialTheme.colors.onBackground
+                                )
+                            }
                         }
                     } else {
                         if (state.value.isSimpleList) {

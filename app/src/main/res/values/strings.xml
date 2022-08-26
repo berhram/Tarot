@@ -2,7 +2,7 @@
     <string name="app_name">Tarot</string>
     <string name="tarot_dir">~/tarot</string>
     <string name="card_dir">.card</string>
-    <string name="no_cards">Oops, there is no cards for some reason!</string>
+    <string name="no_cards">There is no cards!</string>
     <string name="type">Type:</string>
     <string name="name">Name:</string>
     <string name="meaning_up">Meaning (up side):</string>

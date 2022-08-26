@@ -26,7 +26,7 @@ interface Repository {
 
         override suspend fun defaultArt(): CardArt = cardArtCacheDataSource.defaultArt()
 
-        override suspend fun art(id: String): CardArt = cardArtCacheDataSource.art(id)
+        override suspend fun art(name: String): CardArt = cardArtCacheDataSource.art(name)
 
         override suspend fun card(id: String): Card = tarotCacheDataSource.card(id)
 

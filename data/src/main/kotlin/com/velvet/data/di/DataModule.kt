@@ -4,6 +4,7 @@ import androidx.room.Room
 import com.google.gson.Gson
 import com.velvet.core.ManageResources
 import com.velvet.core.exception.HandleError
+import com.velvet.data.BuildConfig
 import com.velvet.data.cache.TarotCacheDataSource
 import com.velvet.data.cache.arts.CardArtCacheDataSource
 import com.velvet.data.cache.arts.ReadCardArts
@@ -18,7 +19,6 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 val dataModule = module {
 
@@ -63,8 +63,19 @@ val dataModule = module {
     }
 
     factory<TarotService> {
-        Retrofit.Builder().baseUrl("https://rws-cards-api.herokuapp.com/api/v1/")
+        val logging = HttpLoggingInterceptor()
+        logging.level = if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor.Level.BODY
+        } else {
+            HttpLoggingInterceptor.Level.NONE
+        }
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor(logging)
+        val retrofit = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .client(OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor()).build()).build().create()
+            .client(httpClient.build())
+            .baseUrl("https://rws-cards-api.herokuapp.com/api/v1/")
+            .build()
+        retrofit.create(TarotService::class.java)
     }
 }
