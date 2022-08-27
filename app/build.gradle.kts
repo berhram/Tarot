@@ -1,3 +1,6 @@
+import com.android.build.gradle.api.ApplicationVariant
+import com.android.build.gradle.api.BaseVariantOutput
+
 plugins {
     id("org.jetbrains.kotlin.android")
     id("com.android.application")
@@ -46,6 +49,20 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    applicationVariants.all(object : Action<ApplicationVariant> {
+        override fun execute(variant: ApplicationVariant) {
+            variant.outputs.all(object : Action<BaseVariantOutput> {
+                override fun execute(output: BaseVariantOutput) {
+                    val outputImpl = output as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+                    val fileName = output.outputFileName
+                        .replace("app-release", "tarot-release-v${defaultConfig.versionName}")
+                        .replace("app-debug", "tarot-debug-v${defaultConfig.versionName}")
+                    outputImpl.outputFileName = fileName
+                }
+            })
+        }
+    })
 }
 
 dependencies {
