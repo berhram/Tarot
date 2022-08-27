@@ -70,7 +70,7 @@ class FeedNode(
                         text = ":F",
                         modifier = Modifier
                             .background(if (state.value.isSearchExpanded) MaterialTheme.colors.onBackground else MaterialTheme.colors.background)
-                            .clickable { viewModel.toggleSearch() },
+                            .clickable { if (!state.value.isLoading) viewModel.toggleSearch() },
                         style = MaterialTheme.appTypography.title,
                         color = if (state.value.isSearchExpanded) MaterialTheme.colors.background else MaterialTheme.colors.onBackground
                     )
@@ -78,7 +78,7 @@ class FeedNode(
                         text = ":v",
                         modifier = Modifier
                             .background(if (state.value.isSimpleList) MaterialTheme.colors.onBackground else MaterialTheme.colors.background)
-                            .clickable { viewModel.switchView() },
+                            .clickable { if (!state.value.isLoading) viewModel.switchView() },
                         style = MaterialTheme.appTypography.title,
                         color = if (state.value.isSimpleList) MaterialTheme.colors.background else MaterialTheme.colors.onBackground
                     )
