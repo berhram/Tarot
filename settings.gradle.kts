@@ -41,9 +41,10 @@ dependencyResolutionManagement {
             library("uiTooling", "androidx.compose.ui", "ui-tooling").version("1.2.0")
             library("foundation", "androidx.compose.foundation", "foundation").version("1.2.0")
             library("material", "androidx.compose.material", "material").version("1.2.0")
+            library("constraint", "androidx.constraintlayout", "constraintlayout-compose").version("1.0.1")
             library("materialIconsCore", "androidx.compose.material", "material-icons-core").version("1.2.0")
             library("materialIconsExtended", "androidx.compose.material", "material-icons-extended").version("1.2.0")
-            bundle("compose", listOf("ui", "uiUtil", "uiTooling", "foundation", "material", "materialIconsCore", "materialIconsExtended"))
+            bundle("compose", listOf("ui", "uiUtil", "uiTooling", "foundation", "material", "materialIconsCore", "materialIconsExtended", "constraint"))
             //Koin
             version("koin", "3.2.0")
             library("koinAndroid", "io.insert-koin", "koin-android").versionRef("koin")
