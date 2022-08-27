@@ -1,6 +1,10 @@
 package com.velvet.tarot.feed
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.keyframes
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -84,7 +88,7 @@ class FeedNode(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                if (state.value.isSearchExpanded) {
+                AnimatedVisibility(visible = state.value.isSearchExpanded) {
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -93,8 +97,12 @@ class FeedNode(
                         textStyle = MaterialTheme.appTypography.body,
                         onValueChange = { viewModel.searchCards(it) })
                 }
-                if (state.value.isLoading || state.value.isServiceUnavailable || state.value.isNoInternetConnection || state.value.cards.list.isEmpty()) {
-                    if (state.value.isLoading) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    AnimatedVisibility(visible = state.value.isLoading) {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                             Text(
                                 text = stringResource(id = R.string.loading),
@@ -104,7 +112,7 @@ class FeedNode(
                             )
                         }
                     }
-                    if (state.value.isServiceUnavailable) {
+                    AnimatedVisibility(visible = state.value.isServiceUnavailable) {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                             Text(
                                 text = stringResource(id = R.string.service_unavailable),
@@ -114,7 +122,7 @@ class FeedNode(
                             )
                         }
                     }
-                    if (state.value.isNoInternetConnection) {
+                    AnimatedVisibility(visible = state.value.isNoInternetConnection) {
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -129,7 +137,15 @@ class FeedNode(
                             )
                         }
                     }
-                    if (state.value.cards.list.isEmpty() && !state.value.isLoading) {
+                    AnimatedVisibility(
+                        visible = state.value.cards.list.isEmpty() && !state.value.isLoading,
+                        enter = fadeIn(animationSpec = keyframes {
+                            durationMillis = 500
+                        }),
+                        exit = fadeOut(animationSpec = keyframes {
+                            durationMillis = 500
+                        })
+                    ) {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                             Text(
                                 text = stringResource(id = R.string.no_cards),
@@ -139,8 +155,15 @@ class FeedNode(
                             )
                         }
                     }
-                } else {
-                    if (state.value.isSimpleList) {
+                    AnimatedVisibility(
+                        visible = state.value.isSimpleList && !state.value.isLoading,
+                        enter = fadeIn(animationSpec = keyframes {
+                            durationMillis = 1000
+                        }),
+                        exit = fadeOut(animationSpec = keyframes {
+                            durationMillis = 500
+                        })
+                    ) {
                         LazyColumn(modifier = Modifier.fillMaxSize(), content = {
                             items(state.value.cards.list) {
                                 Row(
@@ -158,7 +181,16 @@ class FeedNode(
                                 }
                             }
                         })
-                    } else {
+                    }
+                    AnimatedVisibility(
+                        visible = !state.value.isSimpleList && !state.value.isLoading,
+                        enter = fadeIn(animationSpec = keyframes {
+                            durationMillis = 1000
+                        }),
+                        exit = fadeOut(animationSpec = keyframes {
+                            durationMillis = 500
+                        })
+                    ) {
                         LazyVerticalGrid(
                             modifier = Modifier.fillMaxSize(),
                             columns = GridCells.Fixed(2),
