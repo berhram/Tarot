@@ -9,12 +9,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -65,7 +63,6 @@ class FeedNode(
                     Text(
                         text = ":F",
                         modifier = Modifier
-                            .clip(CircleShape)
                             .background(if (state.value.isSearchExpanded) MaterialTheme.colors.onBackground else MaterialTheme.colors.background)
                             .clickable { viewModel.toggleSearch() },
                         style = MaterialTheme.appTypography.title,
@@ -74,25 +71,24 @@ class FeedNode(
                     Text(
                         text = ":v",
                         modifier = Modifier
-                            .clip(CircleShape)
+                            .background(if (state.value.isSimpleList) MaterialTheme.colors.onBackground else MaterialTheme.colors.background)
                             .clickable { viewModel.switchView() },
                         style = MaterialTheme.appTypography.title,
-                        color = MaterialTheme.colors.onBackground
+                        color = if (state.value.isSimpleList) MaterialTheme.colors.background else MaterialTheme.colors.onBackground
                     )
                 }
             }
         }, backgroundColor = MaterialTheme.colors.background) {
-
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = MaterialTheme.dimensions.medium),
+                modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 if (state.value.isSearchExpanded) {
-                    TextField(
-                        modifier = Modifier.padding(MaterialTheme.dimensions.small),
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = MaterialTheme.dimensions.small),
                         value = state.value.searchText,
                         textStyle = MaterialTheme.appTypography.body,
                         onValueChange = { viewModel.searchCards(it) })
