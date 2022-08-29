@@ -31,3 +31,6 @@ proguard/
 *.ipr
 *.iws
 .idea/
+
+# Output metadata
+output-metadata.json
