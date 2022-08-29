@@ -1,7 +1,7 @@
 package com.velvet.domain
 
-import com.velvet.core.Mapper
-import com.velvet.data.repo.Repository
+import com.velvet.core.util.Mapper
+import com.velvet.data.Repository
 import com.velvet.data.schemas.Card
 import com.velvet.data.schemas.CardArt
 import com.velvet.domain.usecases.*

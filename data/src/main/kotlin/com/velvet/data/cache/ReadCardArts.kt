@@ -1,9 +1,9 @@
-package com.velvet.data.cache.arts
+package com.velvet.data.cache
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.velvet.core.ManageResources
-import com.velvet.core.Read
+import com.velvet.core.util.Read
 import com.velvet.data.schemas.CardArt
 import java.lang.reflect.Type
 

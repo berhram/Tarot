@@ -1,4 +1,4 @@
-package com.velvet.core
+package com.velvet.core.util
 
 interface IsEmpty {
 

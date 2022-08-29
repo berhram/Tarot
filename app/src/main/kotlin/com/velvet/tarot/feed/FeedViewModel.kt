@@ -1,7 +1,7 @@
 package com.velvet.tarot.feed
 
 import androidx.lifecycle.viewModelScope
-import com.velvet.core.ReactiveViewModel
+import com.velvet.core.viewmodel.ReactiveViewModel
 import com.velvet.core.exception.NoInternetConnectionException
 import com.velvet.core.exception.ServiceUnavailableException
 import com.velvet.domain.usecases.CachedCardsUseCase

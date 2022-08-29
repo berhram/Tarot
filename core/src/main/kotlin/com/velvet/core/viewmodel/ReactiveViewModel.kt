@@ -1,7 +1,6 @@
-package com.velvet.core
+package com.velvet.core.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.velvet.core.exception.InterceptError
 import org.orbitmvi.orbit.ContainerHost
 
 abstract class ReactiveViewModel<STATE : Any, SIDE_EFFECT : Any> :

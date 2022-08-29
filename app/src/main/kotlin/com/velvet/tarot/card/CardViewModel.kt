@@ -1,6 +1,6 @@
 package com.velvet.tarot.card
 
-import com.velvet.core.ReactiveViewModel
+import com.velvet.core.viewmodel.ReactiveViewModel
 import com.velvet.core.exception.NoInternetConnectionException
 import com.velvet.core.exception.ServiceUnavailableException
 import com.velvet.data.exception.NoSuchCardException

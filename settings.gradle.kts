@@ -11,7 +11,7 @@ dependencyResolutionManagement {
         create("libs") {
             //Core
             library("coreKtx", "androidx.core", "core-ktx").version("1.8.0")
-            library("appcompat", "androidx.appcompat", "appcompat").version("1.4.2")
+            library("appcompat", "androidx.appcompat", "appcompat").version("1.5.0")
             library(    "androidMaterial", "com.google.android.material","material").version("1.6.1")
             //Coroutines
             version("coroutines", "1.6.4")
@@ -65,7 +65,7 @@ dependencyResolutionManagement {
             //Internet
             bundle("internet", listOf("retrofit", "retrofitConverter", "loggingInterceptor", "okHttp"))
             //Accompanist
-            version("accompanist", "0.25.0")
+            version("accompanist", "0.25.1")
             library("accompanistSystemUiController", "com.google.accompanist", "accompanist-systemuicontroller").versionRef("accompanist")
             library("accompanistPager", "com.google.accompanist", "accompanist-pager").versionRef("accompanist")
             library("accompanistSwipeRefresh", "com.google.accompanist", "accompanist-swiperefresh").versionRef("accompanist")
@@ -76,11 +76,12 @@ dependencyResolutionManagement {
             library("junit", "junit", "junit").version("4.13.2")
             library("junitAndroid", "androidx.test.ext", "junit").version("1.1.3")
             library("uiTestJunit4", "androidx.compose.ui", "ui-test-junit4").version("1.1.1")
-            version("appyx", "1.0-alpha05")
             //Appyx
+            version("appyx", "1.0-alpha06")
             library("appyxCore", "com.bumble.appyx",  "core").versionRef("appyx")
+            //TODO replace with regular appyx version
             library("appyxTesting", "com.bumble.appyx", "testing-ui").versionRef("appyx")
-            library("appyxTestingUnit", "com.bumble.appyx", "testing-unit-common").versionRef("appyx")
+            library("appyxTestingUnit", "com.bumble.appyx", "testing-unit-common").version("1.0-alpha05")
             library("appyxJunit", "com.bumble.appyx", "testing-junit4").versionRef("appyx")
         }
     }

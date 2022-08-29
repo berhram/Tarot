@@ -1,6 +1,6 @@
 package com.velvet.domain.di
 
-import com.velvet.core.Mapper
+import com.velvet.core.util.Mapper
 import com.velvet.data.schemas.CardArt
 import com.velvet.domain.CardInteractor
 import com.velvet.domain.mappers.FromCardArtToString

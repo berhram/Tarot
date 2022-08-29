@@ -1,4 +1,4 @@
-package com.velvet.data.cache.arts
+package com.velvet.data.cache
 
 import com.velvet.data.schemas.CardArt
 

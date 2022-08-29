@@ -1,6 +1,6 @@
-package com.velvet.data.cache.arts
+package com.velvet.data.cache
 
-import com.velvet.core.Read
+import com.velvet.core.util.Read
 import com.velvet.data.schemas.CardArt
 
 interface ReadDefaultArt : Read<CardArt> {

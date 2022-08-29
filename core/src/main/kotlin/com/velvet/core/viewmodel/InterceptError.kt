@@ -1,4 +1,4 @@
-package com.velvet.core.exception
+package com.velvet.core.viewmodel
 
 interface InterceptError {
 

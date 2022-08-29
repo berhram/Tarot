@@ -1,6 +1,5 @@
 package com.velvet.data.cache
 
-import com.velvet.data.cache.room.CardDao
 import com.velvet.data.exception.NoSuchCardException
 import com.velvet.data.schemas.Card
 import kotlinx.coroutines.runBlocking

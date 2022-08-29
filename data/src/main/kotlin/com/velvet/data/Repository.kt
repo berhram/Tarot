@@ -1,8 +1,8 @@
-package com.velvet.data.repo
+package com.velvet.data
 
 import com.velvet.data.cache.TarotCacheDataSource
 import com.velvet.data.cloud.TarotCloudDataSource
-import com.velvet.data.cache.arts.CardArtCacheDataSource
+import com.velvet.data.cache.CardArtCacheDataSource
 import com.velvet.data.schemas.Card
 import com.velvet.data.schemas.CardArt
 
