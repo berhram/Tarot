@@ -1,8 +1,6 @@
 package com.velvet.tarot.card
 
 import com.velvet.core.viewmodel.ReactiveViewModel
-import com.velvet.core.exception.NoInternetConnectionException
-import com.velvet.core.exception.ServiceUnavailableException
 import com.velvet.data.exception.NoSuchCardException
 import com.velvet.domain.usecases.CardDetailsUseCase
 import kotlinx.coroutines.Dispatchers
@@ -23,11 +21,10 @@ class CardViewModel(
     )
 
     init {
-        refresh()
+        details()
     }
 
-    fun refresh() = intent {
-        reduce { state.copy(isLoading = true, isNoInternetConnection = false, isServiceUnavailable = false) }
+    private fun details() = intent {
         intercept { cardDetailsUseCase.cardById(cardId) }.map { cardDomain ->
             reduce {
                 state.copy(
@@ -35,7 +32,6 @@ class CardViewModel(
                 )
             }
         }
-        reduce { state.copy(isLoading = false) }
     }
 
     fun goBack() = intent {
@@ -44,23 +40,7 @@ class CardViewModel(
 
     override suspend fun interceptError(error: Exception) {
         when (error) {
-            is NoInternetConnectionException -> intent {
-                reduce {
-                    state.copy(
-                        isNoInternetConnection = true,
-                        isLoading = false
-                    )
-                }
-            }
-            is ServiceUnavailableException -> intent {
-                reduce {
-                    state.copy(
-                        isServiceUnavailable = true,
-                        isLoading = false
-                    )
-                }
-            }
-            is NoSuchCardException -> intent { reduce { state.copy(isNoSuchCard = true, isLoading = false) } }
+            is NoSuchCardException -> intent { reduce { state.copy(isNoSuchCard = true) } }
         }
     }
 }

@@ -8,7 +8,8 @@ interface CardArtCacheDataSource {
 
     suspend fun defaultArt(): CardArt
 
-    class Base(private val arts: ReadCardArts, private val defaultArt: ReadDefaultArt) : CardArtCacheDataSource {
+    class Base(private val arts: ReadCardArts, private val defaultArt: ReadDefaultArt) :
+        CardArtCacheDataSource {
 
         override suspend fun art(name: String): CardArt {
             val art = arts.read().find { it.name == name }

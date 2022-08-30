@@ -9,10 +9,12 @@ import java.lang.reflect.Type
 
 interface ReadCardArts : Read<List<CardArt>> {
 
-    class Base(private val gson: Gson, private val manageResources: ManageResources) : ReadCardArts {
+    class Base(private val gson: Gson, private val manageResources: ManageResources) :
+        ReadCardArts {
 
         private val typeList: Type = object : TypeToken<List<CardArt>>() {}.type
 
-        override fun read(): List<CardArt> = gson.fromJson(manageResources.string("ASCIIarts.json"), typeList)
+        override fun read(): List<CardArt> =
+            gson.fromJson(manageResources.string("ASCIIarts.json"), typeList)
     }
 }

@@ -45,7 +45,11 @@ class FeedNode(
         val context = LocalContext.current
         viewModel.collectSideEffect {
             when (it) {
-                FeedEffect.ErrorRefresh -> Toast.makeText(context, R.string.error_refresh, Toast.LENGTH_LONG).show()
+                FeedEffect.ErrorRefresh -> Toast.makeText(
+                    context,
+                    R.string.error_refresh,
+                    Toast.LENGTH_LONG
+                ).show()
                 is FeedEffect.ShowCard -> onShowCard(it.cardName)
             }
         }

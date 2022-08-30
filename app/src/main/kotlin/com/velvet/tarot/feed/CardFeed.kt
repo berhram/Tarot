@@ -11,6 +11,7 @@ data class CardFeed(
 ) {
     companion object {
 
-        fun fromCardDomain(cardDomain: CardDomain): CardFeed = CardFeed(cardDomain.id, cardDomain.art, cardDomain.name)
+        fun fromCardDomain(cardDomain: CardDomain): CardFeed =
+            CardFeed(cardDomain.id, cardDomain.art, cardDomain.name)
     }
 }

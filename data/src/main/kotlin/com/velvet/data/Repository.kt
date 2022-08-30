@@ -34,7 +34,8 @@ interface Repository {
 
         override suspend fun card(id: String): Card = tarotCacheDataSource.card(id)
 
-        override suspend fun cards(keyword: String): List<Card> = tarotCloudDataSource.cards(keyword)
+        override suspend fun cards(keyword: String): List<Card> =
+            tarotCloudDataSource.cards(keyword)
 
         override suspend fun cards(): List<Card> {
             val cloudCards = tarotCloudDataSource.cards()

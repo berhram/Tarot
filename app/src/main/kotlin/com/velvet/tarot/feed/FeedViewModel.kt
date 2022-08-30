@@ -42,7 +42,13 @@ class FeedViewModel(
     }
 
     fun refresh() = intent {
-        reduce { state.copy(isLoading = true, isServiceUnavailable = false, isNoInternetConnection = false) }
+        reduce {
+            state.copy(
+                isLoading = true,
+                isServiceUnavailable = false,
+                isNoInternetConnection = false
+            )
+        }
         intercept { cardsUseCase.cards() }.map { cards ->
             reduce {
                 state.copy(
@@ -58,7 +64,8 @@ class FeedViewModel(
         reduce { state.copy(isSimpleList = !state.isSimpleList) }
     }
 
-    fun showCard(cardName: String) = intent { postSideEffect(FeedEffect.ShowCard(cardName = cardName)) }
+    fun showCard(cardName: String) =
+        intent { postSideEffect(FeedEffect.ShowCard(cardName = cardName)) }
 
     fun toggleSearch() = intent {
         if (state.isSearchExpanded)

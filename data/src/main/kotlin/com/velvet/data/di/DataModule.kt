@@ -27,7 +27,8 @@ val dataModule = module {
     }
 
     factory {
-        Room.databaseBuilder(androidContext(), CardDatabase::class.java, CardDatabase.DB_NAME).build().cardDao()
+        Room.databaseBuilder(androidContext(), CardDatabase::class.java, CardDatabase.DB_NAME)
+            .build().cardDao()
     }
 
     factory {

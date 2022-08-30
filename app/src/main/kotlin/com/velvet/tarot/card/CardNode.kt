@@ -13,8 +13,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.velvet.tarot.R
 import com.velvet.tarot.ui.AutoSizeText
 import com.velvet.tarot.ui.appTypography
@@ -60,114 +58,77 @@ class CardNode(
                     )
                     IconButton(onClick = { viewModel.goBack() }) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_q), contentDescription = stringResource(
+                            painter = painterResource(id = R.drawable.ic_q),
+                            contentDescription = stringResource(
                                 id = R.string.button_back
-                            ), tint = MaterialTheme.colors.onBackground
+                            ),
+                            tint = MaterialTheme.colors.onBackground
                         )
                     }
                 }
             }
         }, backgroundColor = MaterialTheme.colors.background) {
-            if (state.value.isLoading || state.value.isServiceUnavailable || state.value.isNoSuchCard || state.value.isNoInternetConnection) {
-                SwipeRefresh(
+            if (state.value.isNoSuchCard) {
+                Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = MaterialTheme.dimensions.medium),
-                    state = rememberSwipeRefreshState(isRefreshing = state.value.isLoading),
-                    onRefresh = { viewModel.refresh() }
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        if (state.value.isLoading) {
-                            Text(
-                                text = stringResource(id = R.string.loading),
-                                style = MaterialTheme.appTypography.bodyBold,
-                                textAlign = TextAlign.Center,
-                                color = MaterialTheme.colors.onBackground
-                            )
-                        }
-                        if (state.value.isServiceUnavailable) {
-                            Text(
-                                text = stringResource(id = R.string.service_unavailable),
-                                style = MaterialTheme.appTypography.bodyBold,
-                                textAlign = TextAlign.Center,
-                                color = MaterialTheme.colors.onBackground
-                            )
-                        }
-                        if (state.value.isNoSuchCard) {
-                            Text(
-                                text = stringResource(id = R.string.no_such_card),
-                                style = MaterialTheme.appTypography.bodyBold,
-                                textAlign = TextAlign.Center,
-                                color = MaterialTheme.colors.onBackground
-                            )
-                        }
-                        if (state.value.isNoInternetConnection) {
-                            Text(
-                                text = stringResource(id = R.string.no_internet_connection),
-                                style = MaterialTheme.appTypography.bodyBold,
-                                textAlign = TextAlign.Center,
-                                color = MaterialTheme.colors.onBackground
-                            )
-                        }
-                    }
+                    Text(
+                        text = stringResource(id = R.string.no_such_card),
+                        style = MaterialTheme.appTypography.bodyBold,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colors.onBackground
+                    )
                 }
             } else {
-                SwipeRefresh(
-                    modifier = Modifier
+                Column(
+                    Modifier
                         .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
                         .padding(horizontal = MaterialTheme.dimensions.medium),
-                    state = rememberSwipeRefreshState(isRefreshing = state.value.isLoading),
-                    onRefresh = { viewModel.refresh() }
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    Column(
-                        Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState()),
-                        horizontalAlignment = Alignment.Start
-                    ) {
-                        AutoSizeText(
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                            text = state.value.cardDetails.art,
-                            lines = 20,
-                            style = MaterialTheme.appTypography.title,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colors.onBackground
-                        )
-                        Text(
-                            text = stringResource(id = R.string.type) + " " + state.value.cardDetails.type,
-                            style = MaterialTheme.appTypography.body,
-                            textAlign = TextAlign.Start,
-                            color = MaterialTheme.colors.onBackground
-                        )
-                        Text(
-                            text = stringResource(id = R.string.name) + " " + state.value.cardDetails.name,
-                            style = MaterialTheme.appTypography.body,
-                            textAlign = TextAlign.Start,
-                            color = MaterialTheme.colors.onBackground
-                        )
-                        Text(
-                            text = stringResource(id = R.string.meaning_up) + " " + state.value.cardDetails.meaningUp,
-                            style = MaterialTheme.appTypography.body,
-                            textAlign = TextAlign.Start,
-                            color = MaterialTheme.colors.onBackground
-                        )
-                        Text(
-                            text = stringResource(id = R.string.meaning_rev) + " " + state.value.cardDetails.meaningRev,
-                            style = MaterialTheme.appTypography.body,
-                            textAlign = TextAlign.Start,
-                            color = MaterialTheme.colors.onBackground
-                        )
-                        Text(
-                            text = stringResource(id = R.string.desc) + " " + state.value.cardDetails.description,
-                            style = MaterialTheme.appTypography.body,
-                            textAlign = TextAlign.Start,
-                            color = MaterialTheme.colors.onBackground
-                        )
-                    }
+                    AutoSizeText(
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        text = state.value.cardDetails.art,
+                        lines = 20,
+                        style = MaterialTheme.appTypography.title,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colors.onBackground
+                    )
+                    Text(
+                        text = stringResource(id = R.string.type) + " " + state.value.cardDetails.type,
+                        style = MaterialTheme.appTypography.body,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colors.onBackground
+                    )
+                    Text(
+                        text = stringResource(id = R.string.name) + " " + state.value.cardDetails.name,
+                        style = MaterialTheme.appTypography.body,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colors.onBackground
+                    )
+                    Text(
+                        text = stringResource(id = R.string.meaning_up) + " " + state.value.cardDetails.meaningUp,
+                        style = MaterialTheme.appTypography.body,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colors.onBackground
+                    )
+                    Text(
+                        text = stringResource(id = R.string.meaning_rev) + " " + state.value.cardDetails.meaningRev,
+                        style = MaterialTheme.appTypography.body,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colors.onBackground
+                    )
+                    Text(
+                        text = stringResource(id = R.string.desc) + " " + state.value.cardDetails.description,
+                        style = MaterialTheme.appTypography.body,
+                        textAlign = TextAlign.Start,
+                        color = MaterialTheme.colors.onBackground
+                    )
                 }
             }
         }

@@ -79,9 +79,7 @@ dependencyResolutionManagement {
             //Appyx
             version("appyx", "1.0-alpha06")
             library("appyxCore", "com.bumble.appyx",  "core").versionRef("appyx")
-            //TODO replace with regular appyx version
             library("appyxTesting", "com.bumble.appyx", "testing-ui").versionRef("appyx")
-            library("appyxTestingUnit", "com.bumble.appyx", "testing-unit-common").version("1.0-alpha05")
             library("appyxJunit", "com.bumble.appyx", "testing-junit4").versionRef("appyx")
         }
     }

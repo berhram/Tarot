@@ -64,7 +64,8 @@ internal class TarotCacheDataSourceTest {
             return Card()
         }
 
-        override fun cardExists(id: String): Boolean = id == "0" || id == "1" || id == "2" || id == "3"
+        override fun cardExists(id: String): Boolean =
+            id == "0" || id == "1" || id == "2" || id == "3"
 
         override fun getAll(): List<Card> = storage
 

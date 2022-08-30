@@ -43,7 +43,10 @@ fun AppTheme(content: @Composable () -> Unit) {
             onError = Color(0xFF000000)
         )
     }
-    CompositionLocalProvider(LocalDimensions provides Dimensions(), LocalTypography provides AppTypography()) {
+    CompositionLocalProvider(
+        LocalDimensions provides Dimensions(),
+        LocalTypography provides AppTypography()
+    ) {
         MaterialTheme(
             colors = colors,
             content = content

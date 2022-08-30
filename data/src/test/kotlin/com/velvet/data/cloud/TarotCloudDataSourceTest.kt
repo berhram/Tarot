@@ -23,19 +23,22 @@ internal class TarotCloudDataSourceTest {
 
     @Test
     fun `success cards by keyword`() = runBlocking {
-        val tarotCloudDataSource = TarotCloudDataSource.Base(TestService(foundCards, allCards), TestHandleError())
+        val tarotCloudDataSource =
+            TarotCloudDataSource.Base(TestService(foundCards, allCards), TestHandleError())
         Assert.assertEquals(foundCards, tarotCloudDataSource.cards("someKeyword"))
     }
 
     @Test
     fun `failed cards by keyword`() = runBlocking {
-        val tarotCloudDataSource = TarotCloudDataSource.Base(TestService(foundCards, allCards), TestHandleError())
+        val tarotCloudDataSource =
+            TarotCloudDataSource.Base(TestService(foundCards, allCards), TestHandleError())
         Assert.assertEquals(emptyList<Card>(), tarotCloudDataSource.cards("abrakadabra"))
     }
 
     @Test
     fun `success all cards`() = runBlocking {
-        val tarotCloudDataSource = TarotCloudDataSource.Base(TestService(foundCards, allCards), TestHandleError())
+        val tarotCloudDataSource =
+            TarotCloudDataSource.Base(TestService(foundCards, allCards), TestHandleError())
         Assert.assertEquals(allCards, tarotCloudDataSource.cards())
     }
 
@@ -44,7 +47,10 @@ internal class TarotCloudDataSourceTest {
         override fun handle(error: Exception): Exception = error
     }
 
-    private class TestService(private val foundCards: List<Card>, private val allCards: List<Card>) : TarotService {
+    private class TestService(
+        private val foundCards: List<Card>,
+        private val allCards: List<Card>
+    ) : TarotService {
 
         override suspend fun searchByKeyword(keyword: String): RemoteCards =
             RemoteCards(if (keyword == "someKeyword") foundCards else emptyList())

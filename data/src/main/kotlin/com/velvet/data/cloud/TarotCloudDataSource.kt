@@ -16,7 +16,8 @@ interface TarotCloudDataSource {
     ) : TarotCloudDataSource,
         CloudDataSource.Abstract(handleError) {
 
-        override suspend fun cards(keyword: String): List<Card> = handle { tarotService.searchByKeyword(keyword).cards }
+        override suspend fun cards(keyword: String): List<Card> =
+            handle { tarotService.searchByKeyword(keyword).cards }
 
         override suspend fun cards(): List<Card> = handle { tarotService.allCards().cards }
     }
