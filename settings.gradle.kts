@@ -77,7 +77,7 @@ dependencyResolutionManagement {
             library("junitAndroid", "androidx.test.ext", "junit").version("1.1.3")
             library("uiTestJunit4", "androidx.compose.ui", "ui-test-junit4").version("1.1.1")
             //Appyx
-            version("appyx", "1.0-alpha06")
+            version("appyx", "1.0-alpha08")
             library("appyxCore", "com.bumble.appyx",  "core").versionRef("appyx")
             library("appyxTesting", "com.bumble.appyx", "testing-ui").versionRef("appyx")
             library("appyxJunit", "com.bumble.appyx", "testing-junit4").versionRef("appyx")

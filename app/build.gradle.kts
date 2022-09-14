@@ -1,3 +1,5 @@
+@file:Suppress("ObjectLiteralToLambda", "DEPRECATION")
+
 import com.android.build.gradle.api.ApplicationVariant
 import com.android.build.gradle.api.BaseVariantOutput
 
