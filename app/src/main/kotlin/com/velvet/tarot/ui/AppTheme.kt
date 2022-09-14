@@ -56,6 +56,7 @@ fun AppTheme(content: @Composable () -> Unit) {
 
 val LocalDimensions = staticCompositionLocalOf { Dimensions() }
 
+@Suppress("unused")
 val MaterialTheme.dimensions: Dimensions
     @Composable
     @ReadOnlyComposable
@@ -63,7 +64,13 @@ val MaterialTheme.dimensions: Dimensions
 
 val LocalTypography = staticCompositionLocalOf { AppTypography() }
 
+@Suppress("unused")
 val MaterialTheme.appTypography: AppTypography
     @Composable
     @ReadOnlyComposable
     get() = LocalTypography.current
+
+
+@Suppress("unused")
+val MaterialTheme.durations: Durations
+    get() = Durations()

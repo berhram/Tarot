@@ -29,6 +29,7 @@ import com.bumble.appyx.core.node.Node
 import com.velvet.tarot.R
 import com.velvet.tarot.ui.appTypography
 import com.velvet.tarot.ui.dimensions
+import com.velvet.tarot.ui.durations
 import org.koin.androidx.compose.getViewModel
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -118,10 +119,10 @@ class FeedNode(
                     AnimatedVisibility(
                         visible = state.value.isLoading,
                         enter = fadeIn(animationSpec = keyframes {
-                            durationMillis = 500
+                            durationMillis = MaterialTheme.durations.medium
                         }),
                         exit = fadeOut(animationSpec = keyframes {
-                            durationMillis = 500
+                            durationMillis = MaterialTheme.durations.medium
                         })
                     ) {
                         Text(
@@ -141,10 +142,10 @@ class FeedNode(
                     AnimatedVisibility(
                         visible = state.value.isServiceUnavailable,
                         enter = fadeIn(animationSpec = keyframes {
-                            durationMillis = 500
+                            durationMillis = MaterialTheme.durations.medium
                         }),
                         exit = fadeOut(animationSpec = keyframes {
-                            durationMillis = 500
+                            durationMillis = MaterialTheme.durations.medium
                         })
                     ) {
                         Text(
@@ -164,10 +165,10 @@ class FeedNode(
                     AnimatedVisibility(
                         visible = state.value.isNoInternetConnection,
                         enter = fadeIn(animationSpec = keyframes {
-                            durationMillis = 500
+                            durationMillis = MaterialTheme.durations.medium
                         }),
                         exit = fadeOut(animationSpec = keyframes {
-                            durationMillis = 500
+                            durationMillis = MaterialTheme.durations.medium
                         })
                     ) {
                         Text(
@@ -188,10 +189,10 @@ class FeedNode(
                     AnimatedVisibility(
                         visible = state.value.cards.list.isEmpty() && !state.value.isLoading,
                         enter = fadeIn(animationSpec = keyframes {
-                            durationMillis = 500
+                            durationMillis = MaterialTheme.durations.medium
                         }),
                         exit = fadeOut(animationSpec = keyframes {
-                            durationMillis = 500
+                            durationMillis = MaterialTheme.durations.medium
                         })
                     ) {
                         Text(
@@ -216,10 +217,10 @@ class FeedNode(
                     AnimatedVisibility(
                         visible = state.value.isSimpleList && !state.value.isLoading,
                         enter = fadeIn(animationSpec = keyframes {
-                            durationMillis = 1000
+                            durationMillis = MaterialTheme.durations.medium
                         }),
                         exit = fadeOut(animationSpec = keyframes {
-                            durationMillis = 500
+                            durationMillis = MaterialTheme.durations.medium
                         })
                     ) {
                         LazyColumn(modifier = Modifier.fillMaxSize(), content = {
@@ -252,10 +253,10 @@ class FeedNode(
                     AnimatedVisibility(
                         visible = !state.value.isSimpleList && !state.value.isLoading,
                         enter = fadeIn(animationSpec = keyframes {
-                            durationMillis = 1000
+                            durationMillis = MaterialTheme.durations.medium
                         }),
                         exit = fadeOut(animationSpec = keyframes {
-                            durationMillis = 500
+                            durationMillis = MaterialTheme.durations.medium
                         })
                     ) {
                         LazyVerticalGrid(
