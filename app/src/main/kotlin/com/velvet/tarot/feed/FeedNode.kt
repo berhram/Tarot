@@ -75,7 +75,7 @@ class FeedNode(
                         text = ":F",
                         modifier = Modifier
                             .background(if (state.value.isSearchExpanded) MaterialTheme.colors.onBackground else MaterialTheme.colors.background)
-                            .clickable { if (!state.value.isLoading) viewModel.toggleSearch() },
+                            .clickable { if (state.value.message != FeedScreenState.Message.LOADING) viewModel.toggleSearch() },
                         style = MaterialTheme.appTypography.title,
                         color = if (state.value.isSearchExpanded) MaterialTheme.colors.background else MaterialTheme.colors.onBackground
                     )
@@ -83,7 +83,7 @@ class FeedNode(
                         text = ":v",
                         modifier = Modifier
                             .background(if (state.value.isSimpleList) MaterialTheme.colors.onBackground else MaterialTheme.colors.background)
-                            .clickable { if (!state.value.isLoading) viewModel.switchView() },
+                            .clickable { if (state.value.message != FeedScreenState.Message.LOADING) viewModel.switchView() },
                         style = MaterialTheme.appTypography.title,
                         color = if (state.value.isSimpleList) MaterialTheme.colors.background else MaterialTheme.colors.onBackground
                     )
@@ -93,7 +93,7 @@ class FeedNode(
             ConstraintLayout(
                 modifier = Modifier.fillMaxSize(),
             ) {
-                val (search, loading, noCards, serviceUnavailable, noInternet, simpleCards, cards) = createRefs()
+                val (search, message, simpleCards, cards) = createRefs()
                 Column(modifier = Modifier
                     .padding(MaterialTheme.dimensions.small)
                     .constrainAs(search) {
@@ -110,14 +110,14 @@ class FeedNode(
                             onValueChange = { viewModel.searchCards(it) })
                     }
                 }
-                Column(modifier = Modifier.constrainAs(loading) {
+                Column(modifier = Modifier.constrainAs(message) {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }) {
                     AnimatedVisibility(
-                        visible = state.value.isLoading,
+                        visible = state.value.message != FeedScreenState.Message.NONE,
                         enter = fadeIn(animationSpec = keyframes {
                             durationMillis = MaterialTheme.durations.medium
                         }),
@@ -126,77 +126,20 @@ class FeedNode(
                         })
                     ) {
                         Text(
-                            text = stringResource(id = R.string.loading),
-                            style = MaterialTheme.appTypography.title,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colors.onBackground
-                        )
-                    }
-                }
-                Column(modifier = Modifier.constrainAs(serviceUnavailable) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }) {
-                    AnimatedVisibility(
-                        visible = state.value.isServiceUnavailable,
-                        enter = fadeIn(animationSpec = keyframes {
-                            durationMillis = MaterialTheme.durations.medium
-                        }),
-                        exit = fadeOut(animationSpec = keyframes {
-                            durationMillis = MaterialTheme.durations.medium
-                        })
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.service_unavailable),
-                            style = MaterialTheme.appTypography.title,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colors.onBackground
-                        )
-                    }
-                }
-                Column(modifier = Modifier.constrainAs(noInternet) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }) {
-                    AnimatedVisibility(
-                        visible = state.value.isNoInternetConnection,
-                        enter = fadeIn(animationSpec = keyframes {
-                            durationMillis = MaterialTheme.durations.medium
-                        }),
-                        exit = fadeOut(animationSpec = keyframes {
-                            durationMillis = MaterialTheme.durations.medium
-                        })
-                    ) {
-                        Text(
-                            modifier = Modifier.clickable { viewModel.refresh() },
-                            text = stringResource(id = R.string.no_internet_connection),
-                            style = MaterialTheme.appTypography.title,
-                            textAlign = TextAlign.Center,
-                            color = MaterialTheme.colors.onBackground
-                        )
-                    }
-                }
-                Column(modifier = Modifier.constrainAs(noCards) {
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                }) {
-                    AnimatedVisibility(
-                        visible = state.value.cards.list.isEmpty() && !state.value.isLoading,
-                        enter = fadeIn(animationSpec = keyframes {
-                            durationMillis = MaterialTheme.durations.medium
-                        }),
-                        exit = fadeOut(animationSpec = keyframes {
-                            durationMillis = MaterialTheme.durations.medium
-                        })
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.no_cards),
+                            modifier = Modifier.clickable {
+                                when (state.value.message) {
+                                    FeedScreenState.Message.NONE -> {}
+                                    FeedScreenState.Message.LOADING -> {}
+                                    FeedScreenState.Message.IS_NO_INTERNET -> viewModel.refresh()
+                                    FeedScreenState.Message.IS_SERVICE_UNAVAILABLE -> viewModel.refresh()
+                                }
+                            },
+                            text = when (state.value.message) {
+                                FeedScreenState.Message.LOADING -> stringResource(id = R.string.loading)
+                                FeedScreenState.Message.NONE -> ""
+                                FeedScreenState.Message.IS_NO_INTERNET -> stringResource(id = R.string.no_internet_connection)
+                                FeedScreenState.Message.IS_SERVICE_UNAVAILABLE -> stringResource(id = R.string.service_unavailable)
+                            },
                             style = MaterialTheme.appTypography.title,
                             textAlign = TextAlign.Center,
                             color = MaterialTheme.colors.onBackground
@@ -215,7 +158,7 @@ class FeedNode(
                             height = Dimension.fillToConstraints
                         }) {
                     AnimatedVisibility(
-                        visible = state.value.isSimpleList && !state.value.isLoading,
+                        visible = state.value.isSimpleList && state.value.message == FeedScreenState.Message.NONE,
                         enter = fadeIn(animationSpec = keyframes {
                             durationMillis = MaterialTheme.durations.medium
                         }),
@@ -251,7 +194,7 @@ class FeedNode(
                     height = Dimension.fillToConstraints
                 }) {
                     AnimatedVisibility(
-                        visible = !state.value.isSimpleList && !state.value.isLoading,
+                        visible = !state.value.isSimpleList && state.value.message == FeedScreenState.Message.NONE,
                         enter = fadeIn(animationSpec = keyframes {
                             durationMillis = MaterialTheme.durations.medium
                         }),

@@ -7,7 +7,8 @@ import com.velvet.core.exception.ServiceUnavailableException
 import com.velvet.domain.usecases.CachedCardsUseCase
 import com.velvet.domain.usecases.CardsByKeywordUseCase
 import com.velvet.domain.usecases.CardsUseCase
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.Container
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -34,7 +35,7 @@ class FeedViewModel(
             reduce {
                 state.copy(
                     cards = CardFeedList(cards.map { CardFeed.fromCardDomain(it) }),
-                    isLoading = false,
+                    message = FeedScreenState.Message.NONE,
                     searchText = ""
                 )
             }
@@ -44,16 +45,14 @@ class FeedViewModel(
     fun refresh() = intent {
         reduce {
             state.copy(
-                isLoading = true,
-                isServiceUnavailable = false,
-                isNoInternetConnection = false
+                message = FeedScreenState.Message.LOADING
             )
         }
         intercept { cardsUseCase.cards() }.map { cards ->
             reduce {
                 state.copy(
                     cards = CardFeedList(cards.map { CardFeed.fromCardDomain(it) }),
-                    isLoading = false,
+                    message = FeedScreenState.Message.NONE,
                     searchText = ""
                 )
             }
@@ -76,11 +75,11 @@ class FeedViewModel(
     fun searchCards(searchWord: String) = intent {
         reduce { state.copy(searchText = searchWord) }
         viewModelScope.launch(Dispatchers.IO) {
-            reduce { state.copy(isLoading = true) }
+            reduce { state.copy(message = FeedScreenState.Message.LOADING) }
             intercept { cardsByKeywordUseCase.cards(searchWord.trim()) }.map { cards ->
                 reduce {
                     state.copy(
-                        isLoading = false,
+                        message = FeedScreenState.Message.NONE,
                         cards = CardFeedList(cards.map { CardFeed.fromCardDomain(it) })
                     )
                 }
@@ -93,16 +92,14 @@ class FeedViewModel(
             is NoInternetConnectionException -> intent {
                 reduce {
                     state.copy(
-                        isNoInternetConnection = true,
-                        isLoading = false
+                        message = FeedScreenState.Message.IS_NO_INTERNET
                     )
                 }
             }
             is ServiceUnavailableException -> intent {
                 reduce {
                     state.copy(
-                        isServiceUnavailable = true,
-                        isLoading = false
+                        message = FeedScreenState.Message.IS_SERVICE_UNAVAILABLE
                     )
                 }
             }

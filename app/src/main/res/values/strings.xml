@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Tarot</string>
     <string name="tarot_dir">~/tarot</string>
-    <string name="card_dir">.card</string>
+    <string name="card_ext">.card</string>
     <string name="no_cards">There is no cards!</string>
     <string name="type">Type:</string>
     <string name="name">Name:</string>
@@ -9,14 +9,12 @@
     <string name="meaning_rev">Meaning (reversed side):</string>
     <string name="desc">Description:</string>
     <string name="button_back">Back button</string>
-    <string name="button_filter">Filter button</string>
-    <string name="unknown">Unknown</string>
     <string name="search">Search</string>
     <string name="major">Major</string>
     <string name="minor">Minor</string>
     <string name="loading">Loading…</string>
     <string name="error_refresh">Can\'t refresh! Check your connection!</string>
     <string name="no_internet_connection">There is no internet connection\nClick to refresh</string>
-    <string name="service_unavailable">Looks like service is not available</string>
+    <string name="service_unavailable">Looks like service is not available\nClick to refresh</string>
     <string name="no_such_card">There is no card with this id</string>
 </resources>

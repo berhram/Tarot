@@ -50,7 +50,16 @@ class CardNode(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     AutoSizeText(
-                        text = "~/tarot/" + state.value.cardDetails.id + ".card",
+                        text =
+                        "${
+                            stringResource(id = R.string.tarot_dir)
+                        }/${
+                            state.value.cardDetails.id
+                        }${
+                            stringResource(
+                                id = R.string.card_ext
+                            )
+                        }",
                         lines = 1,
                         style = MaterialTheme.appTypography.title,
                         textAlign = TextAlign.Start,
